@@ -141,14 +141,12 @@ export default function App() {
     console.log('Sungazing completed:', duration);
   };
 
-  // Show onboarding if needed
-  if (showOnboarding) {
-    return <OnboardingScreen onComplete={handleOnboardingComplete} />;
-  }
-
   // Show new onboarding flow
-  if (showNewOnboarding) {
-    return <OnboardingFlow onComplete={() => setShowNewOnboarding(false)} />;
+  if (showOnboarding || showNewOnboarding) {
+    return <OnboardingFlow onComplete={() => {
+      setShowOnboarding(false);
+      setShowNewOnboarding(false);
+    }} />;
   }
 
   // Show night mode
@@ -1058,10 +1056,6 @@ export default function App() {
         userId="test-user-1"
       />
 
-      {/* New Onboarding Flow */}
-      {showNewOnboarding && (
-        <OnboardingFlow onComplete={() => setShowNewOnboarding(false)} />
-      )}
 
       {/* Solar Window Manager */}
       <SolarWindowManager onRitualComplete={() => {}} />
