@@ -1,0 +1,3 @@
+{
+  "/api/webhooks/flutterwave/route": "app/api/webhooks/flutterwave/route.js"
+}

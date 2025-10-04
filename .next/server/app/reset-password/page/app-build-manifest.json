@@ -1,0 +1,16 @@
+{
+  "pages": {
+    "/reset-password/page": [
+      "static/chunks/dad4125320d49925.js",
+      "static/chunks/2473c16c0c2f6b5f.css",
+      "static/chunks/d824f83c5548624c.css",
+      "static/chunks/d1ea46f18acf2548.js",
+      "static/chunks/24b0f65278b0c44d.js",
+      "static/chunks/94a5f2e64bd999c2.js",
+      "static/chunks/6811fd676b48a548.js",
+      "static/chunks/8d2b716fb9ac52f9.js",
+      "static/chunks/73bca13195347849.js",
+      "static/chunks/turbopack-c434d8d2cefcf7f5.js"
+    ]
+  }
+}

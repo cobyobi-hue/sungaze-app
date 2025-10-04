@@ -1,0 +1,11 @@
+{
+  "pages": {
+    "/api/upload-voice/route": [
+      "static/chunks/94a5f2e64bd999c2.js",
+      "static/chunks/6811fd676b48a548.js",
+      "static/chunks/8d2b716fb9ac52f9.js",
+      "static/chunks/73bca13195347849.js",
+      "static/chunks/turbopack-c434d8d2cefcf7f5.js"
+    ]
+  }
+}

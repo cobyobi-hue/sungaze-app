@@ -1,0 +1,1049 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import { SunVisualization } from "./components/SunVisualization";
+import { SungazingTimer } from "./components/SungazingTimer";
+import { SunTimes } from "./components/SunTimes";
+import { SungazingGuide } from "./components/SungazingGuide";
+import { RitualTimer } from "./components/RitualTimer";
+import { OnboardingScreen } from "./components/OnboardingScreen";
+import { UnlocksScreen } from "./components/UnlocksScreen";
+import { GraduationScreen } from "./components/GraduationScreen";
+import { CloudGazingTimer } from "./components/CloudGazingTimer";
+import { SolarWindow } from "./components/SolarWindow";
+import { PostGazeRitual } from "./components/PostGazeRitual";
+import { SolarJournal } from "./components/SolarJournal";
+import { NightMode } from "./components/NightMode";
+// import { TruthScrollsNew } from "./components/TruthScrollsNew"; // Temporarily disabled
+import { Button } from "./components/ui/button";
+import { PaywallModal } from "./components/PaywallModal";
+import { ProfileScreen } from "./components/ProfileScreen";
+import { PremiumGate } from "./components/PremiumGate";
+import { FounderAccessModal } from "./components/FounderAccessModal";
+import { FounderAdminPanel } from "./components/FounderAdminPanel";
+import { useSubscription } from "./hooks/useSubscription";
+import { OracleDialog } from "./components/OracleDialog";
+import { TruthSerum } from "./components/TruthSerum";
+import { EnhancedSolarLevelCard } from "./components/EnhancedSolarLevelCard";
+import { SolarContentViewer } from "./components/SolarContentViewer";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "./components/ui/tabs";
+import { Home, Eye, Sparkles, User, Cloud, Sun, Crown, Upload, ChevronDown, BookOpen, Book } from "lucide-react";
+import { hasValidConsent } from "./lib/consent";
+import { isGraduated } from "./lib/milestones";
+
+export default function App() {
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [timerProgress, setTimerProgress] = useState(0);
+  const [activeRitual, setActiveRitual] = useState<string | null>(null);
+  const [ritualTimeLeft, setRitualTimeLeft] = useState(0);
+  const [ritualDuration, setRitualDuration] = useState(0);
+  const [currentView, setCurrentView] = useState<'main' | 'palming' | 'barefoot' | 'unlocks' | 'graduation' | 'post-gaze' | 'journal' | 'night' | 'truth-scrolls'>('main');
+  const [sungazingCompleted, setSungazingCompleted] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showGraduation, setShowGraduation] = useState(false);
+  const [gazingDuration, setGazingDuration] = useState(0);
+  const [journalMode, setJournalMode] = useState<'day' | 'evening'>('day');
+  const [premium] = useState(true); // Temporarily set to true to test if premium gating is causing the error
+  const [premiumUnlockDate] = useState(new Date('2024-12-01')); // Mock premium unlock date
+  const [flareNotification, setFlareNotification] = useState<string | null>(null);
+  const [showNarrativeLayer, setShowNarrativeLayer] = useState(false);
+  const [showOracle, setShowOracle] = useState(false);
+  const [oracleSessionType, setOracleSessionType] = useState<string>('');
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [showFounderModal, setShowFounderModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("home");
+  const [autoStartTimer, setAutoStartTimer] = useState(false);
+
+  // Subscription management
+  const { profile, hasAccess, isPremium, isFounder, loading } = useSubscription('test-user-1');
+  
+  // Debug logging
+  console.log('Profile:', profile);
+  console.log('isPremium:', isPremium);
+  console.log('isFounder:', isFounder);
+  console.log('Loading:', loading);
+
+  // Check consent and graduation status on component mount
+  useEffect(() => {
+    // Check consent for Solar Oracle Onboarding
+    if (typeof window !== 'undefined') {
+      try {
+        const hasConsent = hasValidConsent();
+        setShowOnboarding(!hasConsent);
+        
+        if (hasConsent && isGraduated()) {
+          setShowGraduation(true);
+        }
+      } catch (error) {
+        console.error('Error checking consent/graduation status:', error);
+        setShowOnboarding(true); // Show onboarding if there's an error
+      }
+    }
+  }, []);
+
+  // Check if founder needs to provide email
+  useEffect(() => {
+    if (isFounder && isPremium && typeof window !== 'undefined') {
+      const storedEmail = localStorage.getItem('localStorage.email');
+      if (!storedEmail) {
+        // Small delay to ensure smooth transition after payment
+        setTimeout(() => {
+          setShowFounderModal(true);
+        }, 1000);
+      }
+    }
+  }, [isFounder, isPremium]);
+
+  const handleTimerChange = (
+    isActive: boolean,
+    progress: number,
+  ) => {
+    setIsTimerActive(isActive);
+    setTimerProgress(progress);
+  };
+
+  const handleFlareAction = (action: string, intensity: number) => {
+    setFlareNotification(action);
+    
+    // Log the action for debugging
+    console.log('Solar Flare Activated:', action, `Intensity: ${intensity}`);
+    
+    // Clear notification after 3 seconds
+    setTimeout(() => setFlareNotification(null), 3000);
+  };
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startRitual = (ritual: string, duration: number) => {
+    setActiveRitual(ritual);
+    setRitualDuration(duration);
+    setRitualTimeLeft(duration);
+  };
+
+  useEffect(() => {
+    if (activeRitual && ritualTimeLeft > 0) {
+      intervalRef.current = setInterval(() => {
+        setRitualTimeLeft((prev) => {
+          if (prev <= 1) {
+            setActiveRitual(null);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [activeRitual, ritualTimeLeft]);
+
+  // Handle onboarding completion
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
+  
+  // Handle graduation completion
+  const handleGraduationComplete = () => {
+    setShowGraduation(false);
+  };
+
+  // Handle sungazing completion -> go directly to barefoot walking
+  const handleSungazingComplete = (duration: number) => {
+    setGazingDuration(duration);
+    setCurrentView('barefoot');
+  };
+
+  // Handle Oracle completion -> just close the dialog
+  const handleOracleComplete = () => {
+    setShowOracle(false);
+  };
+
+  // Handle post-gaze ritual completion -> journal
+  const handlePostGazeComplete = () => {
+    setCurrentView('journal');
+  };
+
+  // Handle journal actions
+  const handleJournalComplete = () => {
+    setCurrentView('main');
+  };
+
+
+  // Handle night mode actions
+  const handleNightModeComplete = () => {
+    setCurrentView('main');
+  };
+
+  // Show loading screen while subscription is loading
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-900 to-amber-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-orange-300 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading Solar Journey...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show graduation screen if user has completed the journey
+  if (showGraduation) {
+    return <GraduationScreen onComplete={handleGraduationComplete} />;
+  }
+
+  // Show onboarding if consent not given
+  if (showOnboarding) {
+    return <OnboardingScreen onComplete={handleOnboardingComplete} />;
+  }
+  
+  // Show unlocks screen
+  if (currentView === 'unlocks') {
+    return (
+      <PremiumGate
+        requiredTier="monthly"
+        hasAccess={!loading && hasAccess ? hasAccess('monthly') : false}
+        onUpgrade={() => setShowPaywall(true)}
+      >
+        <UnlocksScreen onBack={() => setCurrentView('main')} />
+      </PremiumGate>
+    );
+  }
+
+  // Show ritual timers when navigated to them
+  if (currentView === 'palming') {
+    return (
+      <RitualTimer 
+        ritualType="palming" 
+        onComplete={() => setCurrentView('barefoot')}
+        onBack={() => setCurrentView('main')}
+      />
+    );
+  }
+
+  if (currentView === 'barefoot') {
+    return (
+      <RitualTimer 
+        ritualType="barefoot" 
+        onComplete={() => setCurrentView('main')}
+        onBack={() => setCurrentView('main')}
+      />
+    );
+  }
+
+  // Show post-gaze ritual
+  if (currentView === 'post-gaze') {
+    return (
+      <PremiumGate
+        requiredTier="monthly"
+        hasAccess={!loading && hasAccess ? hasAccess('monthly') : false}
+        onUpgrade={() => setShowPaywall(true)}
+      >
+        <PostGazeRitual
+          gazingDuration={gazingDuration}
+          onComplete={handlePostGazeComplete}
+          onJournalOpen={() => setCurrentView('journal')}
+        />
+      </PremiumGate>
+    );
+  }
+
+  // Show solar journal
+  if (currentView === 'journal') {
+    return (
+      <PremiumGate
+        requiredTier="monthly"
+        hasAccess={!loading && hasAccess ? hasAccess('monthly') : false}
+        onUpgrade={() => setShowPaywall(true)}
+      >
+        <SolarJournal
+          onClose={handleJournalComplete}
+          mode={journalMode}
+          userId="test-user-1"
+        />
+      </PremiumGate>
+    );
+  }
+
+
+  // Show Truth Scrolls - temporarily disabled for debugging
+  if (currentView === 'truth-scrolls') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-900 via-yellow-900 to-amber-800 p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={() => setCurrentView('main')}
+              className="bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-all duration-200"
+            >
+              ← Back to Solar Journey
+            </button>
+          </div>
+          <TruthSerum />
+        </div>
+      </div>
+    );
+  }
+
+  // Show night mode
+  if (currentView === 'night') {
+    return (
+      <NightMode
+        onJournalOpen={(mode) => {
+          // Pass the mode to SolarJournal when opening from night mode
+          setJournalMode('evening');
+          setCurrentView('journal');
+        }}
+      />
+    );
+  }
+
+  return (
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Beautiful sun and desert landscape background */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url(/app-background.jpg)',
+        }}
+      />
+      
+      {/* Overlay for content readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-orange-50/60 to-yellow-50/70 backdrop-blur-[0.5px]" />
+      
+      {/* Subtle tech grid overlay */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: `
+          linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+        `,
+        backgroundSize: '20px 20px'
+      }} />
+
+      {/* Holographic sun effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Main holographic sun */}
+        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-gradient-conic from-orange-200/20 via-yellow-200/30 via-cyan-200/20 to-orange-200/20 animate-spin" 
+             style={{ animationDuration: '20s' }} />
+        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-radial from-yellow-300/15 via-orange-300/20 to-transparent animate-pulse" 
+             style={{ animationDuration: '4s' }} />
+        
+        {/* Floating light particles */}
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-yellow-400/40 rounded-full animate-pulse"
+            style={{
+              left: `${15 + Math.random() * 70}%`,
+              top: `${15 + Math.random() * 70}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 4}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Solar Flare Notification */}
+      {flareNotification && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(251,146,60,0.4)] backdrop-blur-xl border border-orange-300/30 animate-bounce">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+            <span className="text-sm font-medium">{flareNotification}</span>
+          </div>
+        </div>
+      )}
+
+      {/* App container with sacred spacing */}
+      <div className="relative z-10 max-w-sm mx-auto min-h-screen px-6">
+        {/* Futuristic header */}
+        <div className="pt-20 pb-12 text-center">
+          <div className="mb-8">
+            {/* Holographic 44 Circle */}
+            <div className="relative inline-flex items-center justify-center mb-6">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/20 to-amber-400/20 blur-3xl scale-150" />
+              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.5)] border border-yellow-300/30">
+                <span className="text-white text-3xl font-light tracking-wider drop-shadow-lg">44</span>
+              </div>
+              {/* Orbiting elements */}
+              <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
+                <div className="w-2 h-2 bg-yellow-400 rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
+                <div className="w-1 h-1 bg-orange-400 rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(251,146,60,0.8)]" />
+                <div className="w-1.5 h-1.5 bg-amber-400 rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                <div className="w-1 h-1 bg-yellow-300 rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(253,224,71,0.8)]" />
+              </div>
+            </div>
+            
+            <h1 className="text-6xl text-white tracking-[0.1em] font-medium mb-3 drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] shadow-[0_0_40px_rgba(255,255,255,0.6)] filter brightness-110">
+              SUNGAZE
+            </h1>
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent mx-auto mb-4 shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
+          </div>
+          <div className="bg-black/40 backdrop-blur-md rounded-2xl px-6 py-5 border border-white/30 shadow-2xl">
+            <p className="text-white text-sm tracking-[0.15em] font-medium mb-4">
+              LIGHT NUTRITION RITUAL
+            </p>
+            
+            <div className="space-y-4">
+              <p className="text-white text-base font-medium leading-relaxed tracking-wide">
+                Transform sunlight into cellular nourishment through ancient gazing meditation.
+              </p>
+              <p className="text-white/95 text-sm font-light italic leading-relaxed tracking-wide">
+                From 10 seconds to 44 minutes — become a solar being through sacred practice.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Holographic Navigation */}
+        <Tabs defaultValue="home" className="mb-12" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className={`grid w-[180%] max-w-none ${isFounder ? 'grid-cols-9' : 'grid-cols-8'} bg-black/60 backdrop-blur-md border border-white/40 mb-12 rounded-3xl px-6 py-4 shadow-2xl gap-2 -mx-[40%]`}>
+            <TabsTrigger
+              value="gaze"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-400/50 data-[state=active]:to-yellow-400/50 data-[state=active]:text-white data-[state=active]:shadow-[0_8px_25px_rgba(249,115,22,0.4)] data-[state=active]:border-2 data-[state=active]:border-orange-300/80 text-gray-200 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-medium py-3 px-4 bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-400/30 shadow-[0_4px_15px_rgba(249,115,22,0.2)]"
+            >
+              <Sun className="w-5 h-5" />
+              <span className="text-xs font-semibold">SUNGAZE</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="home"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400/40 data-[state=active]:to-purple-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(59,130,246,0.3)] data-[state=active]:border data-[state=active]:border-blue-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+            >
+              <Home className="w-4 h-4" />
+              <span className="text-xs">Home</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="profile"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400/40 data-[state=active]:to-purple-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(59,130,246,0.3)] data-[state=active]:border data-[state=active]:border-blue-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+            >
+              <User className="w-4 h-4" />
+              <span className="text-xs">Profile</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="learn"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-400/40 data-[state=active]:to-yellow-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(249,115,22,0.3)] data-[state=active]:border data-[state=active]:border-orange-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span className="text-xs">Learn</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="clouds"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400/40 data-[state=active]:to-purple-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(59,130,246,0.3)] data-[state=active]:border data-[state=active]:border-blue-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+            >
+              <Cloud className="w-4 h-4" />
+              <span className="text-xs">Clouds</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="rituals"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400/40 data-[state=active]:to-purple-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(59,130,246,0.3)] data-[state=active]:border data-[state=active]:border-blue-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span className="text-xs">Rituals</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="night"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400/40 data-[state=active]:to-purple-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(59,130,246,0.3)] data-[state=active]:border data-[state=active]:border-blue-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+            >
+              <Sun className="w-4 h-4" />
+              <span className="text-xs">Night</span>
+            </TabsTrigger>
+            {isFounder && (
+              <TabsTrigger
+                value="upload"
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-400/40 data-[state=active]:to-orange-400/40 data-[state=active]:text-white data-[state=active]:shadow-[0_4px_20px_rgba(251,146,60,0.3)] data-[state=active]:border data-[state=active]:border-amber-400/60 text-gray-300 hover:text-white flex flex-col items-center gap-1 rounded-xl transition-all duration-300 font-light py-2 px-3"
+              >
+                <Upload className="w-4 h-4" />
+                <span className="text-xs">Upload</span>
+              </TabsTrigger>
+            )}
+          </TabsList>
+
+          <TabsContent value="home" className="space-y-4">
+            {/* Solar Window with adaptive conditions */}
+            <SolarWindow
+              onStartGazing={() => {
+                // Switch to gaze tab and trigger auto-start
+                setActiveTab("gaze");
+                setAutoStartTimer(true);
+              }}
+            />
+            
+            {/* Enhanced Solar Level Progression Card */}
+            <EnhancedSolarLevelCard 
+              currentDay={1} // This would come from user state
+              completedMinutes={0} // This would come from user progress
+            />
+            
+            {/* Premium Access Button - only show for non-premium users */}
+            {!loading && !isPremium && (
+              <div className="bg-white/90 border border-yellow-300 rounded-2xl p-6 text-center shadow-sm backdrop-blur-xl">
+                <h3 className="text-gray-900 font-bold mb-2">⚡ Unlock Full Potential</h3>
+                <p className="text-gray-700 text-sm mb-4">Access sacred seals, truth scrolls, and founder benefits</p>
+                <Button
+                  onClick={() => setShowPaywall(true)}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black font-bold border-0"
+                >
+                  View Premium Options
+                </Button>
+              </div>
+            )}
+
+            {/* Premium Status Badge - show for premium users */}
+            {!loading && isPremium && (
+              <div className="bg-gradient-to-r from-orange-100 to-yellow-100 border border-orange-300 rounded-2xl p-6 text-center shadow-sm">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Crown className="w-5 h-5 text-orange-600" />
+                  <h3 className="text-gray-900 font-bold">Sacred Access Unlocked</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-2">
+                  {profile?.tier === 'founder_444' ? 'First Witness of the Flame' : 
+                   profile?.tier === 'yearly' ? 'Sungaze+ Yearly' :
+                   profile?.tier === 'monthly' ? 'Sungaze+ Monthly' : 'Free Seeker'}
+                </p>
+                {isFounder && profile?.founderNumber && (
+                  <p className="text-orange-600 text-sm font-bold mb-3">Founder #{profile.founderNumber}/444</p>
+                )}
+                {isFounder && (
+                  <Button
+                    onClick={() => setShowFounderModal(true)}
+                    className="w-full bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white font-bold px-4 py-3 rounded-xl text-sm"
+                  >
+                    Join Global Ritual
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {/* The Narrative Layer - Expandable Section */}
+            <PremiumGate
+              requiredTier="monthly"
+              hasAccess={!loading && hasAccess ? hasAccess('monthly') : false}
+              onUpgrade={() => setShowPaywall(true)}
+            >
+              <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 backdrop-blur-md rounded-2xl px-6 py-4 border border-amber-400/30 shadow-2xl mt-6">
+                <button 
+                  onClick={() => setShowNarrativeLayer(!showNarrativeLayer)}
+                  className="w-full flex items-center justify-between text-left hover:bg-amber-900/20 transition-all duration-300 rounded-xl p-2"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center">
+                      <span className="text-white text-xs">☀</span>
+                    </div>
+                    <h2 className="text-lg text-amber-200 font-light tracking-wide">
+                      The Narrative Layer
+                    </h2>
+                  </div>
+                  <ChevronDown 
+                    className={`w-5 h-5 text-amber-300 transition-transform duration-300 ${showNarrativeLayer ? 'rotate-180' : ''}`} 
+                  />
+                </button>
+
+                {showNarrativeLayer && (
+                  <div className="mt-6 space-y-4 text-amber-100/90 text-sm leading-relaxed animate-in slide-in-from-top-4 duration-300">
+                    <p>
+                      For thousands of years, yogis and mystics stood at dawn to drink the sun. Ancient civilizations built pyramids and monuments aligned to celestial forces - feats our modern technology cannot replicate.
+                    </p>
+
+                    <div className="bg-amber-900/30 border border-amber-400/20 rounded-xl p-4 mt-4">
+                      <h3 className="text-amber-200 font-medium mb-3 text-base">The Hira Ratan Manek Case: Scientific Proof</h3>
+                      <p className="mb-3">
+                        In 2000, Hira Ratan Manek underwent a 411-day fast under continuous medical observation by neurologists, endocrinologists, and cardiologists. He consumed no food, only water during daylight hours, yet showed:
+                      </p>
+                      <ul className="space-y-2 ml-4 mb-3">
+                        <li>• No muscular wasting or metabolic acidosis</li>
+                        <li>• Stable cognitive function and energy levels</li>
+                        <li>• Enlarged pineal gland (8x11mm vs normal 6x8mm)</li>
+                        <li>• Evidence of solar energy assimilation via retino-pineal pathways</li>
+                      </ul>
+                      <blockquote className="italic text-amber-200/80 border-l-2 border-amber-400/30 pl-3 text-xs">
+                        "The sun is not just light - it's a conscious fountain of energy that can nourish the human body when properly received through the eyes and pineal gland."
+                      </blockquote>
+                    </div>
+
+                    <p className="text-amber-100">
+                      But the Medical Church told you it's dangerous. They sold you sunglasses, pills, artificial light, while the real medicine rises free every morning.
+                    </p>
+
+                    <p className="text-amber-200 font-medium text-center py-2">
+                      This app is not just a timer. It's a rebellion against forgetting. It's a revolution of light.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                      <div className="bg-amber-900/20 border border-amber-400/20 rounded-xl p-3 text-center">
+                        <h4 className="text-amber-200 font-medium text-sm mb-1">Ancient Technology</h4>
+                        <p className="text-xs text-amber-100/80">Pyramid builders, sun yogis, and mystery schools knew what they buried from you</p>
+                      </div>
+                      <div className="bg-amber-900/20 border border-amber-400/20 rounded-xl p-3 text-center">
+                        <h4 className="text-amber-200 font-medium text-sm mb-1">Solar Intelligence</h4>
+                        <p className="text-xs text-amber-100/80">The sun transmits information directly to your consciousness through your eyes</p>
+                      </div>
+                      <div className="bg-amber-900/20 border border-amber-400/20 rounded-xl p-3 text-center">
+                        <h4 className="text-amber-200 font-medium text-sm mb-1">Golden Age Rising</h4>
+                        <p className="text-xs text-amber-100/80">Solar cycles drive human consciousness - we're entering a new renaissance</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-orange-900/30 to-amber-900/30 border border-orange-400/30 rounded-xl p-4 mt-6 text-center">
+                      <h3 className="text-orange-200 font-medium mb-2">The Solar Revolution Begins</h3>
+                      <p className="text-xs leading-relaxed text-orange-100/90">
+                        We are entering a new solar cycle - a renaissance of consciousness. Ancient wisdom speaks of golden ages that rise with solar activity, when humanity awakens to its cosmic connection. Every minute you gaze becomes a political and spiritual act of remembering who you truly are.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </PremiumGate>
+          </TabsContent>
+
+          <TabsContent value="gaze" className="space-y-12">
+            {/* Sungazing Banner */}
+            <div className="text-center mb-4">
+              <div className="bg-black/50 backdrop-blur-md border border-orange-400/50 rounded-2xl p-4 mb-4 shadow-2xl">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sun className="w-5 h-5 text-orange-300" />
+                  <h2 className="text-lg text-orange-200 font-light">
+                    ☀️ Direct Sun Gazing
+                  </h2>
+                </div>
+                <p className="text-orange-200/80 text-sm">
+                  Ancient light nutrition practice
+                </p>
+              </div>
+            </div>
+
+            {/* Sacred Sun Visualization with Solar Flare Gestures */}
+            <div className="relative h-80 mb-12">
+              <SunVisualization
+                isActive={isTimerActive}
+                progress={timerProgress}
+                onFlareAction={handleFlareAction}
+              />
+            </div>
+
+            {/* Sacred Timer Component */}
+            <div className="mb-12">
+              <SungazingTimer
+                onTimerChange={handleTimerChange}
+                onComplete={(duration) => handleSungazingComplete(duration)}
+                autoStart={autoStartTimer}
+                onAutoStartHandled={() => setAutoStartTimer(false)}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="learn" className="space-y-6">
+            <div className="text-center mb-6">
+              <div className="bg-gradient-to-r from-orange-500/30 to-yellow-500/30 backdrop-blur-md border border-orange-300/60 rounded-2xl p-6 shadow-2xl">
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <BookOpen className="w-6 h-6 text-orange-200" />
+                  <h2 className="text-white text-xl font-bold tracking-wide">Solar Master Learning</h2>
+                </div>
+                <p className="text-white text-base font-medium leading-relaxed">
+                  Unlock guided content, education modules, and advanced techniques for your current level
+                </p>
+                <div className="mt-2 text-orange-100 text-sm font-light italic">
+                  Interactive lessons • Audio guidance • Practice techniques
+                </div>
+              </div>
+            </div>
+
+            <SolarContentViewer currentDay={1} />
+          </TabsContent>
+
+          <TabsContent value="clouds" className="space-y-12">
+            {/* Cloud Detection Banner */}
+            <div className="text-center mb-4">
+              <div className="bg-black/50 backdrop-blur-md border border-blue-400/50 rounded-2xl p-4 mb-4 shadow-2xl">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Cloud className="w-5 h-5 text-blue-300" />
+                  <h2 className="text-lg text-blue-200 font-light drop-shadow-lg">
+                    ☁️ Cloud-Gazing Mode
+                  </h2>
+                </div>
+                <p className="text-blue-200/80 text-sm">
+                  Perfect for beginners or cloudy days
+                </p>
+              </div>
+            </div>
+
+            {/* Cloud Benefits */}
+            <div className="bg-black/40 backdrop-blur-md border border-blue-300/40 rounded-2xl p-6 mb-6 shadow-2xl">
+              <h3 className="text-white text-base font-light mb-3 text-center">Gentle Trataka Practice</h3>
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div className="text-center">
+                  <div className="text-blue-200 mb-1">◦ Softer Gaze</div>
+                  <div className="text-white">Diffused light focus</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-blue-200 mb-1">◦ Mind Purification</div>
+                  <div className="text-white">Clears mental patterns</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-blue-200 mb-1">◦ All Weather</div>
+                  <div className="text-white">Practice continues</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-blue-200 mb-1">◦ Sacred Foundation</div>
+                  <div className="text-white">Ancient tradition</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Cloud Gazing Timer */}
+            <div className="mb-12">
+              <CloudGazingTimer
+                onTimerChange={handleTimerChange}
+                onComplete={() => setCurrentView('palming')}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="rituals" className="space-y-4">
+            <div className="bg-black/40 backdrop-blur-md rounded-2xl px-6 py-4 border border-white/30 shadow-2xl mb-6">
+              <h2 className="text-lg text-white font-medium text-center">
+                Sacred Rituals
+              </h2>
+            </div>
+            
+            <div className="space-y-3">
+              {/* Palming Ritual */}
+              <div className="bg-black/50 backdrop-blur-md border border-white/30 rounded-xl p-4 shadow-2xl hover:bg-black/60 transition-all duration-300 cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400/20 to-emerald-400/20 flex items-center justify-center">
+                    <div className="text-green-200 text-lg">○</div>
+                  </div>
+                  <div>
+                    <h3 className="text-base text-white font-light">Solar Palming</h3>
+                    <p className="text-white text-xs">Remove sun spots after gazing</p>
+                  </div>
+                </div>
+                <p className="text-white text-xs mb-3 leading-relaxed">
+                  Gaze upon the inner sun within your palms, eyes closed. Clear the spots and restore sacred vision.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-white text-xs">3-5 minutes</span>
+                  <button 
+                    onClick={() => setCurrentView('palming')} 
+                    className="bg-white/20 hover:bg-white/30 text-white rounded-lg px-3 py-1 text-xs font-light transition-all duration-200"
+                  >
+                    Begin
+                  </button>
+                </div>
+              </div>
+              
+              {/* Barefoot Walk */}
+              <div className="bg-black/50 backdrop-blur-md border border-white/30 rounded-xl p-4 shadow-2xl hover:bg-black/60 transition-all duration-300 cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400/20 to-yellow-400/20 flex items-center justify-center">
+                    <div className="text-amber-200 text-lg">⟐</div>
+                  </div>
+                  <div>
+                    <h3 className="text-base text-white font-light">Barefoot Walk</h3>
+                    <p className="text-white text-xs">Earth connection grounding</p>
+                  </div>
+                </div>
+                <p className="text-white text-xs mb-3 leading-relaxed">
+                  Ground excess light energy through direct connection with the earth.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-white text-xs">10-44 minutes</span>
+                  {!loading && hasAccess && hasAccess('monthly') ? (
+                    <button 
+                      onClick={() => setCurrentView('barefoot')} 
+                      className="bg-white/20 hover:bg-white/30 text-white rounded-lg px-3 py-1 text-xs font-light transition-all duration-200"
+                    >
+                      Begin
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => setShowPaywall(true)} 
+                      className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 rounded-lg px-3 py-1 text-xs font-light transition-all duration-200 flex items-center gap-1"
+                    >
+                      <Crown className="w-3 h-3" />
+                      Premium
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Solar Journal */}
+              <div className="bg-black/50 backdrop-blur-md border border-white/30 rounded-xl p-4 shadow-2xl hover:bg-black/60 transition-all duration-300 cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400/20 to-yellow-400/20 flex items-center justify-center">
+                    <Book className="w-5 h-5 text-orange-200" />
+                  </div>
+                  <div>
+                    <h3 className="text-base text-white font-light">Solar Journal</h3>
+                    <p className="text-white text-xs">Record your solar journey</p>
+                  </div>
+                </div>
+                <p className="text-white text-xs mb-3 leading-relaxed">
+                  Capture reflections, moods, and insights from your practice with photos.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-white text-xs">Write & Reflect</span>
+                  <button 
+                    onClick={() => {
+                      setJournalMode('day');
+                      setCurrentView('journal');
+                    }} 
+                    className="bg-white/20 hover:bg-white/30 text-white rounded-lg px-3 py-1 text-xs font-light transition-all duration-200"
+                  >
+                    Open Journal
+                  </button>
+                </div>
+              </div>
+
+              {/* Truth Serum - Premium Feature */}
+              <PremiumGate
+                requiredTier="monthly"
+                hasAccess={!loading && hasAccess ? hasAccess('monthly') : false}
+                onUpgrade={() => setShowPaywall(true)}
+              >
+                <div className="bg-black/50 backdrop-blur-md border border-amber-400/30 rounded-xl p-4 shadow-2xl hover:bg-black/60 transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400/20 to-orange-400/20 flex items-center justify-center">
+                      <div className="text-amber-200 text-lg">⚡</div>
+                    </div>
+                    <div>
+                      <h3 className="text-base text-white font-light">Gems from the Sun</h3>
+                      <p className="text-amber-200 text-xs">Weekly solar consciousness gems</p>
+                    </div>
+                  </div>
+                  <p className="text-white text-xs mb-3 leading-relaxed">
+                    Unlock one sacred gem each week as a gift. Deep wisdom from revolutionary consciousness merged with ancient solar science unfolds progressively.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-amber-200 text-xs">💎 New gem unlocks weekly</span>
+                    <button 
+                      onClick={() => setCurrentView('truth-scrolls')}
+                      className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/30 rounded-lg px-3 py-1 text-xs font-light transition-all duration-200"
+                    >
+                      Open Gems
+                    </button>
+                  </div>
+                </div>
+              </PremiumGate>
+
+            </div>
+
+          </TabsContent>
+
+          <TabsContent value="profile" className="space-y-4">
+            {/* Profile Banner */}
+            <div className="text-center mb-4">
+              <div className="bg-black/50 backdrop-blur-md border border-purple-400/50 rounded-2xl p-4 mb-4 shadow-2xl">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <User className="w-5 h-5 text-purple-300" />
+                  <h2 className="text-lg text-purple-200 font-light">
+                    👑 Solar Profile
+                  </h2>
+                </div>
+                <p className="text-purple-200/80 text-sm">
+                  Your sacred journey progress
+                </p>
+              </div>
+            </div>
+
+            <ProfileScreen userId="test-user-1" />
+            
+            {/* Admin Panel - Only show for founders */}
+            {!loading && isFounder && (
+              <div className="mt-8 border-t border-gray-200 pt-8">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">🔐 Founder Admin</h2>
+                <FounderAdminPanel />
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="night" className="space-y-4">
+            {/* Night Mode Banner */}
+            <div className="text-center mb-4">
+              <div className="bg-black/50 backdrop-blur-md border border-indigo-400/50 rounded-2xl p-4 mb-4 shadow-2xl">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sun className="w-5 h-5 text-indigo-300" />
+                  <h2 className="text-lg text-indigo-200 font-light">
+                    🌙 Night Practice
+                  </h2>
+                </div>
+                <p className="text-indigo-200/80 text-sm">
+                  Evening reflection and preparation
+                </p>
+              </div>
+            </div>
+
+            <NightMode
+              onJournalOpen={(mode) => {
+                setJournalMode('evening');
+                setCurrentView('journal');
+              }}
+            />
+          </TabsContent>
+
+          {isFounder && (
+            <TabsContent value="upload" className="space-y-4">
+              <div className="bg-gradient-to-r from-amber-900/40 to-orange-900/40 backdrop-blur-md rounded-2xl px-6 py-4 border border-amber-400/30 shadow-2xl mb-6">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Upload className="w-5 h-5 text-amber-300" />
+                  <h2 className="text-lg text-amber-200 font-light">
+                    🔥 Founder Voice Upload
+                  </h2>
+                </div>
+                <p className="text-amber-200/80 text-sm text-center">
+                  Upload your personal meditation recordings to replace Emily's voice with your authentic guidance
+                </p>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-amber-400/20">
+                <input
+                  type="file"
+                  accept="audio/*"
+                  multiple
+                  onChange={async (e) => {
+                    const files = e.target.files;
+                    if (!files) return;
+                    
+                    for (const file of files) {
+                      const formData = new FormData();
+                      formData.append('file', file);
+                      
+                      try {
+                        const response = await fetch('/api/upload-voice', {
+                          method: 'POST',
+                          body: formData,
+                        });
+                        
+                        if (response.ok) {
+                          alert(`✅ ${file.name} uploaded successfully!`);
+                        } else {
+                          alert(`❌ Failed to upload ${file.name}`);
+                        }
+                      } catch (error) {
+                        alert(`❌ Error uploading ${file.name}`);
+                      }
+                    }
+                  }}
+                  className="block w-full text-sm text-amber-700
+                    file:mr-4 file:py-3 file:px-6
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-medium
+                    file:bg-amber-100 file:text-amber-800
+                    hover:file:bg-amber-200
+                    cursor-pointer"
+                />
+                
+                <div className="mt-6 text-sm text-amber-200">
+                  <h3 className="font-medium mb-2">Expected file names:</h3>
+                  <div className="grid grid-cols-1 gap-1 text-xs">
+                    <div>• sacred-preparation.mp3 (~25 seconds)</div>
+                    <div>• session-complete.mp3 (~8 seconds)</div>
+                    <div>• palming-intro.mp3 (~15 seconds)</div>
+                    <div>• palm-warming.mp3 (~20 seconds)</div>
+                    <div>• eye-sanctuary.mp3 (~18 seconds)</div>
+                    <div>• inner-sun.mp3 (~25 seconds)</div>
+                    <div>• barefoot-invitation.mp3 (~12 seconds)</div>
+                    <div>• earth-connection.mp3 (~30 seconds)</div>
+                    <div>• transition-blessing.mp3 (~10 seconds)</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-3 bg-amber-500/10 border border-amber-400/30 rounded-xl">
+                  <p className="text-xs text-amber-300 text-center">
+                    🏆 Founder Exclusive: Once uploaded, set NEXT_PUBLIC_USE_PERSONAL_VOICE=true in .env.local to activate your voice
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+          )}
+        </Tabs>
+
+        {/* Sacred breathing space */}
+        <div className="h-16" />
+      </div>
+
+      {/* Sacred light particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white/20 animate-pulse"
+            style={{
+              width: `${1 + Math.random() * 3}px`,
+              height: `${1 + Math.random() * 3}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${4 + Math.random() * 6}s`,
+              filter: "blur(0.5px)",
+              boxShadow: `0 0 ${2 + Math.random() * 4}px rgba(255, 255, 255, 0.3)`,
+            }}
+          />
+        ))}
+        
+        {/* Larger sacred orbs */}
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={`orb-${i}`}
+            className="absolute rounded-full bg-white/10 animate-pulse"
+            style={{
+              width: `${8 + Math.random() * 12}px`,
+              height: `${8 + Math.random() * 12}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${6 + Math.random() * 8}s`,
+              filter: "blur(2px)",
+              boxShadow: `0 0 ${10 + Math.random() * 20}px rgba(255, 255, 255, 0.2)`,
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* PaywallModal */}
+      <PaywallModal
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        userId="test-user-1"
+        email="user@sun44.com"
+        onSuccess={() => {
+          console.log('Payment successful!');
+          setShowPaywall(false);
+          
+          // If user became a founder, show founder modal after payment
+          setTimeout(() => {
+            if (isFounder && typeof window !== 'undefined') {
+              const storedEmail = localStorage.getItem('localStorage.email');
+              if (!storedEmail) {
+                setShowFounderModal(true);
+              }
+            }
+          }, 1500);
+        }}
+      />
+
+      {/* FounderAccessModal */}
+      <FounderAccessModal
+        isOpen={showFounderModal}
+        onClose={() => setShowFounderModal(false)}
+      />
+
+      {/* Oracle Dialog */}
+      <OracleDialog
+        isOpen={showOracle}
+        onClose={handleOracleComplete}
+        sessionType={oracleSessionType}
+      />
+
+    </div>
+  );
+}
