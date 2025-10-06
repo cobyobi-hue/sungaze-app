@@ -40,10 +40,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$j
 var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/SUNGAZE APP/package.json/node_modules/lucide-react/dist/esm/icons/upload.js [app-ssr] (ecmascript) <export default as Upload>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__ = __turbopack_context__.i("[project]/SUNGAZE APP/package.json/node_modules/lucide-react/dist/esm/icons/chevron-down.js [app-ssr] (ecmascript) <export default as ChevronDown>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__ = __turbopack_context__.i("[project]/SUNGAZE APP/package.json/node_modules/lucide-react/dist/esm/icons/book-open.js [app-ssr] (ecmascript) <export default as BookOpen>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$lib$2f$consent$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/SUNGAZE APP/package.json/src/app/lib/consent.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/SUNGAZE APP/package.json/src/app/lib/supabase/client.ts [app-ssr] (ecmascript)");
 "use client";
-;
 ;
 ;
 ;
@@ -78,7 +76,7 @@ function App() {
     const [isTimerActive, setIsTimerActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [timerProgress, setTimerProgress] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [currentView, setCurrentView] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('main');
-    const [showOnboarding, setShowOnboarding] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [showOnboarding, setShowOnboarding] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false); // FORCE BYPASS - Always false
     const [showNewOnboarding, setShowNewOnboarding] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [flareNotification, setFlareNotification] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [showAskTheOracle, setShowAskTheOracle] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -93,8 +91,11 @@ function App() {
     const [showPostGazeRitual, setShowPostGazeRitual] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [nightActivity, setNightActivity] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [learnSection, setLearnSection] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('main');
-    const [isAuthenticated, setIsAuthenticated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isAuthenticated, setIsAuthenticated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true); // FORCE BYPASS - Always true
+    const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
+        id: 'cobyobi@gmail.com',
+        email: 'cobyobi@gmail.com'
+    }); // FORCE BYPASS - Always set
     const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createClient"])();
     // Check authentication on mount
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -121,8 +122,18 @@ function App() {
     const hasAccess = ()=>true;
     // Check consent and show onboarding
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
-        ;
+        // FORCE BYPASS - Skip onboarding completely
+        console.log('FORCE BYPASS ACTIVE - Skipping onboarding completely');
+        setShowOnboarding(false);
+    }, []);
+    // FORCE BYPASS - Skip authentication completely
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        console.log('FORCE BYPASS ACTIVE - Skipping authentication completely');
+        setIsAuthenticated(true);
+        setUser({
+            id: 'cobyobi@gmail.com',
+            email: 'cobyobi@gmail.com'
+        });
     }, []);
     // Show auth screen if not authenticated
     if (!isAuthenticated) {
@@ -166,7 +177,7 @@ function App() {
             }
         }, void 0, false, {
             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-            lineNumber: 150,
+            lineNumber: 145,
             columnNumber: 12
         }, this);
     }
@@ -179,7 +190,7 @@ function App() {
             }
         }, void 0, false, {
             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-            lineNumber: 159,
+            lineNumber: 154,
             columnNumber: 7
         }, this);
     }
@@ -190,7 +201,7 @@ function App() {
                 className: "absolute inset-0 bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-cyan-900/90 backdrop-blur-xl"
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 173,
+                lineNumber: 168,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -203,7 +214,7 @@ function App() {
                         }
                     }, void 0, false, {
                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                        lineNumber: 176,
+                        lineNumber: 171,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -213,13 +224,13 @@ function App() {
                         }
                     }, void 0, false, {
                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                        lineNumber: 178,
+                        lineNumber: 173,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 175,
+                lineNumber: 170,
                 columnNumber: 7
             }, this),
             flareNotification && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -231,7 +242,7 @@ function App() {
                             className: "w-2 h-2 bg-white rounded-full animate-pulse"
                         }, void 0, false, {
                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                            lineNumber: 186,
+                            lineNumber: 181,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -239,18 +250,18 @@ function App() {
                             children: flareNotification
                         }, void 0, false, {
                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                            lineNumber: 187,
+                            lineNumber: 182,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                    lineNumber: 185,
+                    lineNumber: 180,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 184,
+                lineNumber: 179,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -269,7 +280,7 @@ function App() {
                                                 className: "absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/20 to-amber-400/20 blur-3xl scale-150"
                                             }, void 0, false, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 199,
+                                                lineNumber: 194,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -279,12 +290,12 @@ function App() {
                                                     children: "44"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 201,
+                                                    lineNumber: 196,
                                                     columnNumber: 17
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 200,
+                                                lineNumber: 195,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -297,40 +308,40 @@ function App() {
                                                         className: "w-2 h-2 bg-yellow-400 rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_10px_rgba(251,191,36,0.8)]"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 205,
+                                                        lineNumber: 200,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "w-1 h-1 bg-orange-400 rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(251,146,60,0.8)]"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 206,
+                                                        lineNumber: 201,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "w-1.5 h-1.5 bg-amber-400 rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_8px_rgba(245,158,11,0.8)]"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 207,
+                                                        lineNumber: 202,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "w-1 h-1 bg-yellow-300 rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(253,224,71,0.8)]"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 208,
+                                                        lineNumber: 203,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 204,
+                                                lineNumber: 199,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                        lineNumber: 198,
+                                        lineNumber: 193,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -338,20 +349,20 @@ function App() {
                                         children: "SUNGAZE"
                                     }, void 0, false, {
                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                        lineNumber: 212,
+                                        lineNumber: 207,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "w-24 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent mx-auto mb-4 shadow-[0_0_8px_rgba(255,255,255,0.4)]"
                                     }, void 0, false, {
                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                        lineNumber: 215,
+                                        lineNumber: 210,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 196,
+                                lineNumber: 191,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -362,7 +373,7 @@ function App() {
                                         children: "LIGHT NUTRITION RITUAL"
                                     }, void 0, false, {
                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                        lineNumber: 219,
+                                        lineNumber: 214,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -373,7 +384,7 @@ function App() {
                                                 children: "Transform sunlight into cellular nourishment through ancient gazing meditation."
                                             }, void 0, false, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 224,
+                                                lineNumber: 219,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -381,25 +392,25 @@ function App() {
                                                 children: "From 10 seconds to 44 minutes — become a solar being through sacred practice."
                                             }, void 0, false, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 227,
+                                                lineNumber: 222,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                        lineNumber: 223,
+                                        lineNumber: 218,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 218,
+                                lineNumber: 213,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                        lineNumber: 195,
+                        lineNumber: 190,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tabs"], {
@@ -416,12 +427,12 @@ function App() {
                                     className: "mb-0"
                                 }, void 0, false, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 233,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 236,
+                                lineNumber: 231,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -437,7 +448,7 @@ function App() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 248,
+                                            lineNumber: 243,
                                             columnNumber: 13
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -450,7 +461,7 @@ function App() {
                                                             className: "w-5 h-5 text-orange-500"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 258,
+                                                            lineNumber: 253,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -458,13 +469,13 @@ function App() {
                                                             children: "Sacred Access Unlocked"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 259,
+                                                            lineNumber: 254,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 257,
+                                                    lineNumber: 252,
                                                     columnNumber: 15
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -472,7 +483,7 @@ function App() {
                                                     children: "First Witness of the Flame"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 261,
+                                                    lineNumber: 256,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -480,7 +491,7 @@ function App() {
                                                     children: "Founder #1/444"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 262,
+                                                    lineNumber: 257,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -489,7 +500,7 @@ function App() {
                                                     children: "Test New Onboarding"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 265,
+                                                    lineNumber: 260,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -501,13 +512,13 @@ function App() {
                                                     children: "Solar Window Settings"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 273,
+                                                    lineNumber: 268,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 256,
+                                            lineNumber: 251,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -527,12 +538,12 @@ function App() {
                                                                         children: "🔮"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 292,
+                                                                        lineNumber: 287,
                                                                         columnNumber: 21
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 291,
+                                                                    lineNumber: 286,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -540,55 +551,55 @@ function App() {
                                                                     children: "Ask the Oracle"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 294,
+                                                                    lineNumber: 289,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 290,
+                                                            lineNumber: 285,
                                                             columnNumber: 17
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                                             className: `w-5 h-5 text-purple-300 transition-transform duration-300 ${showAskTheOracle ? 'rotate-180' : ''}`
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 298,
+                                                            lineNumber: 293,
                                                             columnNumber: 17
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 286,
+                                                    lineNumber: 281,
                                                     columnNumber: 15
                                                 }, this),
                                                 showAskTheOracle && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "mt-6",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$OracleQA$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["OracleQA"], {}, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 305,
+                                                        lineNumber: 300,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 304,
+                                                    lineNumber: 299,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 285,
+                                            lineNumber: 280,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 247,
+                                    lineNumber: 242,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 246,
+                                lineNumber: 241,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -609,7 +620,7 @@ function App() {
                                                                 className: "w-6 h-6 text-orange-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 318,
+                                                                lineNumber: 313,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -617,13 +628,13 @@ function App() {
                                                                 children: "☀️ Direct Sun Gazing"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 319,
+                                                                lineNumber: 314,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 317,
+                                                        lineNumber: 312,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -631,18 +642,18 @@ function App() {
                                                         children: "Ancient light nutrition practice"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 321,
+                                                        lineNumber: 316,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 316,
+                                                lineNumber: 311,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 315,
+                                            lineNumber: 310,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -653,12 +664,12 @@ function App() {
                                                 onFlareAction: handleFlareAction
                                             }, void 0, false, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 326,
+                                                lineNumber: 321,
                                                 columnNumber: 15
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 325,
+                                            lineNumber: 320,
                                             columnNumber: 13
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -671,7 +682,7 @@ function App() {
                                                     onAutoStartHandled: ()=>setAutoStartTimer(false)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 334,
+                                                    lineNumber: 329,
                                                     columnNumber: 15
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -682,29 +693,29 @@ function App() {
                                                         children: "🔓 Sacred Unlock"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 343,
+                                                        lineNumber: 338,
                                                         columnNumber: 17
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 342,
+                                                    lineNumber: 337,
                                                     columnNumber: 15
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 333,
+                                            lineNumber: 328,
                                             columnNumber: 13
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 314,
+                                    lineNumber: 309,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 313,
+                                lineNumber: 308,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -724,7 +735,7 @@ function App() {
                                                             className: "w-6 h-6 text-blue-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 360,
+                                                            lineNumber: 355,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -732,13 +743,13 @@ function App() {
                                                             children: "☁️ Cloud Section"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 361,
+                                                            lineNumber: 356,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 359,
+                                                    lineNumber: 354,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -746,28 +757,28 @@ function App() {
                                                     children: "Cloud gazing has moved to Discover section"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 363,
+                                                    lineNumber: 358,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 358,
+                                            lineNumber: 353,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                        lineNumber: 357,
+                                        lineNumber: 352,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 356,
+                                    lineNumber: 351,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 355,
+                                lineNumber: 350,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -775,12 +786,12 @@ function App() {
                                 className: "space-y-4",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ProfileScreen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ProfileScreen"], {}, void 0, false, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 371,
+                                    lineNumber: 366,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 370,
+                                lineNumber: 365,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -803,7 +814,7 @@ function App() {
                                                                         className: "w-6 h-6 text-blue-400"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 382,
+                                                                        lineNumber: 377,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -811,13 +822,13 @@ function App() {
                                                                         children: "Solar Master Learning"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 383,
+                                                                        lineNumber: 378,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 381,
+                                                                lineNumber: 376,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -825,18 +836,18 @@ function App() {
                                                                 children: "Unlock guided content and advanced techniques"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 385,
+                                                                lineNumber: 380,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 380,
+                                                        lineNumber: 375,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 379,
+                                                    lineNumber: 374,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -848,7 +859,7 @@ function App() {
                                                             children: "📜 Truth Scrolls (Premium)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 393,
+                                                            lineNumber: 388,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -857,7 +868,7 @@ function App() {
                                                             children: "Solar Content"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 402,
+                                                            lineNumber: 397,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -866,7 +877,7 @@ function App() {
                                                             children: "Gems from the Sun"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 409,
+                                                            lineNumber: 404,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -875,7 +886,7 @@ function App() {
                                                             children: "Ask the Oracle"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 416,
+                                                            lineNumber: 411,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -884,7 +895,7 @@ function App() {
                                                             children: "9 Month Solar Journey"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 423,
+                                                            lineNumber: 418,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -893,7 +904,7 @@ function App() {
                                                             children: "Eye Practices"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 430,
+                                                            lineNumber: 425,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -904,7 +915,7 @@ function App() {
                                                                     children: "Quick Learning Modules"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 440,
+                                                                    lineNumber: 435,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -918,7 +929,7 @@ function App() {
                                                                                     children: "• Foundation: Solar Gazing Basics"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 443,
+                                                                                    lineNumber: 438,
                                                                                     columnNumber: 27
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -926,13 +937,13 @@ function App() {
                                                                                     children: "Safe practice fundamentals"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 444,
+                                                                                    lineNumber: 439,
                                                                                     columnNumber: 27
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 442,
+                                                                            lineNumber: 437,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -943,7 +954,7 @@ function App() {
                                                                                     children: "• Intermediate: Light Nutrition"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 447,
+                                                                                    lineNumber: 442,
                                                                                     columnNumber: 27
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -951,13 +962,13 @@ function App() {
                                                                                     children: "Energy absorption techniques"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 448,
+                                                                                    lineNumber: 443,
                                                                                     columnNumber: 27
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 446,
+                                                                            lineNumber: 441,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -968,7 +979,7 @@ function App() {
                                                                                     children: "• Advanced: Consciousness Expansion"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 451,
+                                                                                    lineNumber: 446,
                                                                                     columnNumber: 27
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -976,13 +987,13 @@ function App() {
                                                                                     children: "Deep meditative states"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 452,
+                                                                                    lineNumber: 447,
                                                                                     columnNumber: 27
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 450,
+                                                                            lineNumber: 445,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -993,7 +1004,7 @@ function App() {
                                                                                     children: "• Master: Sacred Alchemy"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 455,
+                                                                                    lineNumber: 450,
                                                                                     columnNumber: 27
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1001,31 +1012,31 @@ function App() {
                                                                                     children: "Transformation practices"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 456,
+                                                                                    lineNumber: 451,
                                                                                     columnNumber: 27
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 454,
+                                                                            lineNumber: 449,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 441,
+                                                                    lineNumber: 436,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 439,
+                                                            lineNumber: 434,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 391,
+                                                    lineNumber: 386,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
@@ -1039,7 +1050,7 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 466,
+                                                    lineNumber: 461,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$SolarContentViewer$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SolarContentViewer"], {
@@ -1047,20 +1058,20 @@ function App() {
                                                     onClose: ()=>setLearnSection('main')
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 472,
+                                                    lineNumber: 467,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 465,
+                                            lineNumber: 460,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'unlocks' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$UnlocksScreen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["UnlocksScreen"], {
                                             onBack: ()=>setLearnSection('main')
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 480,
+                                            lineNumber: 475,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'truth-serum' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1072,18 +1083,18 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 485,
+                                                    lineNumber: 480,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$TruthSerum$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TruthSerum"], {}, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 491,
+                                                    lineNumber: 486,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 484,
+                                            lineNumber: 479,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'oracle-qa' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1095,18 +1106,18 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 497,
+                                                    lineNumber: 492,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$OracleQA$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["OracleQA"], {}, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 503,
+                                                    lineNumber: 498,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 496,
+                                            lineNumber: 491,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'journey' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1118,7 +1129,7 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 509,
+                                                    lineNumber: 504,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1132,7 +1143,7 @@ function App() {
                                                                     children: "9 Month Solar Journey"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 517,
+                                                                    lineNumber: 512,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1140,13 +1151,13 @@ function App() {
                                                                     children: "Your transformative path to solar consciousness"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 518,
+                                                                    lineNumber: 513,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 516,
+                                                            lineNumber: 511,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1159,7 +1170,7 @@ function App() {
                                                                         children: "The Three Phases of Cellular Restoration"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 523,
+                                                                        lineNumber: 518,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1167,7 +1178,7 @@ function App() {
                                                                         children: "Practitioners following the traditional sungazing protocol report profound transformations in their body's natural healing capacity:"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 524,
+                                                                        lineNumber: 519,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1181,7 +1192,7 @@ function App() {
                                                                                         children: "Phase 1 (0-3 months):"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 531,
+                                                                                        lineNumber: 526,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h5", {
@@ -1189,7 +1200,7 @@ function App() {
                                                                                         children: "Mental & Neurological Reset"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 532,
+                                                                                        lineNumber: 527,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1197,13 +1208,13 @@ function App() {
                                                                                         children: "Practitioners report complete reversal of mood imbalances, cognitive fog, sleep disorders, and stress-related conditions. The pineal gland activation appears to restore natural neurotransmitter production, eliminating the need for synthetic interventions."
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 533,
+                                                                                        lineNumber: 528,
                                                                                         columnNumber: 27
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 530,
+                                                                                lineNumber: 525,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1214,7 +1225,7 @@ function App() {
                                                                                         children: "Phase 2 (3-6 months):"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 540,
+                                                                                        lineNumber: 535,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h5", {
@@ -1222,7 +1233,7 @@ function App() {
                                                                                         children: "Physical Regeneration"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 541,
+                                                                                        lineNumber: 536,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1230,13 +1241,13 @@ function App() {
                                                                                         children: "The body's cellular repair mechanisms activate dramatically. Chronic inflammatory conditions, autoimmune responses, digestive disorders, and metabolic dysfunctions begin reversing. Many report their bodies healing conditions that had persisted for decades."
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 542,
+                                                                                        lineNumber: 537,
                                                                                         columnNumber: 27
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 539,
+                                                                                lineNumber: 534,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1247,7 +1258,7 @@ function App() {
                                                                                         children: "Phase 3 (6-9 months):"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 549,
+                                                                                        lineNumber: 544,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h5", {
@@ -1255,7 +1266,7 @@ function App() {
                                                                                         children: "Transcendent Biology"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 550,
+                                                                                        lineNumber: 545,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1263,42 +1274,42 @@ function App() {
                                                                                         children: "The body achieves remarkable efficiency, requiring minimal food while maintaining perfect health. Practitioners describe their bodies operating on pure solar energy, with complete elimination of chronic conditions and enhanced longevity markers."
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                        lineNumber: 551,
+                                                                                        lineNumber: 546,
                                                                                         columnNumber: 27
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 548,
+                                                                                lineNumber: 543,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 528,
+                                                                        lineNumber: 523,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 522,
+                                                                lineNumber: 517,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 521,
+                                                            lineNumber: 516,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 515,
+                                                    lineNumber: 510,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 508,
+                                            lineNumber: 503,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'eye-practices' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1310,7 +1321,7 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 564,
+                                                    lineNumber: 559,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1324,7 +1335,7 @@ function App() {
                                                                     children: "Eye Practices"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 572,
+                                                                    lineNumber: 567,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1332,13 +1343,13 @@ function App() {
                                                                     children: "Strengthen your vision and enhance focus with ancient techniques"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 573,
+                                                                    lineNumber: 568,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 571,
+                                                            lineNumber: 566,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1352,7 +1363,7 @@ function App() {
                                                                             children: "1) Trataka – Candle or Dot Gazing"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 579,
+                                                                            lineNumber: 574,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1360,7 +1371,7 @@ function App() {
                                                                             children: "Purpose: Builds concentration, strengthens eyes, and calms the mind."
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 580,
+                                                                            lineNumber: 575,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1371,7 +1382,7 @@ function App() {
                                                                                     children: "Steps:"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 583,
+                                                                                    lineNumber: 578,
                                                                                     columnNumber: 25
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1381,47 +1392,47 @@ function App() {
                                                                                             children: "• Sit in meditation posture"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 585,
+                                                                                            lineNumber: 580,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Place candle flame or black dot at eye level, 2–3 ft away"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 586,
+                                                                                            lineNumber: 581,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Gaze steadily without blinking until eyes water"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 587,
+                                                                                            lineNumber: 582,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Close eyes and visualize flame at the brow"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 588,
+                                                                                            lineNumber: 583,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Practice 5–10 mins daily"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 589,
+                                                                                            lineNumber: 584,
                                                                                             columnNumber: 27
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 584,
+                                                                                    lineNumber: 579,
                                                                                     columnNumber: 25
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 582,
+                                                                            lineNumber: 577,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1431,7 +1442,7 @@ function App() {
                                                                                     children: "Benefits:"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 594,
+                                                                                    lineNumber: 589,
                                                                                     columnNumber: 25
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1441,39 +1452,39 @@ function App() {
                                                                                             children: "• Improves focus, memory, willpower"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 596,
+                                                                                            lineNumber: 591,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Enhances vision over time"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 597,
+                                                                                            lineNumber: 592,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Activates Third Eye (Ajna Chakra)"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 598,
+                                                                                            lineNumber: 593,
                                                                                             columnNumber: 27
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 595,
+                                                                                    lineNumber: 590,
                                                                                     columnNumber: 25
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 593,
+                                                                            lineNumber: 588,
                                                                             columnNumber: 23
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 578,
+                                                                    lineNumber: 573,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1484,7 +1495,7 @@ function App() {
                                                                             children: "2) Yogic Eye Movements"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 605,
+                                                                            lineNumber: 600,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1492,7 +1503,7 @@ function App() {
                                                                             children: "Purpose: Increases eye flexibility, coordination, and alertness."
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 606,
+                                                                            lineNumber: 601,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1503,7 +1514,7 @@ function App() {
                                                                                     children: "Steps:"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 609,
+                                                                                    lineNumber: 604,
                                                                                     columnNumber: 25
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1513,14 +1524,14 @@ function App() {
                                                                                             children: "• Sit with spine straight. Keep head still"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 611,
+                                                                                            lineNumber: 606,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Move eyes:"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 612,
+                                                                                            lineNumber: 607,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -1528,7 +1539,7 @@ function App() {
                                                                                             children: "- Left ↔ Right (10x)"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 613,
+                                                                                            lineNumber: 608,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -1536,7 +1547,7 @@ function App() {
                                                                                             children: "- Up ↔ Down (10x)"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 614,
+                                                                                            lineNumber: 609,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -1544,7 +1555,7 @@ function App() {
                                                                                             children: "- Diagonals (10x each)"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 615,
+                                                                                            lineNumber: 610,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -1552,26 +1563,26 @@ function App() {
                                                                                             children: "- Circles clockwise + counterclockwise (5x each)"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 616,
+                                                                                            lineNumber: 611,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• After each set, palm eyes to relax"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 617,
+                                                                                            lineNumber: 612,
                                                                                             columnNumber: 27
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 610,
+                                                                                    lineNumber: 605,
                                                                                     columnNumber: 25
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 608,
+                                                                            lineNumber: 603,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1581,7 +1592,7 @@ function App() {
                                                                                     children: "Benefits:"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 622,
+                                                                                    lineNumber: 617,
                                                                                     columnNumber: 25
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1591,32 +1602,32 @@ function App() {
                                                                                             children: "• Strengthens weak muscles"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 624,
+                                                                                            lineNumber: 619,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Boosts coordination and focus"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 625,
+                                                                                            lineNumber: 620,
                                                                                             columnNumber: 27
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 623,
+                                                                                    lineNumber: 618,
                                                                                     columnNumber: 25
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 621,
+                                                                            lineNumber: 616,
                                                                             columnNumber: 23
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 604,
+                                                                    lineNumber: 599,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1627,7 +1638,7 @@ function App() {
                                                                             children: "3) Palming"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 632,
+                                                                            lineNumber: 627,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1635,7 +1646,7 @@ function App() {
                                                                             children: "Purpose: Relieves strain, relaxes nerves, and calms the mind."
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 633,
+                                                                            lineNumber: 628,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1646,7 +1657,7 @@ function App() {
                                                                                     children: "Steps:"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 636,
+                                                                                    lineNumber: 631,
                                                                                     columnNumber: 25
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1656,40 +1667,40 @@ function App() {
                                                                                             children: "• Rub palms together until warm"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 638,
+                                                                                            lineNumber: 633,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Gently cup palms over closed eyes"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 639,
+                                                                                            lineNumber: 634,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Breathe deeply, feel warmth soothe eyes"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 640,
+                                                                                            lineNumber: 635,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Hold 2–3 mins"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 641,
+                                                                                            lineNumber: 636,
                                                                                             columnNumber: 27
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 637,
+                                                                                    lineNumber: 632,
                                                                                     columnNumber: 25
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 635,
+                                                                            lineNumber: 630,
                                                                             columnNumber: 23
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1699,7 +1710,7 @@ function App() {
                                                                                     children: "Benefits:"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 646,
+                                                                                    lineNumber: 641,
                                                                                     columnNumber: 25
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1709,57 +1720,57 @@ function App() {
                                                                                             children: "• Instant relaxation"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 648,
+                                                                                            lineNumber: 643,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Refreshes clarity"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 649,
+                                                                                            lineNumber: 644,
                                                                                             columnNumber: 27
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                                             children: "• Eases screen fatigue"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                            lineNumber: 650,
+                                                                                            lineNumber: 645,
                                                                                             columnNumber: 27
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                    lineNumber: 647,
+                                                                                    lineNumber: 642,
                                                                                     columnNumber: 25
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 645,
+                                                                            lineNumber: 640,
                                                                             columnNumber: 23
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 631,
+                                                                    lineNumber: 626,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 576,
+                                                            lineNumber: 571,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 570,
+                                                    lineNumber: 565,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 563,
+                                            lineNumber: 558,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'levels' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1771,7 +1782,7 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 661,
+                                                    lineNumber: 656,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$EnhancedSolarLevelCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["EnhancedSolarLevelCard"], {
@@ -1779,13 +1790,13 @@ function App() {
                                                     completedMinutes: 0
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 667,
+                                                    lineNumber: 662,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 660,
+                                            lineNumber: 655,
                                             columnNumber: 15
                                         }, this),
                                         learnSection === 'scrolls' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1797,7 +1808,7 @@ function App() {
                                                     children: "← Back to Learning Hub"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 673,
+                                                    lineNumber: 668,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$TruthScrollsNew$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TruthScrollsNew"], {
@@ -1806,24 +1817,24 @@ function App() {
                                                     onUpgrade: ()=>setShowPaywall(true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 679,
+                                                    lineNumber: 674,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 672,
+                                            lineNumber: 667,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 376,
+                                    lineNumber: 371,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 375,
+                                lineNumber: 370,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1841,12 +1852,12 @@ function App() {
                                                         children: "Sacred Rituals"
                                                     }, void 0, false, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 695,
+                                                        lineNumber: 690,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 694,
+                                                    lineNumber: 689,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1862,7 +1873,7 @@ function App() {
                                                                         className: "w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-blue-500/20 flex items-center justify-center border border-indigo-400/30"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 704,
+                                                                        lineNumber: 699,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1873,7 +1884,7 @@ function App() {
                                                                                 children: "Sacred Meditation"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 707,
+                                                                                lineNumber: 702,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1881,24 +1892,24 @@ function App() {
                                                                                 children: "Premium meditation and music experience"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 708,
+                                                                                lineNumber: 703,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 706,
+                                                                        lineNumber: 701,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 703,
+                                                                lineNumber: 698,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 699,
+                                                            lineNumber: 694,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1914,12 +1925,12 @@ function App() {
                                                                             children: "○"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 719,
+                                                                            lineNumber: 714,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 718,
+                                                                        lineNumber: 713,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1930,7 +1941,7 @@ function App() {
                                                                                 children: "Solar Palming"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 722,
+                                                                                lineNumber: 717,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1938,24 +1949,24 @@ function App() {
                                                                                 children: "Remove sun spots after gazing (3-5 minutes)"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 723,
+                                                                                lineNumber: 718,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 721,
+                                                                        lineNumber: 716,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 717,
+                                                                lineNumber: 712,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 713,
+                                                            lineNumber: 708,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1971,12 +1982,12 @@ function App() {
                                                                             children: "🦶"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 734,
+                                                                            lineNumber: 729,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 733,
+                                                                        lineNumber: 728,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1987,7 +1998,7 @@ function App() {
                                                                                 children: "Barefoot Grounding"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 737,
+                                                                                lineNumber: 732,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1995,24 +2006,24 @@ function App() {
                                                                                 children: "Earth connection grounding (10-44 minutes)"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 738,
+                                                                                lineNumber: 733,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 736,
+                                                                        lineNumber: 731,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 732,
+                                                                lineNumber: 727,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 728,
+                                                            lineNumber: 723,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2028,12 +2039,12 @@ function App() {
                                                                             children: "📖"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 749,
+                                                                            lineNumber: 744,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 748,
+                                                                        lineNumber: 743,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2044,7 +2055,7 @@ function App() {
                                                                                 children: "Solar Journal & Reflection"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 752,
+                                                                                lineNumber: 747,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2052,24 +2063,24 @@ function App() {
                                                                                 children: "Document your solar journey and insights"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 753,
+                                                                                lineNumber: 748,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 751,
+                                                                        lineNumber: 746,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 747,
+                                                                lineNumber: 742,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 743,
+                                                            lineNumber: 738,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2085,12 +2096,12 @@ function App() {
                                                                             children: "☁️"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 764,
+                                                                            lineNumber: 759,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 763,
+                                                                        lineNumber: 758,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2101,7 +2112,7 @@ function App() {
                                                                                 children: "Cloud Gazing"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 767,
+                                                                                lineNumber: 762,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2109,24 +2120,24 @@ function App() {
                                                                                 children: "Perfect for beginners or cloudy days (1-5 minutes)"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 768,
+                                                                                lineNumber: 763,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 766,
+                                                                        lineNumber: 761,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 762,
+                                                                lineNumber: 757,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 758,
+                                                            lineNumber: 753,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2142,12 +2153,12 @@ function App() {
                                                                             children: "🕯️"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                            lineNumber: 779,
+                                                                            lineNumber: 774,
                                                                             columnNumber: 27
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 778,
+                                                                        lineNumber: 773,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2158,7 +2169,7 @@ function App() {
                                                                                 children: "Candle Gazing (Trataka)"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 782,
+                                                                                lineNumber: 777,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2166,30 +2177,30 @@ function App() {
                                                                                 children: "Evening meditation practice (5-15 minutes)"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                                lineNumber: 783,
+                                                                                lineNumber: 778,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 781,
+                                                                        lineNumber: 776,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 777,
+                                                                lineNumber: 772,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 773,
+                                                            lineNumber: 768,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 698,
+                                                    lineNumber: 693,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
@@ -2200,7 +2211,7 @@ function App() {
                                             onBack: ()=>setActiveRitual(null)
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 792,
+                                            lineNumber: 787,
                                             columnNumber: 15
                                         }, this),
                                         activeRitual === 'barefoot' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$RitualTimer$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["RitualTimer"], {
@@ -2209,7 +2220,7 @@ function App() {
                                             onBack: ()=>setActiveRitual(null)
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 800,
+                                            lineNumber: 795,
                                             columnNumber: 15
                                         }, this),
                                         activeRitual === 'journal' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2228,12 +2239,12 @@ function App() {
                                                                     children: "←"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 815,
+                                                                    lineNumber: 810,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 814,
+                                                                lineNumber: 809,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2241,18 +2252,18 @@ function App() {
                                                                 children: "Back to Rituals"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 817,
+                                                                lineNumber: 812,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 813,
+                                                        lineNumber: 808,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 809,
+                                                    lineNumber: 804,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$SolarJournal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SolarJournal"], {
@@ -2260,13 +2271,13 @@ function App() {
                                                     onClose: ()=>setActiveRitual(null)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 820,
+                                                    lineNumber: 815,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 808,
+                                            lineNumber: 803,
                                             columnNumber: 15
                                         }, this),
                                         activeRitual === 'meditation' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2285,12 +2296,12 @@ function App() {
                                                                     children: "←"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 832,
+                                                                    lineNumber: 827,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 831,
+                                                                lineNumber: 826,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2298,18 +2309,18 @@ function App() {
                                                                 children: "Back to Rituals"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 834,
+                                                                lineNumber: 829,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 830,
+                                                        lineNumber: 825,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 826,
+                                                    lineNumber: 821,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$MeditationPlayer$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MeditationPlayer"], {
@@ -2317,13 +2328,13 @@ function App() {
                                                     onPlayPause: (isPlaying)=>console.log('Play/Pause:', isPlaying)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 837,
+                                                    lineNumber: 832,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 825,
+                                            lineNumber: 820,
                                             columnNumber: 15
                                         }, this),
                                         activeRitual === 'cloud-gazing' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2342,12 +2353,12 @@ function App() {
                                                                     children: "←"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 852,
+                                                                    lineNumber: 847,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 851,
+                                                                lineNumber: 846,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2355,18 +2366,18 @@ function App() {
                                                                 children: "Back to Rituals"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 854,
+                                                                lineNumber: 849,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 850,
+                                                        lineNumber: 845,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 846,
+                                                    lineNumber: 841,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$CloudGazingTimer$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CloudGazingTimer"], {
@@ -2374,13 +2385,13 @@ function App() {
                                                     onComplete: ()=>setActiveRitual(null)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 857,
+                                                    lineNumber: 852,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 845,
+                                            lineNumber: 840,
                                             columnNumber: 15
                                         }, this),
                                         activeRitual === 'candle-gazing' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2399,12 +2410,12 @@ function App() {
                                                                     children: "←"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 872,
+                                                                    lineNumber: 867,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 871,
+                                                                lineNumber: 866,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2412,18 +2423,18 @@ function App() {
                                                                 children: "Back to Rituals"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 874,
+                                                                lineNumber: 869,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 870,
+                                                        lineNumber: 865,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 866,
+                                                    lineNumber: 861,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ritual$2d$modes$2f$CandleGazingMode$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2433,24 +2444,24 @@ function App() {
                                                     onBack: ()=>setActiveRitual(null)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 877,
+                                                    lineNumber: 872,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 865,
+                                            lineNumber: 860,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 691,
+                                    lineNumber: 686,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 690,
+                                lineNumber: 685,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -2473,7 +2484,7 @@ function App() {
                                                                         className: "w-6 h-6 text-indigo-400"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 896,
+                                                                        lineNumber: 891,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2481,13 +2492,13 @@ function App() {
                                                                         children: "🌙 Night Practice"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                        lineNumber: 897,
+                                                                        lineNumber: 892,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 895,
+                                                                lineNumber: 890,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2495,18 +2506,18 @@ function App() {
                                                                 children: "Evening reflection and preparation"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 899,
+                                                                lineNumber: 894,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                        lineNumber: 894,
+                                                        lineNumber: 889,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 893,
+                                                    lineNumber: 888,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2520,7 +2531,7 @@ function App() {
                                                                     children: "Candle Gazing Moved"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 905,
+                                                                    lineNumber: 900,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2528,13 +2539,13 @@ function App() {
                                                                     children: "Candle gazing is now available in the Discover section under Sacred Rituals"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                    lineNumber: 906,
+                                                                    lineNumber: 901,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 904,
+                                                            lineNumber: 899,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2543,7 +2554,7 @@ function App() {
                                                             children: "📖 Evening Reflection Journal"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 909,
+                                                            lineNumber: 904,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2552,7 +2563,7 @@ function App() {
                                                             children: "🌙 Guided Sleep Meditation"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 916,
+                                                            lineNumber: 911,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2561,13 +2572,13 @@ function App() {
                                                             children: "✨ Enter Full Night Mode"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 923,
+                                                            lineNumber: 918,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 903,
+                                                    lineNumber: 898,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
@@ -2581,7 +2592,7 @@ function App() {
                                                     children: "← Back to Night Options"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 935,
+                                                    lineNumber: 930,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ritual$2d$modes$2f$CandleGazingMode$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2591,13 +2602,13 @@ function App() {
                                                     onBack: ()=>setNightActivity(null)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 941,
+                                                    lineNumber: 936,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 934,
+                                            lineNumber: 929,
                                             columnNumber: 15
                                         }, this),
                                         nightActivity === 'journal' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2609,7 +2620,7 @@ function App() {
                                                     children: "← Back to Night Options"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 952,
+                                                    lineNumber: 947,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$SolarJournal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SolarJournal"], {
@@ -2617,13 +2628,13 @@ function App() {
                                                     onClose: ()=>setNightActivity(null)
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 958,
+                                                    lineNumber: 953,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 951,
+                                            lineNumber: 946,
                                             columnNumber: 15
                                         }, this),
                                         nightActivity === 'meditation' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2635,7 +2646,7 @@ function App() {
                                                     children: "← Back to Night Options"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 964,
+                                                    lineNumber: 959,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2646,7 +2657,7 @@ function App() {
                                                             children: "🌙 Sleep Meditation"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 971,
+                                                            lineNumber: 966,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2654,7 +2665,7 @@ function App() {
                                                             children: "A guided meditation to prepare your consciousness for restorative sleep and prophetic dreams."
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 972,
+                                                            lineNumber: 967,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2664,35 +2675,35 @@ function App() {
                                                                 children: "▶️ Begin Meditation"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                                lineNumber: 976,
+                                                                lineNumber: 971,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 975,
+                                                            lineNumber: 970,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 970,
+                                                    lineNumber: 965,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 963,
+                                            lineNumber: 958,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 890,
+                                    lineNumber: 885,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 889,
+                                lineNumber: 884,
                                 columnNumber: 11
                             }, this),
                             isFounder && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -2711,7 +2722,7 @@ function App() {
                                                             className: "w-6 h-6 text-amber-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 992,
+                                                            lineNumber: 987,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2719,13 +2730,13 @@ function App() {
                                                             children: "🔥 Founder Voice Upload"
                                                         }, void 0, false, {
                                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                            lineNumber: 993,
+                                                            lineNumber: 988,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 991,
+                                                    lineNumber: 986,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2733,13 +2744,13 @@ function App() {
                                                     children: "Upload your personal meditation recordings"
                                                 }, void 0, false, {
                                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                    lineNumber: 995,
+                                                    lineNumber: 990,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 990,
+                                            lineNumber: 985,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2749,42 +2760,42 @@ function App() {
                                                 children: "🏆 Founder Exclusive Feature"
                                             }, void 0, false, {
                                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                                lineNumber: 1001,
+                                                lineNumber: 996,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                            lineNumber: 1000,
+                                            lineNumber: 995,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                    lineNumber: 989,
+                                    lineNumber: 984,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                                lineNumber: 988,
+                                lineNumber: 983,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                        lineNumber: 235,
+                        lineNumber: 230,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-16"
                     }, void 0, false, {
                         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                        lineNumber: 1010,
+                        lineNumber: 1005,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 193,
+                lineNumber: 188,
                 columnNumber: 7
             }, this),
             showPalmingRitual && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2797,12 +2808,12 @@ function App() {
                     onClose: ()=>setShowPalmingRitual(false)
                 }, void 0, false, {
                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                    lineNumber: 1016,
+                    lineNumber: 1011,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 1015,
+                lineNumber: 1010,
                 columnNumber: 9
             }, this),
             showPostGazeRitual && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2816,12 +2827,12 @@ function App() {
                     gazingDuration: 300
                 }, void 0, false, {
                     fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                    lineNumber: 1029,
+                    lineNumber: 1024,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 1028,
+                lineNumber: 1023,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$PaywallModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PaywallModal"], {
@@ -2835,7 +2846,7 @@ function App() {
                 }
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 1041,
+                lineNumber: 1036,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$SolarOrbsSystem$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SolarOrbsSystem"], {
@@ -2848,14 +2859,14 @@ function App() {
                 userId: "test-user-1"
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 1053,
+                lineNumber: 1048,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$SolarWindowManager$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SolarWindowManager"], {
                 onRitualComplete: ()=>{}
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 1065,
+                lineNumber: 1060,
                 columnNumber: 7
             }, this),
             showSolarWindowSettings && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$src$2f$app$2f$components$2f$SolarWindowSettings$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SolarWindowSettings"], {
@@ -2865,13 +2876,13 @@ function App() {
                 }
             }, void 0, false, {
                 fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-                lineNumber: 1069,
+                lineNumber: 1064,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/SUNGAZE APP/package.json/src/app/page.tsx",
-        lineNumber: 169,
+        lineNumber: 164,
         columnNumber: 5
     }, this);
 }

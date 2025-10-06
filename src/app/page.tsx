@@ -43,7 +43,7 @@ export default function App() {
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timerProgress, setTimerProgress] = useState(0);
   const [currentView, setCurrentView] = useState<'main' | 'night'>('main');
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false); // FORCE BYPASS - Always false
   const [showNewOnboarding, setShowNewOnboarding] = useState(false);
   const [flareNotification, setFlareNotification] = useState<string | null>(null);
   const [showAskTheOracle, setShowAskTheOracle] = useState(false);
@@ -58,8 +58,8 @@ export default function App() {
   const [showPostGazeRitual, setShowPostGazeRitual] = useState(false);
   const [nightActivity, setNightActivity] = useState<'candle' | 'journal' | 'meditation' | null>(null);
   const [learnSection, setLearnSection] = useState<'main' | 'guide' | 'content' | 'unlocks' | 'levels' | 'scrolls' | 'truth-serum' | 'oracle-qa' | 'journey' | 'eye-practices'>('main');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // FORCE BYPASS - Always true
+  const [user, setUser] = useState<any>({ id: 'cobyobi@gmail.com', email: 'cobyobi@gmail.com' }); // FORCE BYPASS - Always set
   const supabase = createClient();
 
   // Check authentication on mount
@@ -91,21 +91,16 @@ export default function App() {
 
   // Check consent and show onboarding
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const hasConsent = hasValidConsent();
-        if (!hasConsent) {
-          // Developer bypass - skip onboarding for both local and production
-          console.log('Developer bypass active - skipping onboarding');
-          setShowOnboarding(false);
-        }
-      } catch (error) {
-        console.error('Error checking consent:', error);
-        // Developer bypass - skip onboarding for both local and production
-        console.log('Developer bypass active - skipping onboarding');
-        setShowOnboarding(false);
-      }
-    }
+    // FORCE BYPASS - Skip onboarding completely
+    console.log('FORCE BYPASS ACTIVE - Skipping onboarding completely');
+    setShowOnboarding(false);
+  }, []);
+
+  // FORCE BYPASS - Skip authentication completely
+  useEffect(() => {
+    console.log('FORCE BYPASS ACTIVE - Skipping authentication completely');
+    setIsAuthenticated(true);
+    setUser({ id: 'cobyobi@gmail.com', email: 'cobyobi@gmail.com' });
   }, []);
 
   // Show auth screen if not authenticated
