@@ -56,13 +56,17 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
         body: JSON.stringify({
           priceId: product.stripePriceId,
           userId,
+          email,
           tier: product.tier,
         }),
       });
 
       const data = await response.json();
       
+      console.log('Payment API Response:', { status: response.status, data });
+      
       if (!response.ok) {
+        console.error('Payment API Error:', data);
         throw new Error(data.error || 'Payment setup failed');
       }
 

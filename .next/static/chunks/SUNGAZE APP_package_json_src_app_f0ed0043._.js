@@ -1566,7 +1566,7 @@ const PAYMENT_PRODUCTS = [
         type: 'subscription',
         interval: 'month',
         tier: 'monthly',
-        stripePriceId: 'price_1SB3p8GIDaitR9oVu9Br2RJB'
+        stripePriceId: __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.STRIPE_MONTHLY_PRICE_ID || 'price_1SB3p8GIDaitR9oVu9Br2RJB'
     },
     {
         id: 'yearly',

@@ -1272,7 +1272,7 @@ const PAYMENT_PRODUCTS = [
         type: 'subscription',
         interval: 'month',
         tier: 'monthly',
-        stripePriceId: 'price_1SB3p8GIDaitR9oVu9Br2RJB'
+        stripePriceId: process.env.STRIPE_MONTHLY_PRICE_ID || 'price_1SB3p8GIDaitR9oVu9Br2RJB'
     },
     {
         id: 'yearly',

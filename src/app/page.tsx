@@ -95,11 +95,15 @@ export default function App() {
       try {
         const hasConsent = hasValidConsent();
         if (!hasConsent) {
-          setShowOnboarding(true);
+          // Developer bypass - skip onboarding for both local and production
+          console.log('Developer bypass active - skipping onboarding');
+          setShowOnboarding(false);
         }
       } catch (error) {
         console.error('Error checking consent:', error);
-        setShowOnboarding(true);
+        // Developer bypass - skip onboarding for both local and production
+        console.log('Developer bypass active - skipping onboarding');
+        setShowOnboarding(false);
       }
     }
   }, []);
