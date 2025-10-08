@@ -1,23 +1,28 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": []
+    "/_app": [
+      "static/chunks/f5c3bb0195151487.js",
+      "static/chunks/312f78d56c8d338a.js",
+      "static/chunks/turbopack-931f81d0596c17b1.js"
+    ],
+    "/_error": [
+      "static/chunks/8b4b1f1a55864150.js",
+      "static/chunks/312f78d56c8d338a.js",
+      "static/chunks/turbopack-1614ad5dcf48cfb6.js"
+    ]
   },
   "devFiles": [],
   "ampDevFiles": [],
   "polyfillFiles": [
-    "static/chunks/3a9b2_next_dist_build_polyfills_polyfill-nomodule.js"
+    "static/chunks/a6dad97d9634a72d.js"
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_81184d3b._.js",
-    "static/chunks/3a9b2_next_dist_compiled_react-dom_633c5141._.js",
-    "static/chunks/3a9b2_next_dist_compiled_next-devtools_index_69ae3328.js",
-    "static/chunks/3a9b2_next_dist_compiled_e25f3717._.js",
-    "static/chunks/3a9b2_next_dist_client_829b05b3._.js",
-    "static/chunks/3a9b2_next_dist_6596dc6d._.js",
-    "static/chunks/3a9b2_@swc_helpers_cjs_f0250657._.js",
-    "static/chunks/SUNGAZE APP_package_json_a0ff3932._.js",
-    "static/chunks/turbopack-SUNGAZE APP_package_json_0c39a7d6._.js"
+    "static/chunks/94a5f2e64bd999c2.js",
+    "static/chunks/6811fd676b48a548.js",
+    "static/chunks/8d2b716fb9ac52f9.js",
+    "static/chunks/73bca13195347849.js",
+    "static/chunks/turbopack-c434d8d2cefcf7f5.js"
   ],
   "ampFirstPages": []
 };
