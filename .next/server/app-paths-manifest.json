@@ -1,5 +1,6 @@
 {
-  "/api/audio/signed-url/route": "app/api/audio/signed-url/route.js",
+  "/api/payments/create-checkout-session/route": "app/api/payments/create-checkout-session/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/success/page": "app/success/page.js"
 }

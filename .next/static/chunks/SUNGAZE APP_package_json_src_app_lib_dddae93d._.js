@@ -1397,7 +1397,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$j
 "use client";
 ;
 // Initialize Stripe with environment variable
-const stripePromise = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f40$stripe$2f$stripe$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["loadStripe"])(("TURBOPACK compile-time value", "pk_live_51NW2s0GIDaitR9oVGRMVtMCR2RST9d4dVd8H7gfqnUO8MyWJ3Y3HPEFGRiAD2CzC4CEVL1UhFIfsD9uyTptsYg5M00Tk7i1f4Y"));
+const stripePromise = (0, __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f40$stripe$2f$stripe$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["loadStripe"])(("TURBOPACK compile-time value", "pk_live_51NW2s0GIDaitR9oVlieoSStcjJJ7h2DwrKEzIqaNnhi9t3KqgtCpGpdn4ibjNLeYT3thhlBiAzjf9hczdfTwtmZ600zXeHdZMy"));
 const createCheckoutSession = async (data)=>{
     try {
         const response = await fetch('/api/payments/create-checkout-session', {

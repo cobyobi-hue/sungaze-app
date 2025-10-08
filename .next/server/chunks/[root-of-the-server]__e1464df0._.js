@@ -98,7 +98,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$j
 ;
 ;
 const stripe = new __TURBOPACK__imported__module__$5b$project$5d2f$SUNGAZE__APP$2f$package$2e$json$2f$node_modules$2f$stripe$2f$esm$2f$stripe$2e$esm$2e$node$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"](process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2025-08-27.basil'
+    apiVersion: '2024-06-20'
 });
 async function POST(request) {
     try {
@@ -151,8 +151,8 @@ async function POST(request) {
                 }
             ],
             mode: mode,
-            success_url: successUrl || `${process.env.APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: cancelUrl || `${process.env.APP_URL}/cancel`,
+            success_url: successUrl || `${"TURBOPACK compile-time value", "http://localhost:3001"}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: cancelUrl || `${"TURBOPACK compile-time value", "http://localhost:3001"}/cancel`,
             metadata: {
                 userId: userId,
                 tier: tier,
