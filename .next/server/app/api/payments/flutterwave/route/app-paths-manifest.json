@@ -1,0 +1,3 @@
+{
+  "/api/payments/flutterwave/route": "app/api/payments/flutterwave/route.js"
+}

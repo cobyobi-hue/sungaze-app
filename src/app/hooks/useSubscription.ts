@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { UserProfile, UserTier } from '../types/subscription';
 import { subscriptionService } from '../lib/database/subscription-service';
+import { createClient } from '../lib/supabase/client';
 
 interface UseSubscriptionReturn {
   profile: UserProfile | null;
@@ -13,15 +14,31 @@ interface UseSubscriptionReturn {
   refreshProfile: () => Promise<void>;
 }
 
-export function useSubscription(userId: string): UseSubscriptionReturn {
+export function useSubscription(userId?: string): UseSubscriptionReturn {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const supabase = createClient();
 
   const loadProfile = async () => {
     try {
       setLoading(true);
-      console.log('Loading profile for userId:', userId);
-      const userProfile = await subscriptionService.getUserProfile(userId);
+      
+      let currentUserId = userId;
+      
+      // If no userId provided, get current user from Supabase auth
+      if (!currentUserId) {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) {
+          console.log('No authenticated user found');
+          setProfile(null);
+          setLoading(false);
+          return;
+        }
+        currentUserId = user.id;
+      }
+      
+      console.log('Loading profile for userId:', currentUserId);
+      const userProfile = await subscriptionService.getUserProfile(currentUserId);
       console.log('Loaded userProfile:', userProfile);
       setProfile(userProfile);
     } catch (error) {
@@ -32,9 +49,7 @@ export function useSubscription(userId: string): UseSubscriptionReturn {
   };
 
   useEffect(() => {
-    if (userId) {
-      loadProfile();
-    }
+    loadProfile();
   }, [userId]);
 
   const hasAccess = (requiredTier: UserTier): boolean => {

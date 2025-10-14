@@ -120,10 +120,9 @@ class SubscriptionService {
       ...userData
     };
 
-    // Use mock data if Supabase is not configured
+    // Ensure Supabase is configured
     if (!this.supabase) {
-      this.mockData.set(profile.id, profile);
-      return profile;
+      throw new Error('Supabase client not available - check environment variables');
     }
 
     try {
@@ -298,16 +297,9 @@ class SubscriptionService {
   }
 
   async hasFounderAccess(userId: string): Promise<boolean> {
-    // Use mock data if Supabase is not configured
+    // Ensure Supabase is configured
     if (!this.supabase) {
-      const user = this.mockData.get(userId);
-      if (!user || user.tier !== 'founder_444') return false;
-      
-      if (user.expirationDate) {
-        const expiration = new Date(user.expirationDate);
-        return expiration > new Date();
-      }
-      return true;
+      throw new Error('Supabase client not available - check environment variables');
     }
 
     try {
@@ -335,28 +327,9 @@ class SubscriptionService {
   }
 
   async canAccessFeature(userId: string, requiredTier: UserTier): Promise<boolean> {
-    // Use mock data if Supabase is not configured
+    // Ensure Supabase is configured
     if (!this.supabase) {
-      const user = this.mockData.get(userId);
-      if (!user) return false;
-
-      // Founder 444 has access to everything
-      if (user.tier === 'founder_444') {
-        return await this.hasFounderAccess(userId);
-      }
-
-      // Define tier hierarchy
-      const tierHierarchy = {
-        'free': 0,
-        'monthly': 1,
-        'yearly': 2,
-        'founder_444': 3
-      };
-
-      const userTierLevel = tierHierarchy[user.tier as UserTier];
-      const requiredTierLevel = tierHierarchy[requiredTier];
-
-      return userTierLevel >= requiredTierLevel;
+      throw new Error('Supabase client not available - check environment variables');
     }
 
     try {
@@ -400,26 +373,9 @@ class SubscriptionService {
     founderNumber?: number;
     daysRemaining?: number;
   } | null> {
-    // Use mock data if Supabase is not configured
+    // Ensure Supabase is configured
     if (!this.supabase) {
-      const user = this.mockData.get(userId);
-      if (!user) return null;
-
-      let daysRemaining;
-      if (user.expirationDate) {
-        const expiration = new Date(user.expirationDate);
-        const now = new Date();
-        const diffTime = expiration.getTime() - now.getTime();
-        daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      }
-
-      return {
-        tier: user.tier,
-        badges: user.badges || [],
-        seals: user.seals || [],
-        founderNumber: user.founderNumber,
-        daysRemaining
-      };
+      throw new Error('Supabase client not available - check environment variables');
     }
 
     try {
