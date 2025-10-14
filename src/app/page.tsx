@@ -58,8 +58,8 @@ export default function App() {
   const [showPostGazeRitual, setShowPostGazeRitual] = useState(false);
   const [nightActivity, setNightActivity] = useState<'candle' | 'journal' | 'meditation' | null>(null);
   const [learnSection, setLearnSection] = useState<'main' | 'guide' | 'content' | 'unlocks' | 'levels' | 'scrolls' | 'truth-serum' | 'oracle-qa' | 'journey' | 'eye-practices'>('main');
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // FORCE BYPASS - Always true
-  const [user, setUser] = useState<any>({ id: 'cobyobi@gmail.com', email: 'cobyobi@gmail.com' }); // FORCE BYPASS - Always set
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
   // Check authentication on mount
@@ -89,27 +89,9 @@ export default function App() {
   const isFounder = true;
   const hasAccess = () => true;
 
-  // Check consent and show onboarding
-  useEffect(() => {
-    // FORCE BYPASS - Skip onboarding completely
-    console.log('FORCE BYPASS ACTIVE - Skipping onboarding completely');
-    setShowOnboarding(false);
-  }, []);
-
-  // FORCE BYPASS - Skip authentication completely
-  useEffect(() => {
-    console.log('FORCE BYPASS ACTIVE - Skipping authentication completely');
-    setIsAuthenticated(true);
-    setUser({ id: 'cobyobi@gmail.com', email: 'cobyobi@gmail.com' });
-  }, []);
-
   // Show auth screen if not authenticated
   if (!isAuthenticated) {
-    // Temporary developer bypass - comment out for production
-    // return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
-    console.log('Developer bypass active - skipping authentication');
-    setIsAuthenticated(true);
-    setUser({ id: 'cobyobi@gmail.com', email: 'cobyobi@gmail.com' });
+    return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
   }
 
 
@@ -1036,7 +1018,7 @@ export default function App() {
       <PaywallModal
         isOpen={showPaywall}
         onClose={handlePaywallClose}
-        userId="test-user-1"
+        userId={user?.id || 'anonymous'}
         email="user@sun44.com"
         onSuccess={() => {
           console.log('Payment successful!');
@@ -1052,7 +1034,7 @@ export default function App() {
           console.log('Upgrade to Solar Adept');
           setShowSolarOrbs(false);
         }}
-        userId="test-user-1"
+        userId={user?.id || 'anonymous'}
       />
 
 

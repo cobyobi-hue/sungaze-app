@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Edit, Save, X, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
+import { createClient } from '../../lib/supabase/client';
 
 interface AccountInfoScreenProps {
   onBack: () => void;
@@ -21,18 +22,63 @@ interface UserAccount {
 
 export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreenProps) {
   const [userAccount, setUserAccount] = useState<UserAccount>({
-    name: "missing missing",
-    username: "@coby",
-    email: "y26yf84xqb@privaterelay.appleid.com",
+    name: "",
+    username: "",
+    email: "",
     phone: "",
-    place: "Los Angeles",
+    place: "",
     aboutMe: "",
     birthday: ""
   });
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
 
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  const loadUserData = async () => {
+    try {
+      // Get current user
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        console.error('Error getting user:', authError);
+        setLoading(false);
+        return;
+      }
+
+      // Get user profile from database
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('Error loading profile:', profileError);
+      }
+
+      // Set user account data
+      setUserAccount({
+        name: profile?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || "User",
+        username: profile?.username || user.user_metadata?.username || "@user",
+        email: user.email || "",
+        phone: profile?.phone || "",
+        place: profile?.location || "Unknown",
+        aboutMe: profile?.about_me || "",
+        birthday: profile?.birthday || ""
+      });
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFieldEdit = (field: string, currentValue: string) => {
     setEditingField(field);
@@ -110,6 +156,17 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
       </button>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white/60">Loading account info...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">

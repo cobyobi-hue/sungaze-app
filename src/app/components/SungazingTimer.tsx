@@ -25,7 +25,7 @@ interface SungazingTimerProps {
 
 export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoStartHandled }: SungazingTimerProps) {
   // Subscription management
-  const { profile, hasAccess, isPremium } = useSubscription('test-user-1');
+  const { profile, hasAccess, isPremium } = useSubscription();
   
   // Progress management - loads current day from localStorage
   const { progress, completePractice, advanceDay, getCurrentDayTarget } = useProgress();

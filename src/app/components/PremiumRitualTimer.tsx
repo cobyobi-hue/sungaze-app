@@ -25,7 +25,7 @@ interface PremiumRitualTimerProps {
 export function PremiumRitualTimer({ 
   onTimerChange, 
   onComplete, 
-  userId = 'test-user-1' 
+  userId = undefined 
 }: PremiumRitualTimerProps) {
   // Premium features integration
   const { 

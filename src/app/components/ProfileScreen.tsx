@@ -56,6 +56,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       console.log('ProfileScreen: loadProfile called, setting loading to true');
       setLoading(true);
       console.log('ProfileScreen: Loading profile for user:', currentUser.id);
+      console.log('ProfileScreen: Current user object:', currentUser);
       
       // Try to get profile from Supabase first
       const { data, error } = await supabase
@@ -67,7 +68,9 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       if (error && error.code !== 'PGRST116') {
         console.error('Supabase error:', error);
         // Fall back to subscription service
+        console.log('ProfileScreen: Falling back to subscription service for user:', currentUser.id);
         const userProfile = await subscriptionService.getUserProfile(currentUser.id);
+        console.log('ProfileScreen: Subscription service returned:', userProfile);
         setProfile(userProfile);
       } else if (data) {
         console.log('ProfileScreen: Loaded userProfile from Supabase:', data);

@@ -3,10 +3,9 @@
 import { UserProfile, UserTier, FounderSlots } from '../../types/subscription';
 import { createClient } from '../supabase/client';
 
-// Supabase database service with fallback to mock data
+// Supabase database service - real database only
 class SubscriptionService {
   private supabase = createClient();
-  private mockData = new Map<string, UserProfile>();
   private founderSlots: FounderSlots = {
     sold: 0, 
     remaining: 444, 
@@ -17,70 +16,22 @@ class SubscriptionService {
     console.log('SubscriptionService: Constructor called');
     console.log('SubscriptionService: Supabase client available:', !!this.supabase);
     
-    // Always initialize mock data for fallback
-    console.log('SubscriptionService: Initializing mock data for fallback');
-    this.initializeMockData();
-    
     if (this.supabase) {
-      console.log('SubscriptionService: Supabase configured, will use real database with mock fallback');
+      console.log('SubscriptionService: Supabase configured, using real database only');
     } else {
-      console.log('SubscriptionService: Using mock data mode only');
+      console.error('SubscriptionService: ERROR - Supabase not configured! App will not work properly.');
+      throw new Error('Supabase client not available - check environment variables');
     }
   }
 
-  private initializeMockData() {
-    console.log('SubscriptionService: Initializing mock data');
-    const expiration = new Date();
-    expiration.setFullYear(expiration.getFullYear() + 3);
-    
-    const testUser = {
-      id: 'test-user-1',
-      email: 'test@sungaze.com',
-      tier: 'founder_444' as UserTier,
-      founderNumber: 1,
-      founderRegion: 'us' as 'us' | 'africa',
-      badges: ['First Witness of the Flame', 'Solar Pioneer'],
-      seals: ['Dawn Keeper', 'Light Bearer'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      purchaseDate: new Date().toISOString(),
-      expirationDate: expiration.toISOString(),
-      subscriptionStatus: 'active' as const
-    };
-    
-    // Also create a profile for the developer's real email
-    const developerUser = {
-      ...testUser,
-      id: 'cobyobi@gmail.com',
-      email: 'cobyobi@gmail.com'
-    };
-    
-    this.mockData.set('test-user-1', testUser);
-    this.mockData.set('cobyobi@gmail.com', developerUser);
-    this.founderSlots.sold = 37;
-    this.founderSlots.remaining = 407;
-    
-    console.log('SubscriptionService: Mock data initialized:', testUser);
-  }
 
   async getUserProfile(userId: string): Promise<UserProfile | null> {
     console.log('SubscriptionService: Getting profile for userId:', userId);
     console.log('SubscriptionService: Supabase client available:', !!this.supabase);
     
-    // For development/testing, always use mock data to avoid Supabase errors
-    if (process.env.NODE_ENV === 'development' || userId === 'test-user-1' || userId === 'cobyobi@gmail.com') {
-      console.log('SubscriptionService: Using mock data mode for development');
-      const mockProfile = this.mockData.get(userId) || null;
-      console.log('SubscriptionService: Mock profile found:', mockProfile);
-      return mockProfile;
-    }
-    
-    // Use mock data if Supabase is not configured
+    // Ensure Supabase is configured
     if (!this.supabase) {
-      console.log('SubscriptionService: Using mock data mode');
-      const mockProfile = this.mockData.get(userId) || null;
-      console.log('SubscriptionService: Mock profile found:', mockProfile);
-      return mockProfile;
+      throw new Error('Supabase client not available - check environment variables');
     }
 
     try {
@@ -98,25 +49,66 @@ class SubscriptionService {
           details: error.details || 'No details available',
           hint: error.hint || 'No hint available'
         });
-        console.log('SubscriptionService: Falling back to mock data');
-        return this.mockData.get(userId) || null;
+        
+        // If user doesn't exist, create a new profile
+        if (error.code === 'PGRST116') {
+          console.log('SubscriptionService: User profile not found, creating new profile');
+          return await this.createUserProfile(userId);
+        }
+        
+        console.error('SubscriptionService: Database error - cannot fall back to mock data');
+        throw new Error(`Failed to fetch user profile: ${error.message}`);
       }
 
       if (!data) {
-        console.log('SubscriptionService: No profile found in Supabase, falling back to mock data');
-        return this.mockData.get(userId) || null;
+        console.log('SubscriptionService: No profile found in Supabase, creating new profile');
+        return await this.createUserProfile(userId);
       }
 
       console.log('SubscriptionService: Supabase profile found:', data);
       return data as UserProfile;
     } catch (error) {
       console.error('SubscriptionService: Error in getUserProfile:', error);
-      console.log('SubscriptionService: Falling back to mock data due to error');
-      return this.mockData.get(userId) || null;
+      throw new Error(`Failed to get user profile: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
-  async createUserProfile(userData: Partial<UserProfile>): Promise<UserProfile> {
+  async createUserProfile(userId: string): Promise<UserProfile> {
+    if (!this.supabase) {
+      throw new Error('Supabase not configured');
+    }
+
+    try {
+      console.log('SubscriptionService: Creating new profile for user:', userId);
+      
+      const newProfile = {
+        id: userId,
+        email: null, // Will be populated by the trigger
+        display_name: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      const { data, error } = await this.supabase
+        .from('user_profiles')
+        .insert([newProfile])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('SubscriptionService: Error creating profile:', error);
+        throw error;
+      }
+
+      console.log('SubscriptionService: Profile created successfully:', data);
+      return data as UserProfile;
+    } catch (error) {
+      console.error('SubscriptionService: Error in createUserProfile:', error);
+      throw error;
+    }
+  }
+
+  async updateUserProfile(userData: Partial<UserProfile>): Promise<UserProfile> {
     const profile: UserProfile = {
       id: userData.id || crypto.randomUUID(),
       email: userData.email || '',
@@ -136,7 +128,7 @@ class SubscriptionService {
 
     try {
       const { data, error } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .insert([profile])
         .select()
         .single();
@@ -173,7 +165,7 @@ class SubscriptionService {
       // Add tier-specific badges
       if (tier === 'founder_444') {
         const { data: user } = await this.supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('badges')
           .eq('id', userId)
           .single();
@@ -185,7 +177,7 @@ class SubscriptionService {
       }
 
       const { data, error } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .update(updateData)
         .eq('id', userId)
         .select()
@@ -242,7 +234,7 @@ class SubscriptionService {
       expirationDate.setFullYear(expirationDate.getFullYear() + 3);
 
       const { data: user } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('badges')
         .eq('id', userId)
         .single();
@@ -250,7 +242,7 @@ class SubscriptionService {
       const existingBadges = user?.badges || [];
 
       const { error: userError } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .update({
           tier: 'founder_444',
           founderNumber,
@@ -320,7 +312,7 @@ class SubscriptionService {
 
     try {
       const { data: user, error } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('tier, expirationDate')
         .eq('id', userId)
         .single();
@@ -369,7 +361,7 @@ class SubscriptionService {
 
     try {
       const { data: user, error } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('tier, expirationDate')
         .eq('id', userId)
         .single();
@@ -432,7 +424,7 @@ class SubscriptionService {
 
     try {
       const { data: user, error } = await this.supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('tier, badges, seals, founderNumber, expirationDate')
         .eq('id', userId)
         .single();
