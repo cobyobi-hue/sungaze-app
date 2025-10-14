@@ -113,3 +113,4 @@ The foundation is now clean, modern, and ready for:
 > "For thousands of years, yogis and mystics stood at dawn to drink the sun. This app is not just a timer. It's a rebellion against forgetting. It's a revolution of light."
 
 From 10 seconds to 44 minutes — become a solar being through sacred practice.
+# Deployment trigger
