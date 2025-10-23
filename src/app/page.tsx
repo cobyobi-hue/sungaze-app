@@ -115,10 +115,10 @@ export default function App() {
   const isFounder = true;
   const hasAccess = () => true;
 
-  // Show auth screen if not authenticated
-  if (!isAuthenticated) {
-    return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
-  }
+  // Show auth screen if not authenticated - BYPASSED FOR DEVELOPMENT
+  // if (!isAuthenticated) {
+  //   return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
+  // }
 
 
   const handleTimerChange = (isActive: boolean, progress: number) => {
