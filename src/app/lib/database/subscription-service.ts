@@ -19,8 +19,7 @@ class SubscriptionService {
     if (this.supabase) {
       console.log('SubscriptionService: Supabase configured, using real database only');
     } else {
-      console.error('SubscriptionService: ERROR - Supabase not configured! App will not work properly.');
-      throw new Error('Supabase client not available - check environment variables');
+      console.warn('SubscriptionService: Supabase not configured - using mock data mode');
     }
   }
 

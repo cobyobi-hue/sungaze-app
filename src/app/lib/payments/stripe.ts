@@ -18,6 +18,7 @@ export interface CreateCheckoutSessionData {
 export interface CheckoutSessionResponse {
   sessionId?: string;
   url?: string;
+  error?: string;
 }
 
 export const createCheckoutSession = async (data: CreateCheckoutSessionData): Promise<CheckoutSessionResponse> => {

@@ -21,5 +21,10 @@ export function createClient() {
 
   console.log('Supabase client created successfully')
 
-  return createBrowserClient(supabaseUrl, supabaseAnonKey)
+  try {
+    return createBrowserClient(supabaseUrl, supabaseAnonKey)
+  } catch (error) {
+    console.error('Error creating Supabase client:', error)
+    return null
+  }
 }

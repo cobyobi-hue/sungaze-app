@@ -149,12 +149,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   handler satisfies RouteHandlerConfig<"/api/payments/create-checkout-session">
 }
 
-// Validate ../../src/app/api/payments/create-payment-intent/route.ts
-{
-  const handler = {} as typeof import("../../src/app/api/payments/create-payment-intent/route.js")
-  handler satisfies RouteHandlerConfig<"/api/payments/create-payment-intent">
-}
-
 // Validate ../../src/app/api/payments/flutterwave/route.ts
 {
   const handler = {} as typeof import("../../src/app/api/payments/flutterwave/route.js")
