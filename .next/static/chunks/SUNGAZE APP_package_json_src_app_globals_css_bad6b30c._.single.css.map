@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/SUNGAZE APP/package.json/src/app/globals.css"],"sourcesContent":["/* Beautiful Blue Gradient Dark Theme */\nhtml, body {\n  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;\n  color: white !important;\n  min-height: 100vh !important;\n  margin: 0;\n  padding: 0;\n}\n\n/* Ensure main container has dark background */\n.min-h-screen {\n  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;\n}\n\n/* Override any white backgrounds */\n.bg-white {\n  background-color: #1e3a8a !important;\n}\n\n/* Ensure text is visible */\n.text-black {\n  color: white !important;\n}\n\n/* Beautiful gradient backgrounds */\n.bg-gradient-to-br {\n  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) !important;\n}\n\n/* Ensure cards have proper dark styling */\n.bg-black\\/40 {\n  background-color: rgba(0, 0, 0, 0.4) !important;\n}\n\n/* Glowing effects */\n.shadow-\\[0_0_40px_rgba\\(251\\,191\\,36\\,0\\.5\\)\\] {\n  box-shadow: 0 0 40px rgba(251, 191, 36, 0.5) !important;\n}"],"names":[],"mappings":"AACA;;;;;;;;AASA;;;;AAKA;;;;AAKA;;;;AAKA;;;;AAKA;;;;AAKA"}}]
+}

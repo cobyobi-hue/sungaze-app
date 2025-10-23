@@ -5,6 +5,7 @@ import { Check, Star, Crown, Zap, Shield, Users, Clock, ArrowRight } from 'lucid
 import { ProgressChart } from './ProgressChart';
 import { createCheckoutSession, redirectToCheckout } from '../../lib/payments/stripe';
 import { PAYMENT_PRODUCTS } from '../../types/subscription';
+import { useIsIOSApp } from '../../hooks/usePlatformDetection';
 
 interface OnboardingPaywallProps {
   data: any;
@@ -92,10 +93,20 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
   const [selectedPlan, setSelectedPlan] = useState('yearly');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isIOSApp = useIsIOSApp();
 
   const handleSubscribe = async () => {
     setIsLoading(true);
     setError(null);
+    
+    if (isIOSApp) {
+      // For iOS app, just continue without payment
+      setTimeout(() => {
+        setIsLoading(false);
+        onNext();
+      }, 1000);
+      return;
+    }
     
     try {
       // Map plan IDs to Stripe tiers
@@ -289,18 +300,21 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
           {isLoading ? (
             <>
               <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-              <span>Processing...</span>
+              <span>{isIOSApp ? 'Starting Journey...' : 'Processing...'}</span>
             </>
           ) : (
             <>
-              <span>Start My Transformation</span>
+              <span>{isIOSApp ? 'Start My Journey' : 'Start My Transformation'}</span>
               <ArrowRight className="w-5 h-5" />
             </>
           )}
         </button>
         
         <p className="text-caption text-white/60 mt-4">
-          Secure payment • Cancel anytime • 30-day money-back guarantee
+          {isIOSApp 
+            ? 'Premium features coming in next update! • Native iOS experience' 
+            : 'Secure payment • Cancel anytime • 30-day money-back guarantee'
+          }
         </p>
         
         {/* Founder Countdown */}

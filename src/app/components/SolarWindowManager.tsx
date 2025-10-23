@@ -63,9 +63,10 @@ export function SolarWindowManager({ onRitualComplete }: SolarWindowManagerProps
 
   return (
     <>
-      {/* Solar Window Notification */}
+      {/* Solar Window Notification - Pass isVisible prop */}
       {isNotificationVisible && (
         <SolarWindowNotification
+          isVisible={isNotificationVisible}
           onClose={closeNotification}
           onStartRitual={handleStartRitual}
         />
@@ -76,5 +77,6 @@ export function SolarWindowManager({ onRitualComplete }: SolarWindowManagerProps
     </>
   );
 }
+
 
 

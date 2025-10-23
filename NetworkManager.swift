@@ -69,42 +69,6 @@ class NetworkManager: ObservableObject {
         return OracleResponse(answer: response.response, wisdomLevel: "advanced")
     }
     
-    // MARK: - Payment Integration
-    func createCheckoutSession(priceId: String) async throws -> CheckoutResponse {
-        let url = URL(string: "\(baseURL)/api/payments/create-checkout-session")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body = ["priceId": priceId]
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        
-        let (data, _) = try await URLSession.shared.data(for: request)
-        return try JSONDecoder().decode(CheckoutResponse.self, from: data)
-    }
-    
-    // MARK: - Flutterwave Payment
-    func createFlutterwavePayment(amount: Double, currency: String, email: String, name: String, userId: String, tier: String) async throws -> FlutterwaveResponse {
-        let url = URL(string: "\(baseURL)/api/payments/flutterwave")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body = [
-            "amount": amount,
-            "currency": currency,
-            "email": email,
-            "name": name,
-            "userId": userId,
-            "tier": tier
-        ] as [String : Any]
-        
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        
-        let (data, _) = try await URLSession.shared.data(for: request)
-        return try JSONDecoder().decode(FlutterwaveResponse.self, from: data)
-    }
-    
     private func getAuthToken() -> String {
         // Retrieve from Keychain or UserDefaults
         return UserDefaults.standard.string(forKey: "authToken") ?? ""
@@ -150,11 +114,6 @@ struct OracleResponse: Codable {
     let wisdomLevel: String
 }
 
-struct CheckoutResponse: Codable {
-    let sessionId: String
-    let url: String
-}
-
 // MARK: - API Response Models
 struct AudioURLResponse: Codable {
     let url: String
@@ -165,39 +124,5 @@ struct OracleAPIResponse: Codable {
     let sessionType: String?
     let userLevel: String?
     let timestamp: String?
-}
-
-struct FlutterwaveResponse: Codable {
-    let success: Bool
-    let paymentData: FlutterwavePaymentData
-    let message: String
-}
-
-struct FlutterwavePaymentData: Codable {
-    let tx_ref: String
-    let amount: Double
-    let currency: String
-    let redirect_url: String
-    let payment_options: String
-    let customer: FlutterwaveCustomer
-    let customizations: FlutterwaveCustomizations
-    let meta: FlutterwaveMeta
-}
-
-struct FlutterwaveCustomer: Codable {
-    let email: String
-    let name: String
-}
-
-struct FlutterwaveCustomizations: Codable {
-    let title: String
-    let description: String
-    let logo: String
-}
-
-struct FlutterwaveMeta: Codable {
-    let userId: String
-    let tier: String
-    let product: String
 }
 

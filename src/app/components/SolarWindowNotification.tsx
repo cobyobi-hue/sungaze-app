@@ -6,12 +6,12 @@ import { X, Sun, Cloud, Droplets, Sparkles, Clock, MapPin } from 'lucide-react';
 import { weatherService, type WeatherData, type SolarTimes } from '../lib/weatherService';
 
 interface SolarWindowNotificationProps {
+  isVisible: boolean;
   onClose: () => void;
   onStartRitual: (type: 'solar' | 'cloud') => void;
 }
 
-export function SolarWindowNotification({ onClose, onStartRitual }: SolarWindowNotificationProps) {
-  const [isVisible, setIsVisible] = useState(false);
+export function SolarWindowNotification({ isVisible, onClose, onStartRitual }: SolarWindowNotificationProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [solarTimes, setSolarTimes] = useState<SolarTimes | null>(null);
   const [timeUntil, setTimeUntil] = useState(0);
@@ -19,13 +19,10 @@ export function SolarWindowNotification({ onClose, onStartRitual }: SolarWindowN
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkSolarWindow();
-    
-    // Check every 5 minutes
-    const interval = setInterval(checkSolarWindow, 5 * 60 * 1000);
-    
-    return () => clearInterval(interval);
-  }, []);
+    if (isVisible) {
+      checkSolarWindow();
+    }
+  }, [isVisible]);
 
   // Debug mode - add a manual trigger for testing
   useEffect(() => {
@@ -33,23 +30,8 @@ export function SolarWindowNotification({ onClose, onStartRitual }: SolarWindowN
       // Press 'S' key to manually trigger solar window for testing
       if (event.key === 's' || event.key === 'S') {
         console.log('Manual solar window trigger for testing');
-        setIsVisible(true);
-        setWeather({
-          isClear: false,
-          condition: 'cloudy',
-          temperature: 20,
-          humidity: 50,
-          description: 'Test mode - Cloud gazing recommended',
-          cachedAt: Date.now()
-        });
-        setSolarTimes({
-          sunrise: new Date(),
-          sunset: new Date(),
-          cachedAt: Date.now()
-        });
-        setTimeUntil(8);
-        setIsSunrise(false);
-        setIsLoading(false);
+        // Trigger notification via parent
+        checkSolarWindow();
       }
     };
 
@@ -66,13 +48,12 @@ export function SolarWindowNotification({ onClose, onStartRitual }: SolarWindowN
         setSolarTimes(result.solarTimes);
         setTimeUntil(result.timeUntil);
         setIsSunrise(result.isSunrise);
-        setIsVisible(true);
+        setIsLoading(false);
       } else {
-        setIsVisible(false);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Failed to check solar window:', error);
-    } finally {
       setIsLoading(false);
     }
   };

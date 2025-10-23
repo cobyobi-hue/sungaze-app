@@ -295,27 +295,10 @@ struct PaywallView: View {
     private func subscribeToPremium() {
         isLoading = true
         
-        Task {
-            do {
-                let response = try await networkManager.createCheckoutSession(priceId: "premium_monthly")
-                
-                // Open Stripe checkout
-                if let url = URL(string: response.url) {
-                    await MainActor.run {
-                        UIApplication.shared.open(url)
-                    }
-                }
-                
-                await MainActor.run {
-                    isLoading = false
-                    dismiss()
-                }
-            } catch {
-                await MainActor.run {
-                    isLoading = false
-                    // Handle error
-                }
-            }
+        // Payment functionality removed for App Store approval
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            isLoading = false
+            dismiss()
         }
     }
     
@@ -323,6 +306,10 @@ struct PaywallView: View {
         dismiss()
     }
 }
+
+
+
+
 
 
 

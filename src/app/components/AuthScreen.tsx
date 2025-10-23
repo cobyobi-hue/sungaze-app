@@ -20,6 +20,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
   
   const supabase = createClient();
 
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -166,7 +167,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
                     placeholder="Enter your email"
                     required
                   />
@@ -209,9 +210,15 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
                   placeholder="Enter your email"
                   required
+                  style={{ 
+                    color: '#000000 !important', 
+                    backgroundColor: '#ffffff !important',
+                    WebkitTextFillColor: '#000000 !important',
+                    WebkitBoxShadow: '0 0 0 1000px #ffffff inset !important'
+                  }}
                 />
               </div>
             </div>
@@ -223,15 +230,15 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
-                  placeholder="Enter your password"
-                  required
-                  minLength={6}
-                />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
+                    placeholder="Enter your password"
+                    required
+                    minLength={6}
+                  />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}

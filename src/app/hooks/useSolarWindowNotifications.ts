@@ -27,23 +27,40 @@ export function useSolarWindowNotifications() {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
+      console.log('Loading notification preferences from localStorage:', stored);
       if (stored) {
         const parsed = JSON.parse(stored);
+        console.log('Parsed notification preferences:', parsed);
         setPreferences({ ...DEFAULT_PREFERENCES, ...parsed });
+      } else {
+        console.log('No stored preferences found, using defaults');
+        setPreferences(DEFAULT_PREFERENCES);
       }
     } catch (error) {
       console.error('Failed to load notification preferences:', error);
+      setPreferences(DEFAULT_PREFERENCES);
     }
   }, []);
 
   // Save preferences to localStorage
   const savePreferences = useCallback((newPreferences: NotificationPreferences) => {
     try {
+      console.log('Saving notification preferences to localStorage:', newPreferences);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newPreferences));
       setPreferences(newPreferences);
+      console.log('Notification preferences saved successfully');
     } catch (error) {
       console.error('Failed to save notification preferences:', error);
     }
+  }, []);
+
+  // Request notification permission
+  const requestNotificationPermission = useCallback(async () => {
+    if ('Notification' in window) {
+      const permission = await Notification.requestPermission();
+      return permission === 'granted';
+    }
+    return false;
   }, []);
 
   // Check if we should show a notification
@@ -65,6 +82,14 @@ export function useSolarWindowNotifications() {
 
         if (shouldRemind) {
           setIsNotificationVisible(true);
+          
+          // Trigger browser notification
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('Sungazing Time!', {
+              body: `Perfect conditions for ${isMorning ? 'sunrise' : 'sunset'} gazing`,
+              icon: '/favicon.ico'
+            });
+          }
         }
       }
     } catch (error) {
@@ -139,9 +164,11 @@ export function useSolarWindowNotifications() {
     toggleEveningReminder,
     closeNotification,
     checkForSolarWindow,
+    requestNotificationPermission,
     getCacheStats,
     clearCaches
   };
 }
+
 
 

@@ -8,6 +8,7 @@ import { createCheckoutSession, redirectToCheckout, getUserRegion } from '../lib
 import { initializeFlutterwavePayment, convertCurrency } from '../lib/payments/flutterwave';
 import { FounderStats } from './FounderStats';
 import { subscriptionService } from '../lib/database/subscription-service';
+import { useIsIOSApp } from '../hooks/usePlatformDetection';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
   const [loading, setLoading] = useState<string | null>(null);
   const [founderSlots, setFounderSlots] = useState({ remaining: 444, sold: 0 });
   const [showFounderDetails, setShowFounderDetails] = useState(false);
+  const isIOSApp = useIsIOSApp();
 
   useEffect(() => {
     if (isOpen) {
@@ -172,10 +174,10 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
                   
                   <Button
                     onClick={() => handlePayment('monthly')}
-                    disabled={loading === 'monthly'}
+                    disabled={loading === 'monthly' || isIOSApp}
                     className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 font-bold"
                   >
-                    {loading === 'monthly' ? 'Processing...' : 'Unlimited Path'}
+                    {isIOSApp ? 'Premium Coming Soon!' : (loading === 'monthly' ? 'Processing...' : 'Unlimited Path')}
                   </Button>
                 </div>
               </div>
@@ -209,10 +211,10 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
                   
                   <Button
                     onClick={() => handlePayment('yearly')}
-                    disabled={loading === 'yearly'}
+                    disabled={loading === 'yearly' || isIOSApp}
                     className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white border-0 font-bold"
                   >
-                    {loading === 'yearly' ? 'Processing...' : 'Infinite Return'}
+                    {isIOSApp ? 'Premium Coming Soon!' : (loading === 'yearly' ? 'Processing...' : 'Infinite Return')}
                   </Button>
                 </div>
               </div>
@@ -256,10 +258,10 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
                   {founderSlots.remaining > 0 ? (
                     <Button
                       onClick={() => handlePayment('founder_444')}
-                      disabled={loading === 'founder_444'}
+                      disabled={loading === 'founder_444' || isIOSApp}
                       className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-bold border-0"
                     >
-                      {loading === 'founder_444' ? 'Processing...' : 'Claim Founder Status'}
+                      {isIOSApp ? 'Premium Coming Soon!' : (loading === 'founder_444' ? 'Processing...' : 'Claim Founder Status')}
                     </Button>
                   ) : (
                     <div className="w-full bg-gray-200 text-gray-600 py-3 rounded-xl text-center font-bold">
@@ -274,7 +276,12 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
             {/* Security Badge */}
             <div className="flex justify-center items-center gap-2 mt-8 text-gray-600 text-sm font-medium">
               <Lock className="w-4 h-4" />
-              <span>Secured by Stripe & Flutterwave • 256-bit encryption</span>
+              <span>
+                {isIOSApp 
+                  ? 'Premium features coming in next update! • Native iOS payments' 
+                  : 'Secured by Stripe & Flutterwave • 256-bit encryption'
+                }
+              </span>
             </div>
           </div>
         </div>

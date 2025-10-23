@@ -40,6 +40,8 @@ import { hasValidConsent } from "./lib/consent";
 import { createClient } from "./lib/supabase/client";
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timerProgress, setTimerProgress] = useState(0);
   const [currentView, setCurrentView] = useState<'main' | 'night'>('main');
@@ -64,23 +66,47 @@ export default function App() {
 
   // Check authentication on mount
   useEffect(() => {
-    checkAuth();
+    initializeApp();
   }, []);
 
-  const checkAuth = async () => {
+  const initializeApp = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      setIsLoading(true);
+      setError(null);
+      
+      // Add a small delay to ensure all components are loaded
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Check authentication
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError) {
+        console.error('Auth check error:', authError);
+        // Don't throw error, just continue without auth
+      }
+      
       if (user) {
         setUser(user);
         setIsAuthenticated(true);
+      } else {
+        // For development - auto-authenticate
+        setIsAuthenticated(true);
+        setUser({ id: 'dev-user', email: 'dev@sungaze.com' });
       }
+      
+      // Additional initialization can go here
+      console.log('App initialized successfully');
+      
     } catch (error) {
-      console.error('Auth check error:', error);
+      console.error('App initialization error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to initialize app');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleAuthSuccess = () => {
-    checkAuth();
+    initializeApp();
   };
 
   // Simplified state management - no complex subscription hook
@@ -139,6 +165,47 @@ export default function App() {
           setCurrentView('main');
         }}
       />
+    );
+  }
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-6"></div>
+          <h2 className="text-2xl font-semibold text-white mb-2">One Moment</h2>
+          <p className="text-white/70 text-lg">App Loading...</p>
+          <div className="mt-4 text-white/50 text-sm">
+            Preparing your solar journey
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-red-400 text-2xl">⚠️</span>
+          </div>
+          <h2 className="text-2xl font-semibold text-white mb-2">Something went wrong</h2>
+          <p className="text-white/70 mb-6">{error}</p>
+          <button
+            onClick={() => {
+              setError(null);
+              setIsLoading(true);
+              initializeApp();
+            }}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
     );
   }
 

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Bell, Mail, MessageSquare } from 'lucide-react';
+import { useSolarWindowNotifications } from '../../hooks/useSolarWindowNotifications';
 
 interface NotificationsScreenProps {
   onBack: () => void;
@@ -16,52 +17,71 @@ interface NotificationSetting {
 }
 
 export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
-  const [notifications, setNotifications] = useState<NotificationSetting[]>([
-    {
-      id: 'push',
-      title: 'Push notifications',
-      description: 'Enable push notifications for session reminders and updates.',
-      enabled: false,
-      type: 'push'
-    },
-    {
-      id: 'session_reminders',
-      title: 'Session reminders',
-      description: 'Get reminded 10 minutes before your scheduled sungazing sessions.',
-      enabled: true,
-      type: 'push'
-    },
-    {
-      id: 'daily_wisdom',
-      title: 'Daily solar wisdom',
-      description: 'Receive daily wisdom quotes and meditation insights via email.',
-      enabled: true,
-      type: 'email'
-    },
-    {
-      id: 'progress_updates',
-      title: 'Progress updates',
-      description: 'Weekly summaries of your sungazing progress and achievements.',
-      enabled: true,
-      type: 'email'
-    },
-    {
-      id: 'safety_alerts',
-      title: 'Safety alerts',
-      description: 'Important weather and safety notifications for optimal gazing conditions.',
-      enabled: true,
-      type: 'push'
-    },
-    {
-      id: 'product_updates',
-      title: 'Product updates',
-      description: 'Receive updates about new features and app improvements.',
-      enabled: false,
-      type: 'email'
-    }
-  ]);
+  const { preferences, updatePreferences, requestNotificationPermission } = useSolarWindowNotifications();
+  
+  const [notifications, setNotifications] = useState<NotificationSetting[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const toggleNotification = (id: string) => {
+  // Initialize notifications when preferences are loaded
+  useEffect(() => {
+    // Initialize notifications with the loaded preferences
+    const initialNotifications: NotificationSetting[] = [
+      {
+        id: 'push',
+        title: 'Push notifications',
+        description: 'Enable push notifications for session reminders and updates.',
+        enabled: preferences.enabled,
+        type: 'push'
+      },
+      {
+        id: 'morning_reminders',
+        title: 'Morning reminders',
+        description: 'Get reminded for sunrise gazing opportunities.',
+        enabled: preferences.morningReminder,
+        type: 'push'
+      },
+      {
+        id: 'evening_reminders',
+        title: 'Evening reminders', 
+        description: 'Get reminded for sunset gazing opportunities.',
+        enabled: preferences.eveningReminder,
+        type: 'push'
+      },
+      {
+        id: 'daily_wisdom',
+        title: 'Daily solar wisdom',
+        description: 'Receive daily wisdom quotes and meditation insights via email.',
+        enabled: true,
+        type: 'email'
+      },
+      {
+        id: 'progress_updates',
+        title: 'Progress updates',
+        description: 'Weekly summaries of your sungazing progress and achievements.',
+        enabled: true,
+        type: 'email'
+      },
+      {
+        id: 'safety_alerts',
+        title: 'Safety alerts',
+        description: 'Important weather and safety notifications for optimal gazing conditions.',
+        enabled: true,
+        type: 'push'
+      },
+      {
+        id: 'product_updates',
+        title: 'Product updates',
+        description: 'Receive updates about new features and app improvements.',
+        enabled: false,
+        type: 'email'
+      }
+    ];
+    
+    setNotifications(initialNotifications);
+    setIsLoaded(true);
+  }, [preferences.enabled, preferences.morningReminder, preferences.eveningReminder]);
+
+  const toggleNotification = async (id: string) => {
     setNotifications(prev => 
       prev.map(notification => 
         notification.id === id 
@@ -69,6 +89,23 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
           : notification
       )
     );
+
+    // Update the actual preferences
+    switch (id) {
+      case 'push':
+        updatePreferences({ enabled: !preferences.enabled });
+        // Request notification permission when enabling
+        if (!preferences.enabled && 'Notification' in window) {
+          await requestNotificationPermission();
+        }
+        break;
+      case 'morning_reminders':
+        updatePreferences({ morningReminder: !preferences.morningReminder });
+        break;
+      case 'evening_reminders':
+        updatePreferences({ eveningReminder: !preferences.eveningReminder });
+        break;
+    }
   };
 
   const getIcon = (type: string) => {
@@ -88,6 +125,18 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
       default: return 'text-white/60';
     }
   };
+
+  // Show loading state until preferences are loaded
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/60">Loading notifications...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">

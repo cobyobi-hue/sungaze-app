@@ -18,12 +18,11 @@ export interface CreateCheckoutSessionData {
 export interface CheckoutSessionResponse {
   sessionId?: string;
   url?: string;
-  error?: string;
 }
 
 export const createCheckoutSession = async (data: CreateCheckoutSessionData): Promise<CheckoutSessionResponse> => {
   try {
-    const response = await fetch('/api/payments/create-checkout-session', {
+    const response = await fetch('/api/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,19 +30,16 @@ export const createCheckoutSession = async (data: CreateCheckoutSessionData): Pr
       body: JSON.stringify(data),
     });
 
-    const result = await response.json();
-
     if (!response.ok) {
-      return { error: result.error || 'Failed to create checkout session' };
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to create checkout session');
     }
 
-    return { 
-      sessionId: result.sessionId,
-      url: result.url 
-    };
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error('Error creating checkout session:', error);
-    return { error: 'Network error occurred' };
+    throw error;
   }
 };
 
@@ -51,11 +47,11 @@ export const redirectToCheckout = async (sessionId: string): Promise<{ error?: s
   try {
     const stripe = await stripePromise;
     if (!stripe) {
-      return { error: 'Stripe failed to initialize' };
+      throw new Error('Stripe failed to load');
     }
 
     const result = await stripe.redirectToCheckout({
-      sessionId,
+      sessionId: sessionId,
     });
 
     if (result.error) {
@@ -65,45 +61,26 @@ export const redirectToCheckout = async (sessionId: string): Promise<{ error?: s
     return {};
   } catch (error) {
     console.error('Error redirecting to checkout:', error);
-    return { error: 'Failed to redirect to checkout' };
+    return { error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };
 
-export const createCustomerPortalSession = async (customerId: string): Promise<{ url?: string; error?: string }> => {
+export const getUserRegion = async (): Promise<string> => {
   try {
-    const response = await fetch('/api/payments/create-portal-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ customerId }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      return { error: result.error || 'Failed to create portal session' };
+    // Simple region detection based on timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    if (timezone.includes('America')) {
+      return 'us';
+    } else if (timezone.includes('Europe')) {
+      return 'eu';
+    } else if (timezone.includes('Asia')) {
+      return 'asia';
     }
-
-    return { url: result.url };
+    
+    return 'us'; // Default to US
   } catch (error) {
-    console.error('Error creating portal session:', error);
-    return { error: 'Network error occurred' };
+    console.error('Error detecting region:', error);
+    return 'us';
   }
 };
-
-// Helper to get user's region based on location or preference
-export const getUserRegion = (): 'us' | 'africa' => {
-  // This could be enhanced with geolocation or user preference
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  
-  // African timezones (simplified list)
-  const africanTimezones = [
-    'Africa/Lagos', 'Africa/Cairo', 'Africa/Johannesburg', 
-    'Africa/Nairobi', 'Africa/Casablanca', 'Africa/Accra'
-  ];
-  
-  return africanTimezones.some(tz => timezone.includes(tz)) ? 'africa' : 'us';
-};
-
-export default stripePromise;

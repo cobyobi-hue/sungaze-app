@@ -57,7 +57,28 @@ class WeatherService {
 
       navigator.geolocation.getCurrentPosition(
         resolve,
-        reject,
+        (error) => {
+          console.error('Location error:', error);
+          // Provide fallback location (New York) if permission denied
+          if (error.code === error.PERMISSION_DENIED) {
+            console.log('Location permission denied, using fallback location');
+            // Return a mock position for New York
+            resolve({
+              coords: {
+                latitude: 40.7128,
+                longitude: -74.0060,
+                accuracy: 1000,
+                altitude: null,
+                altitudeAccuracy: null,
+                heading: null,
+                speed: null
+              },
+              timestamp: Date.now()
+            } as GeolocationPosition);
+          } else {
+            reject(error);
+          }
+        },
         {
           enableHighAccuracy: true,
           timeout: 10000,

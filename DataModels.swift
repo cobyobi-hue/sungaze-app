@@ -80,14 +80,6 @@ struct OracleResponse: Codable {
     let error: String?
 }
 
-// MARK: - Payment Models
-struct PaymentResponse: Codable {
-    let success: Bool
-    let sessionId: String?
-    let url: String?
-    let error: String?
-}
-
 // MARK: - Journal Models
 struct JournalEntry: Codable {
     let id: String

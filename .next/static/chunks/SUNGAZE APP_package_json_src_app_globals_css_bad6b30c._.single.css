@@ -1,0 +1,34 @@
+/* [project]/SUNGAZE APP/package.json/src/app/globals.css [app-client] (css) */
+html, body {
+  margin: 0;
+  padding: 0;
+  color: #fff !important;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
+  min-height: 100vh !important;
+}
+
+.min-h-screen {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
+}
+
+.bg-white {
+  background-color: #1e3a8a !important;
+}
+
+.text-black {
+  color: #fff !important;
+}
+
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) !important;
+}
+
+.bg-black\/40 {
+  background-color: rgba(0, 0, 0, .4) !important;
+}
+
+.shadow-\[0_0_40px_rgba\(251\,191\,36\,0\.5\)\] {
+  box-shadow: 0 0 40px rgba(251, 191, 36, .5) !important;
+}
+
+/*# sourceMappingURL=SUNGAZE%20APP_package_json_src_app_globals_css_bad6b30c._.single.css.map*/

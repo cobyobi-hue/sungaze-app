@@ -88,3 +88,4 @@ export function EnergyChart({ currentEnergy, targetEnergy, className = '' }: Ene
 }
 
 
+
