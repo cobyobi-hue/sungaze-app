@@ -40,7 +40,7 @@ import { hasValidConsent } from "./lib/consent";
 import { createClient } from "./lib/supabase/client";
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timerProgress, setTimerProgress] = useState(0);
@@ -60,7 +60,7 @@ export default function App() {
   const [showPostGazeRitual, setShowPostGazeRitual] = useState(false);
   const [nightActivity, setNightActivity] = useState<'candle' | 'journal' | 'meditation' | null>(null);
   const [learnSection, setLearnSection] = useState<'main' | 'guide' | 'content' | 'unlocks' | 'levels' | 'scrolls' | 'truth-serum' | 'oracle-qa' | 'journey' | 'eye-practices'>('main');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
