@@ -1,8 +1,6 @@
 var R=require("../../chunks/[turbopack]_runtime.js")("server/app/favicon.ico/route.js")
-R.c("server/chunks/[root-of-the-server]__7040c1f0._.js")
-R.c("server/chunks/3a9b2_next_dist_a1d87ef1._.js")
-R.c("server/chunks/3a9b2_next_dist_3540aa5f._.js")
-R.c("server/chunks/3a9b2_next_87d392c0._.js")
-R.m(30351)
-R.m(6982)
-module.exports=R.m(6982).exports
+R.c("server/chunks/72fe8_next_e4b9a6e5._.js")
+R.c("server/chunks/[root-of-the-server]__f7c6945f._.js")
+R.m("[project]/Desktop/sungaze-app-GOOD/.next-internal/server/app/favicon.ico/route/actions.js [app-rsc] (server actions loader, ecmascript)")
+R.m("[project]/Desktop/sungaze-app-GOOD/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/Desktop/sungaze-app-GOOD/src/app/favicon--route-entry.js [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)")
+module.exports=R.m("[project]/Desktop/sungaze-app-GOOD/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/Desktop/sungaze-app-GOOD/src/app/favicon--route-entry.js [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)").exports
