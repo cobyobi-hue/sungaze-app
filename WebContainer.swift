@@ -60,7 +60,16 @@ final class WebModel: ObservableObject {
     @Published var showShareSheet = false
     @Published var safariItem: SafariItem?
 
-    func goBack() { webView?.goBack() }
+    func goBack() { webView?.goBack() }private let allowedHosts: Set<String> = [
+    "localhost",
+    "127.0.0.1",
+    "192.168.1.57",
+    "sungaze-app.vercel.app",
+    "www.sungaze-app.vercel.app",
+    "js.stripe.com",           // ADD THIS
+    "checkout.stripe.com",     // ADD THIS
+    "m.stripe.com"             // ADD THIS
+
     func goForward() { webView?.goForward() }
     func reload() { webView?.reload() }
     func share() { showShareSheet = true }
@@ -109,12 +118,15 @@ final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
     private let model: WebModel
     // Allow localhost for development
     private let allowedHosts: Set<String> = [
-        "localhost",
-        "127.0.0.1",
-        "192.168.1.57", // Your network IP
-        "sungaze-app.vercel.app",
-        "www.sungaze-app.vercel.app"
-    ]
+    "localhost",
+    "127.0.0.1",
+    "192.168.1.57",
+    "sungaze-app.vercel.app",
+    "www.sungaze-app.vercel.app",
+    "js.stripe.com",           
+    "checkout.stripe.com",     
+    "m.stripe.com"             
+]
 
     init(model: WebModel) { self.model = model }
 
