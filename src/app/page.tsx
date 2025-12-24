@@ -69,6 +69,17 @@ export default function App() {
 
   const checkAuth = async () => {
     try {
+      // Check for developer bypass first
+      const devBypass = localStorage.getItem('dev_bypass');
+      const devEmail = localStorage.getItem('dev_email');
+      
+      if (devBypass === 'true' && devEmail === 'cobyobi@gmail.com') {
+        console.log('Developer bypass active - auto-authenticating');
+        setUser({ id: 'dev-user-1', email: 'cobyobi@gmail.com' });
+        setIsAuthenticated(true);
+        return;
+      }
+      
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUser(user);
@@ -76,6 +87,13 @@ export default function App() {
       }
     } catch (error) {
       console.error('Auth check error:', error);
+      // If Supabase fails but dev bypass is set, still authenticate
+      const devBypass = localStorage.getItem('dev_bypass');
+      if (devBypass === 'true') {
+        const devEmail = localStorage.getItem('dev_email') || 'cobyobi@gmail.com';
+        setUser({ id: 'dev-user-1', email: devEmail });
+        setIsAuthenticated(true);
+      }
     }
   };
 

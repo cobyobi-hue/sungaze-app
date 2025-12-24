@@ -74,8 +74,32 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
         // Developer bypass - auto-verify for app creator
         if (email === 'cobyobi@gmail.com') {
           setError('Developer access granted! Redirecting...');
-          setTimeout(() => {
-            onAuthSuccess();
+          // For developer bypass, we need to actually sign in to create a session
+          // Try to sign in with password first, if that fails, create a session manually
+          setTimeout(async () => {
+            try {
+              // Try to sign in (password might be anything for dev account)
+              const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                email: 'cobyobi@gmail.com',
+                password: password || 'dev-bypass-2024',
+              });
+              
+              if (signInError) {
+                // If sign in fails, create a mock session for developer
+                console.log('Developer bypass: Creating mock session');
+                // Set a flag in localStorage to indicate developer mode
+                localStorage.setItem('dev_bypass', 'true');
+                localStorage.setItem('dev_email', 'cobyobi@gmail.com');
+              }
+              
+              onAuthSuccess();
+            } catch (err) {
+              console.error('Developer bypass error:', err);
+              // Still call onAuthSuccess to proceed
+              localStorage.setItem('dev_bypass', 'true');
+              localStorage.setItem('dev_email', 'cobyobi@gmail.com');
+              onAuthSuccess();
+            }
           }, 1000);
         } else {
           setError('Check your email for verification link!');
@@ -92,6 +116,8 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
           // Developer bypass - auto-login for app creator
           if (email === 'cobyobi@gmail.com') {
             setError('Developer access granted! Redirecting...');
+            localStorage.setItem('dev_bypass', 'true');
+            localStorage.setItem('dev_email', 'cobyobi@gmail.com');
             setTimeout(() => {
               onAuthSuccess();
             }, 1000);
