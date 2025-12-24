@@ -1,1 +1,8 @@
 node_modules
+.next
+out
+android/app/build
+ios/App/Pods
+*.keystore
+keystore.properties
+.DS_Store
