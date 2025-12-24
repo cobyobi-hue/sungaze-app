@@ -5,6 +5,7 @@ import { Check, Star, Crown, Zap, Shield, Users, Clock, ArrowRight } from 'lucid
 import { ProgressChart } from './ProgressChart';
 import { createCheckoutSession, redirectToCheckout } from '../../lib/payments/stripe';
 import { PAYMENT_PRODUCTS } from '../../types/subscription';
+import { PAYMENTS_ENABLED } from '../../lib/featureFlags';
 
 interface OnboardingPaywallProps {
   data: any;
@@ -92,6 +93,61 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
   const [selectedPlan, setSelectedPlan] = useState('yearly');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // If payments are disabled, show "Coming Soon" and auto-advance
+  if (!PAYMENTS_ENABLED) {
+    // Auto-advance after a short delay
+    React.useEffect(() => {
+      const timer = setTimeout(() => {
+        if (onNext) onNext();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }, [onNext]);
+
+    return (
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-display-2xl text-white font-bold mb-2">Your Custom Solar Transformation Plan Is Ready</h1>
+          <p className="text-body-md text-white/70">Based on your profile, here's what we've created for you:</p>
+        </div>
+
+        {/* Preview Content */}
+        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg mb-8">
+          <h2 className="text-title-md text-white font-semibold mb-4">Your Personalized Insights:</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <p className="text-body-sm text-white/80">• Sungazing progression: 10 seconds daily, increasing by 10 seconds each day</p>
+              <p className="text-body-sm text-white/80">• General practice time: 10-20 minutes (candle gazing, cloud gazing, sungazing)</p>
+              <p className="text-body-sm text-white/80">• Optimal timing based on your location</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-body-sm text-white/80">• Safety protocols tailored to your experience level</p>
+              <p className="text-body-sm text-white/80">• Expected transformation timeline: 90-273 days</p>
+              <p className="text-body-sm text-white/80">• Energy optimization focus areas</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Coming Soon Message */}
+        <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-xl border border-yellow-400/20 rounded-2xl p-8 text-center shadow-lg mb-8">
+          <Crown className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+          <h2 className="text-title-lg text-white font-bold mb-2">Premium Features Coming Soon!</h2>
+          <p className="text-body-md text-white/90 mb-2">Currently enjoying Sungaze at a low cost or FREE</p>
+          <p className="text-body-sm text-white/70 mb-6">
+            We're working on bringing you premium features. For now, enjoy the full experience!
+          </p>
+          <button
+            onClick={onNext}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-black font-bold rounded-xl transition-all duration-300"
+          >
+            <span>Continue to App</span>
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubscribe = async () => {
     setIsLoading(true);

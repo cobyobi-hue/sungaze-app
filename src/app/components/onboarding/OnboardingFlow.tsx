@@ -9,6 +9,7 @@ import { EncouragementSlides } from './EncouragementSlides';
 import { RatingRequest } from './RatingRequest';
 import { PlanGenerationLoading } from './PlanGenerationLoading';
 import { OnboardingPaywall } from './OnboardingPaywall';
+import { PAYMENTS_ENABLED } from '../../lib/featureFlags';
 
 export interface OnboardingData {
   // 13 Core Questions
@@ -81,7 +82,8 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps = {}) {
     { component: EncouragementSlides, title: "Your Potential" },
     { component: RatingRequest, title: "Help Others" },
     { component: PlanGenerationLoading, title: "Generating Your Plan" },
-    { component: OnboardingPaywall, title: "Your Transformation Plan" },
+    // Only include paywall step if payments are enabled
+    ...(PAYMENTS_ENABLED ? [{ component: OnboardingPaywall, title: "Your Transformation Plan" }] : []),
   ];
 
   const updateData = (section: keyof OnboardingData, data: any) => {

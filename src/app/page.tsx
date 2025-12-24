@@ -237,14 +237,6 @@ export default function App() {
               </div>
                 <p className="text-body-sm text-white/60 mb-2">First Witness of the Flame</p>
                 <p className="text-body-sm text-orange-400 font-bold mb-3">Founder #1/444</p>
-                
-                {/* Test New Onboarding Button */}
-                <button
-                  onClick={() => setShowNewOnboarding(true)}
-                  className="mt-4 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all duration-300"
-                >
-                  Test New Onboarding
-                </button>
 
                 {/* Solar Window Settings Button */}
                 <button

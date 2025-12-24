@@ -203,11 +203,19 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      console.log('Starting sign out...');
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Supabase signOut error:', error);
+        throw error;
+      }
       setCurrentUser(null);
       setProfile(null);
+      localStorage.clear();
+      window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
+      alert('Failed to sign out. Please try again.');
     }
   };
 
@@ -409,6 +417,20 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
             handleSignOut
           )}
         </div>
+
+        {/* Developer Section - Test Onboarding (only for developer account) */}
+        {currentUser?.email?.toLowerCase() === 'cobyobi@gmail.com' && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <button
+              onClick={() => {
+                window.location.href = '/demo-onboarding';
+              }}
+              className="w-full px-4 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all duration-300"
+            >
+              Test New Onboarding
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Hidden File Input */}
