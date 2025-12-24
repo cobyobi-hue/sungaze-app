@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>Sungaze</string>
+	<string>Sungaze</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -45,5 +45,20 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>SUNGAZE needs location access to provide accurate solar timing and safe gazing recommendations.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>SUNGAZE needs location access to provide accurate solar timing and safe gazing recommendations.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>SUNGAZE may use the camera for solar visualization and safety monitoring.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>SUNGAZE may use the microphone for voice-guided meditation sessions.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
