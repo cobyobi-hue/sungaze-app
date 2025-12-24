@@ -3,9 +3,28 @@
  * Handles in-app subscription purchases for iOS and Android
  */
 
-import { Purchases, PurchasesOffering, PurchasesPackage, CustomerInfo } from '@revenuecat/purchases-capacitor';
-import { Capacitor } from '@capacitor/core';
 import { PAYMENTS_ENABLED } from '../lib/featureFlags';
+
+// Conditional imports - only load RevenueCat if payments are enabled
+let Purchases: any;
+let PurchasesOffering: any;
+let PurchasesPackage: any;
+let CustomerInfo: any;
+let Capacitor: any;
+
+if (PAYMENTS_ENABLED) {
+  try {
+    const revenuecat = require('@revenuecat/purchases-capacitor');
+    const capacitor = require('@capacitor/core');
+    Purchases = revenuecat.Purchases;
+    PurchasesOffering = revenuecat.PurchasesOffering;
+    PurchasesPackage = revenuecat.PurchasesPackage;
+    CustomerInfo = revenuecat.CustomerInfo;
+    Capacitor = capacitor.Capacitor;
+  } catch (e) {
+    console.warn('RevenueCat not available:', e);
+  }
+}
 
 // RevenueCat API Key - Set this in your environment or config
 const REVENUECAT_API_KEY = process.env.NEXT_PUBLIC_REVENUECAT_API_KEY || '';
@@ -82,7 +101,7 @@ export async function initializeRevenueCat(userId?: string): Promise<void> {
 /**
  * Get available subscription offerings from RevenueCat
  */
-export async function getOfferings(): Promise<PurchasesOffering | null> {
+export async function getOfferings(): Promise<any | null> {
   if (!PAYMENTS_ENABLED || !isInitialized) {
     console.log('RevenueCat: Not initialized or payments disabled');
     return null;
@@ -107,7 +126,7 @@ export async function getOfferings(): Promise<PurchasesOffering | null> {
 /**
  * Purchase a subscription package
  */
-export async function purchasePackage(packageToPurchase: PurchasesPackage): Promise<CustomerInfo> {
+export async function purchasePackage(packageToPurchase: any): Promise<any> {
   if (!PAYMENTS_ENABLED || !isInitialized) {
     throw new Error('RevenueCat not initialized or payments disabled');
   }
@@ -139,7 +158,7 @@ export async function purchasePackage(packageToPurchase: PurchasesPackage): Prom
 /**
  * Restore previous purchases
  */
-export async function restorePurchases(): Promise<CustomerInfo> {
+export async function restorePurchases(): Promise<any> {
   if (!PAYMENTS_ENABLED || !isInitialized) {
     throw new Error('RevenueCat not initialized or payments disabled');
   }
@@ -216,7 +235,7 @@ export async function checkSubscriptionStatus(): Promise<SubscriptionStatus> {
 /**
  * Get full customer information
  */
-export async function getCustomerInfo(): Promise<CustomerInfo> {
+export async function getCustomerInfo(): Promise<any> {
   if (!PAYMENTS_ENABLED || !isInitialized) {
     throw new Error('RevenueCat not initialized or payments disabled');
   }
