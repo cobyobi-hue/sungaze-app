@@ -65,10 +65,10 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg">
+      <div className="bg-gradient-to-br from-orange-500/15 via-amber-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-2xl p-6 shadow-lg">
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 animate-pulse mx-auto mb-4" />
-          <p className="text-body-sm text-white/70">Checking solar conditions...</p>
+          <p className="text-body-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Checking solar conditions...</p>
         </div>
       </div>
     );
@@ -78,16 +78,16 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
     <div className="space-y-4">
       {/* Solar Window Notification */}
       {showNotification && (
-        <div className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-4 shadow-lg animate-pulse">
+        <div className="bg-gradient-to-br from-orange-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-2xl p-4 shadow-lg animate-pulse">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center">
               <Bell className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-title-sm text-white font-semibold">
+              <p className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 Solar Window Alert
               </p>
-              <p className="text-body-sm text-white/70">
+              <p className="text-body-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                 Your optimal gazing window begins in {formatCountdown(sunCondition.minutesToWindow)}
               </p>
             </div>
@@ -96,7 +96,7 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
       )}
 
       {/* Main Solar Condition Display */}
-      <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg">
+      <div className="bg-gradient-to-br from-orange-500/15 via-amber-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-2xl p-6 shadow-lg">
         {/* Current Condition Header */}
         <div className="text-center mb-6">
           <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${getConditionColor()} flex items-center justify-center mx-auto mb-4 shadow-[0_8px_32px_rgba(255,165,0,0.3)]`}>
@@ -107,23 +107,23 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
             )}
           </div>
           
-          <h3 className="text-title-md text-white font-semibold mb-2 capitalize">
+          <h3 className="text-title-md text-white font-semibold mb-2 capitalize drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             {sunCondition.condition} Conditions
           </h3>
           
           {sunCondition.location && (
-            <p className="text-body-sm text-white/60 mb-1">
+            <p className="text-body-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)] mb-1">
               📍 {sunCondition.location}
             </p>
           )}
           
-          <p className="text-body-md text-white/80 font-medium">
+          <p className="text-body-md text-white font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             {sunCondition.message}
           </p>
-          <p className="text-caption text-white/50 mt-1">
+          <p className="text-caption text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] mt-1">
             Last updated: {lastRefreshTime.toLocaleTimeString()}
           </p>
-          <p className="text-caption text-white/40">
+          <p className="text-caption text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
             Refresh count: {refreshCount}
           </p>
           {isLoading && (
@@ -135,16 +135,16 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
 
         {/* Condition Details */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-xl p-3 text-center">
-            <div className="text-label text-white/60 mb-1">Visibility</div>
-            <div className="text-number-display text-white font-bold">
+          <div className="bg-gradient-to-br from-orange-500/15 via-amber-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-xl p-3 text-center">
+            <div className="text-label text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)] mb-1">Visibility</div>
+            <div className="text-number-display text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               {sunCondition.isVisible ? 'Clear' : 'Veiled'}
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-xl p-3 text-center">
-            <div className="text-label text-white/60 mb-1">Cloud Cover</div>
-            <div className="text-number-display text-white font-bold">
+          <div className="bg-gradient-to-br from-orange-500/15 via-amber-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-xl p-3 text-center">
+            <div className="text-label text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)] mb-1">Cloud Cover</div>
+            <div className="text-number-display text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               {sunCondition.cloudCover}%
             </div>
           </div>
@@ -152,16 +152,16 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
 
         {/* Solar Window Countdown */}
         {sunCondition.solarWindowStart && sunCondition.minutesToWindow > 0 && (
-          <div className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 backdrop-blur-xl border border-orange-400/30 rounded-xl p-4 mb-6">
+          <div className="bg-gradient-to-br from-orange-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-xl p-4 mb-6">
             <div className="flex items-center justify-center gap-3 mb-2">
-              <Clock className="w-5 h-5 text-orange-400" />
-              <span className="text-title-sm text-white font-semibold">Next Solar Window</span>
+              <Clock className="w-5 h-5 text-orange-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]" />
+              <span className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Next Solar Window</span>
             </div>
             <div className="text-center">
-              <div className="text-display-2xl text-white font-bold mb-1">
+              <div className="text-display-2xl text-white font-bold mb-1 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
                 {formatCountdown(sunCondition.minutesToWindow)}
               </div>
-              <div className="text-body-sm text-white/70">
+              <div className="text-body-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                 until optimal conditions
               </div>
             </div>
@@ -172,12 +172,14 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
         <div className="space-y-3">
           <Button
             onClick={onStartGazing}
-            className={`w-full bg-gradient-to-r ${getConditionColor()}/30 hover:${getConditionColor().replace('to-', 'hover:to-')}/40 text-white border border-orange-400/30 backdrop-blur-xl rounded-2xl py-3 transition-all duration-300 font-medium tracking-wide shadow-[0_4px_20px_rgba(255,165,0,0.2)]`}
+            className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl py-3 transition-colors duration-300 font-medium tracking-wide shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
           >
-            {getSunIcon()}
-            <span className="ml-2 text-body-md">
-              {sunCondition.isVisible ? 'Begin Sun Gazing' : 'Begin Sun Gazing'}
-            </span>
+            <div className="flex items-center justify-center">
+              {getSunIcon()}
+              <span className="ml-2 text-body-md drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                {sunCondition.isVisible ? 'Begin Sun Gazing' : 'Begin Sun Gazing'}
+              </span>
+            </div>
           </Button>
           
           <Button
@@ -194,19 +196,21 @@ export function SolarWindow({ onStartGazing }: SolarWindowProps) {
               }
             }}
             disabled={isLoading}
-            className="w-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 disabled:from-blue-500/10 disabled:to-indigo-500/10 disabled:opacity-50 text-white border border-blue-400/30 backdrop-blur-xl rounded-2xl py-2 transition-all duration-300 font-medium tracking-wide text-body-sm"
+            className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 disabled:bg-black/20 disabled:opacity-50 text-white rounded-2xl py-2 transition-colors duration-300 font-medium tracking-wide text-body-sm shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
           >
-            {isLoading ? 'Refreshing...' : 'Refresh Conditions'}
+            <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              {isLoading ? 'Refreshing...' : 'Refresh Conditions'}
+            </span>
           </Button>
         </div>
 
         {/* Encouraging Message for Non-Gazing Conditions */}
         {!sunCondition.canGaze && (
-          <div className="mt-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-xl border border-blue-400/30 rounded-xl p-4 text-center">
-            <p className="text-body-md text-white/80 font-medium italic">
+          <div className="mt-4 bg-gradient-to-br from-orange-500/15 via-amber-500/15 to-yellow-500/15 backdrop-blur-lg border border-orange-400/20 rounded-xl p-4 text-center">
+            <p className="text-body-md text-white font-medium italic drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               "Even hidden, the sun reaches you."
             </p>
-            <p className="text-body-sm text-white/60 mt-1">
+            <p className="text-body-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)] mt-1">
               Your practice continues through all conditions
             </p>
           </div>

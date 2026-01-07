@@ -523,7 +523,12 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
 
   return (
     <>
-    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white min-h-screen px-6 pt-6 pb-24 relative">
+    <div className="bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white min-h-screen px-6 pt-6 pb-24 relative overflow-hidden">
+      {/* Dark warm overlay for app interface */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
+      
+      {/* Content wrapper - positioned above overlay */}
+      <div className="relative z-10">
       {/* Pre-Gazing Instructions Overlay */}
       {showPreGazingInstructions && (
         <div className="absolute inset-0 bg-black/80 backdrop-blur-xl rounded-3xl flex flex-col items-center justify-center p-6 z-10">
@@ -577,7 +582,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
       {!isActive && (
         <div className="mb-8">
           <div className="text-center mb-4">
-            <h3 className="text-white/80 text-sm font-medium mb-3">Choose Sacred Sound</h3>
+            <h3 className="text-white text-sm font-medium mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Choose Sacred Sound</h3>
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex justify-center gap-3">
@@ -585,25 +590,25 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
                 onClick={() => {
                   setSelectedTrack('mahavakya-gold');
                 }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
                   selectedTrack === 'mahavakya-gold'
-                    ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border-2 border-yellow-400/60'
-                    : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/20'
+                    ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border-2 border-yellow-400/60 shadow-[0_4px_20px_rgba(255,200,0,0.2)]'
+                    : 'bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
                 }`}
               >
-                🎵 Mahavakya Gold
+                <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">🎵 Mahavakya Gold</span>
               </button>
               <button
                 onClick={() => {
                   setSelectedTrack('432hz');
                 }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
                   selectedTrack === '432hz'
-                    ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border-2 border-yellow-400/60'
-                    : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/20'
+                    ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border-2 border-yellow-400/60 shadow-[0_4px_20px_rgba(255,200,0,0.2)]'
+                    : 'bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
                 }`}
               >
-                🌊 432 Hz
+                <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">🌊 432 Hz</span>
               </button>
               <button
                 onClick={() => {
@@ -613,13 +618,13 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
                     setIsAudioPlaying(false);
                   }
                 }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
                   selectedTrack === 'none'
-                    ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border-2 border-yellow-400/60'
-                    : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/20'
+                    ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border-2 border-yellow-400/60 shadow-[0_4px_20px_rgba(255,200,0,0.2)]'
+                    : 'bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
                 }`}
               >
-                🔇 Silent
+                <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">🔇 Silent</span>
               </button>
             </div>
           </div>
@@ -629,7 +634,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
             </div>
           )}
            <div className="text-center mt-2">
-             <span className="text-white/50 text-xs">Select your preferred audio for the session</span>
+             <span className="text-white text-xs drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Select your preferred audio for the session</span>
            </div>
            {/* Test Audio Button */}
            <div className="text-center mt-3">
@@ -639,7 +644,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
                    (window as any).testAudio();
                  }
                }}
-               className="px-4 py-2 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 border border-blue-400/30 transition-all duration-300"
+               className="px-4 py-2 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 hover:bg-orange-500/30 border border-orange-400/30 transition-all duration-300"
              >
                🎵 Test Audio Now
              </button>
@@ -647,21 +652,23 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         </div>
       )}
 
-      {/* Main Timer Display - Clean Style */}
-      <div className="text-center mb-8">
-        <div className="text-8xl text-white font-bold mb-2 tracking-tight drop-shadow-lg">
-          {formatTime(timeLeft)}
-        </div>
-        <div className="text-white/60 text-body-md font-medium mb-2">
-          Day {currentDay} of your sacred journey
-        </div>
-        {/* Audio Status */}
-        {isActive && selectedTrack !== 'none' && (
-          <div className="flex items-center justify-center gap-2 text-white/70 text-sm">
-            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-            <span>Playing: {selectedTrack === 'mahavakya-gold' ? 'Mahavakya Gold' : selectedTrack === '432hz' ? '432 Hz' : 'None'}</span>
+      {/* Main Timer Display - Luxury Black Style */}
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-8">
+        <div className="text-center">
+          <div className="text-8xl text-white font-bold mb-2 tracking-tight drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+            {formatTime(timeLeft)}
           </div>
-        )}
+          <div className="text-white text-body-md font-medium mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
+            Day {currentDay} of your sacred journey
+          </div>
+          {/* Audio Status */}
+          {isActive && selectedTrack !== 'none' && (
+            <div className="flex items-center justify-center gap-2 text-white/80 text-sm drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+              <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+              <span>Playing: {selectedTrack === 'mahavakya-gold' ? 'Mahavakya Gold' : selectedTrack === '432hz' ? '432 Hz' : 'None'}</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Action Buttons - Clean Style */}
@@ -693,42 +700,46 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         </Button>
       </div>
 
-      {/* Journey Progress Card - Clean Style */}
-      <div className="text-center mb-8">
-        <h3 className="text-white/80 text-lg font-medium mb-4">Journey Progress</h3>
-        <div className="flex items-center justify-center gap-4 mb-4">
-          <span className="text-white/60 text-sm">Day {currentDay} Target:</span>
-          <span className="text-white text-lg font-bold">{formatTime(currentDay * 10)}</span>
-        </div>
-        <div className="w-full max-w-xs mx-auto bg-white/10 rounded-full h-2 mb-3">
-          <div
-            className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${levelProgress}%` }}
-          ></div>
-        </div>
-        <p className="text-white/60 text-sm">{levelMotivation}</p>
-      </div>
-
-      {/* Current Solar Level Card - Clean Style */}
-      <div className="text-center mb-8">
-        <h3 className="text-white/80 text-lg font-medium mb-4">Current Solar Level</h3>
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className={`text-2xl font-bold ${currentSolarLevel.color}`}>
-            Level {currentSolarLevel.levelNumber}
+      {/* Journey Progress Card - Luxury Black Style */}
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-8">
+        <div className="text-center">
+          <h3 className="text-white text-lg font-medium mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Journey Progress</h3>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <span className="text-white text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Day {currentDay} Target:</span>
+            <span className="text-white text-lg font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{formatTime(currentDay * 10)}</span>
           </div>
-          <div className="text-xl">{currentSolarLevel.emoji}</div>
+          <div className="w-full max-w-xs mx-auto bg-white/10 rounded-full h-2 mb-3">
+            <div
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${levelProgress}%` }}
+            ></div>
+          </div>
+          <p className="text-white text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">{levelMotivation}</p>
         </div>
-        <h4 className="text-white/80 text-lg font-medium mb-2">
-          {currentSolarLevel.title}
-        </h4>
-        <p className="text-white/60 text-sm max-w-xs mx-auto">
-          {currentSolarLevel.description}
-        </p>
       </div>
 
-      {/* Practice Duration Card - Clean Style */}
+      {/* Current Solar Level Card - Luxury Black Style */}
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-8">
+        <div className="text-center">
+          <h3 className="text-white text-lg font-medium mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Current Solar Level</h3>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className={`text-2xl font-bold ${currentSolarLevel.color} drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
+              Level {currentSolarLevel.levelNumber}
+            </div>
+            <div className="text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">{currentSolarLevel.emoji}</div>
+          </div>
+          <h4 className="text-white text-lg font-medium mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            {currentSolarLevel.title}
+          </h4>
+          <p className="text-white text-sm max-w-xs mx-auto drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
+            {currentSolarLevel.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Practice Duration Card - Luxury Black Style */}
       <div className="text-center mb-8">
-        <h3 className="text-white/80 text-lg font-medium mb-4">Practice Duration</h3>
+        <h3 className="text-white text-lg font-medium mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Practice Duration</h3>
         <div className="flex flex-wrap justify-center gap-3">
           {getCurrentDayTimeOptions().map((seconds) => (
             <button
@@ -737,8 +748,8 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 initialTime === seconds
                   ? 'bg-gradient-to-r from-yellow-400/30 to-orange-400/30 text-white border border-yellow-400/30 shadow-[0_4px_20px_rgba(255,200,0,0.2)]'
-                  : 'bg-white/10 text-white/80 hover:bg-white/15 border border-white/20'
-              } ${isActive ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} backdrop-blur-xl`}
+                  : 'bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white'
+              } ${isActive ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} shadow-[0_4px_16px_rgba(0,0,0,0.3)]`}
               disabled={isActive}
             >
               {formatTime(seconds)}
@@ -746,7 +757,8 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
           ))}
         </div>
       </div>
-
+      </div>
+      {/* End content wrapper */}
 
     </div>
 

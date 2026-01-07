@@ -161,24 +161,50 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden">
-      {/* Background - Using gradient only */}
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white relative overflow-hidden">
+      {/* Background - Luxury Sunrise/Sunset Gradient Theme with Pinkish Tones */}
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-cyan-900/90 backdrop-blur-xl" />
-      {/* Holographic sun effects */}
+      {/* Surreal Landscape Background Image - Add your landscape image to /public/landscape-background.jpg */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 pointer-events-none"
+        style={{
+          backgroundImage: 'url(/landscape-background.jpg)',
+        }}
+      />
+
+      {/* Enhanced Sun Background - Multiple Layers for Depth */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-gradient-conic from-orange-200/20 via-yellow-200/30 via-cyan-200/20 to-orange-200/20 animate-spin"
-             style={{ animationDuration: '20s' }} />
-        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-radial from-yellow-300/15 via-orange-300/20 to-transparent animate-pulse"
-             style={{ animationDuration: '4s' }} />
+        {/* Core Sun - Bright yellow-white center with strong glow */}
+        <div className="absolute top-1/3 right-1/4 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-gradient-radial from-yellow-100 via-yellow-200 to-yellow-300 shadow-[0_0_60px_rgba(255,255,224,0.9),0_0_120px_rgba(255,255,224,0.6)] animate-float-gentle" />
+        
+        {/* Corona Layer - Orange-yellow ring around core */}
+        <div className="absolute top-1/3 right-1/4 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-gradient-radial from-yellow-200/80 via-orange-200/60 to-orange-300/40 blur-xl animate-float-gentle"
+             style={{ animationDelay: '0.5s' }} />
+        
+        {/* Outer Glow - Large soft yellow-orange halo */}
+        <div className="absolute top-1/3 right-1/4 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-radial from-yellow-200/50 via-orange-200/40 via-pink-200/30 to-transparent blur-3xl animate-float-gentle"
+             style={{ animationDelay: '1s' }} />
+        
+        {/* Extended Halo - Pink-orange glow matching reference */}
+        <div className="absolute top-1/3 right-1/4 transform -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full bg-gradient-radial from-pink-200/30 via-orange-200/20 to-transparent blur-[4rem] animate-float-gentle"
+             style={{ animationDelay: '1.5s' }} />
+        
+        {/* Water Reflection - Subtle reflection below sun */}
+        <div className="absolute top-1/2 right-1/4 transform -translate-x-1/2 translate-y-1/2 w-[32rem] h-32 rounded-full bg-gradient-radial from-yellow-200/20 via-orange-200/15 to-transparent blur-2xl scale-y-50 animate-float-gentle"
+             style={{ animationDelay: '2s' }} />
+        
+        {/* Subtle orbiting elements - refined */}
+        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-gradient-conic from-pink-200/15 via-yellow-200/20 via-orange-200/15 to-pink-200/15 animate-spin-slow" />
       </div>
+
+      {/* Dark warm overlay for app interface with pink-orange tints - lighter for better contrast */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
 
       {/* Solar Flare Notification */}
       {flareNotification && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(251,146,60,0.4)] backdrop-blur-xl border border-orange-300/30 animate-bounce">
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(251,146,60,0.4)] backdrop-blur-xl border border-orange-300/30 animate-float-gentle">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-white rounded-full animate-pulse-slow" />
             <span className="text-sm font-medium">{flareNotification}</span>
           </div>
         </div>
@@ -191,35 +217,35 @@ export default function App() {
           <div className="mb-8">
             {/* 44 Circle */}
             <div className="relative inline-flex items-center justify-center mb-6">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/20 to-amber-400/20 blur-3xl scale-150" />
-              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.5)] border border-yellow-300/30">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/30 to-orange-300/30 blur-3xl scale-150" />
+              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-yellow-300/90 via-yellow-200/90 to-orange-300/90 flex items-center justify-center shadow-[0_0_40px_rgba(255,215,0,0.6)] border border-yellow-200/40">
                 <span className="text-black text-3xl font-bold tracking-tight drop-shadow-lg">44</span>
               </div>
               {/* Orbiting elements */}
               <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
-                <div className="w-2 h-2 bg-yellow-400 rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
-                <div className="w-1 h-1 bg-orange-400 rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(251,146,60,0.8)]" />
-                <div className="w-1.5 h-1.5 bg-amber-400 rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
-                <div className="w-1 h-1 bg-yellow-300 rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(253,224,71,0.8)]" />
+                <div className="w-2 h-2 bg-yellow-300 rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_10px_rgba(255,215,0,0.8)]" />
+                <div className="w-1 h-1 bg-orange-500 rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(255,140,0,0.8)]" />
+                <div className="w-1.5 h-1.5 bg-yellow-200 rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_8px_rgba(255,235,59,0.8)]" />
+                <div className="w-1 h-1 bg-yellow-200 rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(255,235,59,0.8)]" />
               </div>
             </div>
 
-            <h1 className="text-display-4xl text-yellow-400 tracking-[0.1em] font-bold mb-3 drop-shadow-[0_4px_20px_rgba(255,235,59,0.8)] shadow-[0_0_40px_rgba(255,235,59,0.6)] filter brightness-110 animate-pulse">
+            <h1 className="text-display-4xl text-white tracking-[0.12em] font-bold mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7),0_4px_16px_rgba(0,0,0,0.5),0_1px_3px_rgba(255,215,0,0.4)] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(255,215,0,0.3)] filter brightness-110 animate-fade-in-slow">
               SUNGAZE
             </h1>
-            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent mx-auto mb-4 shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent mx-auto mb-4 shadow-[0_0_4px_rgba(255,255,255,0.5),0_0_8px_rgba(255,255,255,0.3)]" />
           </div>
 
-          <div className="bg-black/40 backdrop-blur-md rounded-2xl px-6 py-5 border border-white/30 shadow-2xl">
-            <p className="text-caption text-white mb-4">
+          <div className="bg-black/40 backdrop-blur-md rounded-2xl px-6 py-5 border border-white/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_4px_16px_rgba(0,0,0,0.3),0_8px_32px_rgba(0,0,0,0.2)]">
+            <p className="text-caption text-white mb-4 tracking-wider font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.6),0_1px_2px_rgba(0,0,0,0.4)]">
               LIGHT NUTRITION RITUAL
             </p>
 
             <div className="space-y-4">
-              <p className="text-body-md text-white font-medium leading-relaxed tracking-wide">
+              <p className="text-body-md text-white font-semibold leading-relaxed tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
                 Transform sunlight into cellular nourishment through ancient gazing meditation.
               </p>
-              <p className="text-body-sm text-white/95 font-light italic leading-relaxed tracking-wide">
+              <p className="text-body-sm text-white font-medium italic leading-relaxed tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
                 From 10 seconds to 44 minutes — become a solar being through sacred practice.
               </p>
             </div>
@@ -237,8 +263,8 @@ export default function App() {
             />
           </div>
 
-          {/* HOME TAB - Premium Design Applied */}
-          <TabsContent value="home" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+          {/* HOME TAB - Sunrise/Sunset Theme */}
+          <TabsContent value="home" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
             <div className="px-6 pt-6 pb-24">
             <SolarWindow
               onStartGazing={() => {
@@ -248,13 +274,13 @@ export default function App() {
             />
 
               {/* Premium Status - Premium Design */}
-              <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 text-center shadow-[0_0_20px_rgba(59,130,246,0.1)] mb-6">
+              <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(255,140,0,0.15),0_8px_32px_rgba(255,140,0,0.1)] mb-6">
               <div className="flex items-center justify-center gap-2 mb-2">
                   <Crown className="w-5 h-5 text-orange-500" />
-                  <h3 className="text-title-sm text-white font-semibold">Sacred Access Unlocked</h3>
+                  <h3 className="text-title-sm text-white font-bold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7),0_1px_2px_rgba(0,0,0,0.5)]">Sacred Access Unlocked</h3>
               </div>
-                <p className="text-body-sm text-white/60 mb-2">First Witness of the Flame</p>
-                <p className="text-body-sm text-orange-400 font-bold mb-3">Founder #1/444</p>
+                <p className="text-body-sm text-white mb-2 font-semibold tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">First Witness of the Flame</p>
+                <p className="text-body-sm text-white font-bold mb-3 tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7),0_1px_2px_rgba(255,215,0,0.4)]">Founder #1/444</p>
 
                 {/* Solar Window Settings Button */}
                 <button
@@ -262,28 +288,28 @@ export default function App() {
                     console.log('Solar Window Settings button clicked');
                     setShowSolarWindowSettings(true);
                   }}
-                  className="mt-2 px-4 py-2 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-indigo-600 transition-all duration-300"
+                  className="mt-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_8px_rgba(255,140,0,0.3),0_4px_16px_rgba(255,140,0,0.2)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_12px_rgba(255,140,0,0.4),0_8px_24px_rgba(255,140,0,0.3)]"
                 >
                   Solar Window Settings
                 </button>
             </div>
 
-              {/* Ask the Oracle - Premium Design */}
-              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-xl border border-purple-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(168,85,247,0.1)]">
+              {/* Ask the Oracle - Luxury Black Design */}
+              <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
               <button
                 onClick={() => setShowAskTheOracle(!showAskTheOracle)}
-                  className="w-full flex items-center justify-between text-left hover:bg-purple-500/10 transition-all duration-300 rounded-xl p-2"
+                  className="w-full flex items-center justify-between text-left hover:bg-white/5 transition-all duration-300 rounded-xl p-2"
               >
                 <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center">
-                    <span className="text-white text-xs">🔮</span>
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 flex items-center justify-center shadow-[0_0_8px_rgba(255,215,0,0.4)]">
+                    <span className="text-black text-xs font-bold">🔮</span>
                   </div>
-                    <h2 className="text-title-sm text-white font-medium tracking-wide">
+                    <h2 className="text-title-sm text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                     Ask the Oracle
                   </h2>
                 </div>
                 <ChevronDown
-                    className={`w-5 h-5 text-purple-300 transition-transform duration-300 ${showAskTheOracle ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-white/80 transition-transform duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)] ${showAskTheOracle ? 'rotate-180' : ''}`}
                 />
               </button>
 
@@ -296,16 +322,16 @@ export default function App() {
             </div>
           </TabsContent>
 
-          {/* GAZE TAB - Premium Design Applied */}
-          <TabsContent value="gaze" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+          {/* GAZE TAB - Sunrise/Sunset Theme */}
+          <TabsContent value="gaze" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
             <div className="px-6 pt-6 pb-24">
               <div className="text-center mb-6">
-                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+                <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(255,140,0,0.15),0_8px_32px_rgba(255,140,0,0.1)]">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                    <Sun className="w-6 h-6 text-orange-400" />
-                    <h2 className="text-title-md text-white font-semibold">☀️ Direct Sun Gazing</h2>
+                    <Sun className="w-6 h-6 text-yellow-300" />
+                    <h2 className="text-title-md text-white font-bold tracking-wide drop-shadow-[0_2px_6px_rgba(0,0,0,0.7),0_1px_3px_rgba(0,0,0,0.5)]">☀️ Direct Sun Gazing</h2>
                 </div>
-                  <p className="text-body-md text-white/60">Ancient light nutrition practice</p>
+                  <p className="text-body-md text-white font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Ancient light nutrition practice</p>
               </div>
             </div>
 
@@ -329,7 +355,7 @@ export default function App() {
               <div className="mt-6 flex justify-center">
                 <Button
                   onClick={() => setLearnSection('unlocks')}
-                  className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border border-purple-400/30 text-white font-semibold px-6 py-3 rounded-2xl transition-colors duration-300"
+                  className="bg-gradient-to-br from-orange-500/30 to-amber-500/30 hover:from-orange-600/40 hover:to-amber-600/40 border border-orange-400/40 text-white font-semibold px-6 py-3 rounded-2xl transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_8px_rgba(255,140,0,0.25),0_4px_16px_rgba(255,140,0,0.15)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_12px_rgba(255,140,0,0.35),0_8px_24px_rgba(255,140,0,0.25)]"
                 >
                   🔓 Sacred Unlock
                 </Button>
@@ -339,15 +365,15 @@ export default function App() {
           </TabsContent>
 
           {/* CLOUDS TAB - Now empty, cloud gazing moved to Discover */}
-          <TabsContent value="clouds" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+          <TabsContent value="clouds" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
             <div className="px-6 pt-6 pb-24">
               <div className="text-center mb-6">
-                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                    <Cloud className="w-6 h-6 text-blue-400" />
+                <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(255,140,0,0.15),0_8px_32px_rgba(255,140,0,0.1)]">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Cloud className="w-6 h-6 text-yellow-300" />
                     <h2 className="text-title-md text-white font-semibold">☁️ Cloud Section</h2>
                   </div>
-                  <p className="text-body-md text-white/60">Cloud gazing has moved to Discover section</p>
+                  <p className="text-body-md text-white font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Cloud gazing has moved to Discover section</p>
                 </div>
               </div>
             </div>
@@ -359,17 +385,17 @@ export default function App() {
           </TabsContent>
 
           {/* LEARN TAB - Premium Design Applied */}
-          <TabsContent value="learn" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+          <TabsContent value="learn" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
             <div className="px-6 pt-6 pb-24">
             {learnSection === 'main' && (
               <>
                 <div className="text-center mb-6">
-                    <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+                    <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
                     <div className="flex items-center justify-center gap-3 mb-3">
-                        <BookOpen className="w-6 h-6 text-blue-400" />
-                        <h2 className="text-title-md text-white font-semibold tracking-wide">Solar Master Learning</h2>
+                        <BookOpen className="w-6 h-6 text-yellow-300 drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]" />
+                        <h2 className="text-title-md text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Solar Master Learning</h2>
                     </div>
-                      <p className="text-body-md text-white/60 font-medium leading-relaxed">
+                      <p className="text-body-md text-white font-semibold leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                       Unlock guided content and advanced techniques
                     </p>
                   </div>
@@ -379,7 +405,7 @@ export default function App() {
                   {isPremium && (
                     <Button
                       onClick={() => setLearnSection('scrolls')}
-                      className="w-full bg-gradient-to-br from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-400/30 text-white font-semibold py-4 rounded-2xl transition-colors duration-300"
+                      className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                     >
                       📜 Truth Scrolls (Premium)
                     </Button>
@@ -388,59 +414,59 @@ export default function App() {
 
                   <Button
                     onClick={() => setLearnSection('content')}
-                      className="w-full bg-gradient-to-br from-orange-500/20 to-yellow-500/20 hover:from-orange-500/30 hover:to-yellow-500/30 border border-orange-400/30 text-white font-semibold py-4 rounded-2xl transition-colors duration-300"
+                      className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   >
                     Solar Content
                   </Button>
 
                   <Button
                     onClick={() => setLearnSection('truth-serum')}
-                      className="w-full bg-gradient-to-br from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-400/30 text-white font-semibold py-4 rounded-2xl transition-colors duration-300"
+                      className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   >
                     Gems from the Sun
                   </Button>
 
                   <Button
                     onClick={() => setLearnSection('oracle-qa')}
-                      className="w-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border border-purple-400/30 text-white font-semibold py-4 rounded-2xl transition-colors duration-300"
+                      className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   >
                     Ask the Oracle
                   </Button>
 
                   <Button
                     onClick={() => setLearnSection('journey')}
-                      className="w-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 border border-green-400/30 text-white font-semibold py-4 rounded-2xl transition-colors duration-300"
+                      className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   >
                     9 Month Solar Journey
                   </Button>
 
                   <Button
                     onClick={() => setLearnSection('eye-practices')}
-                      className="w-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 border border-cyan-400/30 text-white font-semibold py-4 rounded-2xl transition-colors duration-300"
+                      className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   >
                     Eye Practices
                   </Button>
 
 
 
-                    <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
-                      <h3 className="text-title-sm text-white font-semibold mb-4">Quick Learning Modules</h3>
+                    <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+                      <h3 className="text-title-sm text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Quick Learning Modules</h3>
                     <div className="grid grid-cols-1 gap-3">
-                        <div className="bg-gradient-to-br from-white/10 to-blue-500/10 rounded-2xl p-3 border border-blue-400/20">
-                          <p className="text-body-sm text-white font-medium">• Foundation: Solar Gazing Basics</p>
-                          <p className="text-caption text-white/60">Safe practice fundamentals</p>
+                        <div className="bg-black/50 backdrop-blur-md border border-white/10 hover:bg-black/60 rounded-2xl p-3 transition-colors duration-300">
+                          <p className="text-body-sm text-white font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">• Foundation: Solar Gazing Basics</p>
+                          <p className="text-caption text-white font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Safe practice fundamentals</p>
                       </div>
-                        <div className="bg-gradient-to-br from-white/10 to-blue-500/10 rounded-2xl p-3 border border-blue-400/20">
-                          <p className="text-body-sm text-white font-medium">• Intermediate: Light Nutrition</p>
-                          <p className="text-caption text-white/60">Energy absorption techniques</p>
+                        <div className="bg-black/50 backdrop-blur-md border border-white/10 hover:bg-black/60 rounded-2xl p-3 transition-colors duration-300">
+                          <p className="text-body-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">• Intermediate: Light Nutrition</p>
+                          <p className="text-caption text-white font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Energy absorption techniques</p>
                       </div>
-                        <div className="bg-gradient-to-br from-white/10 to-blue-500/10 rounded-2xl p-3 border border-blue-400/20">
-                          <p className="text-body-sm text-white font-medium">• Advanced: Consciousness Expansion</p>
-                          <p className="text-caption text-white/60">Deep meditative states</p>
+                        <div className="bg-black/50 backdrop-blur-md border border-white/10 hover:bg-black/60 rounded-2xl p-3 transition-colors duration-300">
+                          <p className="text-body-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">• Advanced: Consciousness Expansion</p>
+                          <p className="text-caption text-white font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Deep meditative states</p>
                       </div>
-                        <div className="bg-gradient-to-br from-white/10 to-blue-500/10 rounded-2xl p-3 border border-blue-400/20">
-                          <p className="text-body-sm text-white font-medium">• Master: Sacred Alchemy</p>
-                          <p className="text-caption text-white/60">Transformation practices</p>
+                        <div className="bg-black/50 backdrop-blur-md border border-white/10 hover:bg-black/60 rounded-2xl p-3 transition-colors duration-300">
+                          <p className="text-body-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">• Master: Sacred Alchemy</p>
+                          <p className="text-caption text-white font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Transformation practices</p>
                       </div>
                     </div>
                   </div>
@@ -452,7 +478,7 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Learning Hub
                 </Button>
@@ -471,7 +497,7 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Learning Hub
                 </Button>
@@ -483,7 +509,7 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Learning Hub
                 </Button>
@@ -495,29 +521,29 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Learning Hub
                 </Button>
                 <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-xl border border-green-400/20 rounded-2xl p-8 shadow-[0_0_20px_rgba(34,197,94,0.1)]">
                   <div className="text-center mb-8">
                     <h2 className="text-2xl text-white font-bold mb-2">9 Month Solar Journey</h2>
-                    <p className="text-green-200 text-sm">Your transformative path to solar consciousness</p>
+                    <p className="text-white text-sm font-semibold tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Your transformative path to solar consciousness</p>
                   </div>
                   
                   <div className="space-y-6">
                     <div className="bg-gradient-to-br from-white/5 to-green-500/10 rounded-2xl p-6 border border-green-400/20">
                       <h3 className="text-xl text-white font-semibold mb-4 text-center">The Three Phases of Cellular Restoration</h3>
-                      <p className="text-green-200 text-sm mb-6 text-center">
+                      <p className="text-white text-sm font-medium mb-6 text-center tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                         Practitioners following the traditional sungazing protocol report profound transformations in their body's natural healing capacity:
                       </p>
                       
                       <div className="space-y-6">
                         {/* Phase 1 */}
-                        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl p-4 border border-blue-400/20">
+                        <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-xl p-4 border border-orange-400/30">
                           <h4 className="text-lg text-white font-semibold mb-2">Phase 1 (0-3 months):</h4>
-                          <h5 className="text-md text-blue-200 font-medium mb-2">Mental & Neurological Reset</h5>
-                          <p className="text-green-200 text-sm">
+                          <h5 className="text-md text-white font-semibold mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">Mental & Neurological Reset</h5>
+                          <p className="text-white text-sm font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                             Practitioners report complete reversal of mood imbalances, cognitive fog, sleep disorders, and stress-related conditions. The pineal gland activation appears to restore natural neurotransmitter production, eliminating the need for synthetic interventions.
                           </p>
                         </div>
@@ -525,17 +551,17 @@ export default function App() {
                         {/* Phase 2 */}
                         <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-4 border border-amber-400/20">
                           <h4 className="text-lg text-white font-semibold mb-2">Phase 2 (3-6 months):</h4>
-                          <h5 className="text-md text-amber-200 font-medium mb-2">Physical Regeneration</h5>
-                          <p className="text-green-200 text-sm">
+                          <h5 className="text-md text-white font-semibold mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">Physical Regeneration</h5>
+                          <p className="text-white text-sm font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                             The body's cellular repair mechanisms activate dramatically. Chronic inflammatory conditions, autoimmune responses, digestive disorders, and metabolic dysfunctions begin reversing. Many report their bodies healing conditions that had persisted for decades.
                           </p>
                         </div>
                         
                         {/* Phase 3 */}
-                        <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl p-4 border border-purple-400/20">
+                        <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-xl p-4 border border-orange-400/30">
                           <h4 className="text-lg text-white font-semibold mb-2">Phase 3 (6-9 months):</h4>
-                          <h5 className="text-md text-purple-200 font-medium mb-2">Transcendent Biology</h5>
-                          <p className="text-green-200 text-sm">
+                          <h5 className="text-md text-white font-semibold mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">Transcendent Biology</h5>
+                          <p className="text-white text-sm font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                             The body achieves remarkable efficiency, requiring minimal food while maintaining perfect health. Practitioners describe their bodies operating on pure solar energy, with complete elimination of chronic conditions and enhanced longevity markers.
                           </p>
                         </div>
@@ -550,25 +576,25 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Learning Hub
                 </Button>
-                <div className="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-xl border border-cyan-400/20 rounded-2xl p-8 shadow-[0_0_20px_rgba(6,182,212,0.1)]">
+                <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
                   <div className="text-center mb-8">
-                    <h2 className="text-2xl text-white font-bold mb-2">Eye Practices</h2>
-                    <p className="text-cyan-200 text-sm">Strengthen your vision and enhance focus with ancient techniques</p>
+                    <h2 className="text-2xl text-white font-bold mb-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">Eye Practices</h2>
+                    <p className="text-white text-sm font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Strengthen your vision and enhance focus with ancient techniques</p>
                   </div>
                   
                   <div className="space-y-8">
                     {/* Trataka */}
-                    <div className="bg-gradient-to-br from-white/5 to-cyan-500/10 rounded-2xl p-6 border border-cyan-400/20">
-                      <h3 className="text-xl text-white font-semibold mb-3">1) Trataka – Candle or Dot Gazing</h3>
-                      <p className="text-cyan-200 text-sm mb-4 font-medium">Purpose: Builds concentration, strengthens eyes, and calms the mind.</p>
+                    <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-black/60 transition-colors duration-300">
+                      <h3 className="text-xl text-white font-semibold mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">1) Trataka – Candle or Dot Gazing</h3>
+                      <p className="text-white text-sm mb-4 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Purpose: Builds concentration, strengthens eyes, and calms the mind.</p>
                       
                       <div className="mb-4">
-                        <h4 className="text-lg text-white font-medium mb-2">Steps:</h4>
-                        <ul className="text-cyan-200 text-sm space-y-1 ml-4">
+                        <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Steps:</h4>
+                        <ul className="text-white text-sm space-y-1 ml-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                           <li>• Sit in meditation posture</li>
                           <li>• Place candle flame or black dot at eye level, 2–3 ft away</li>
                           <li>• Gaze steadily without blinking until eyes water</li>
@@ -578,8 +604,8 @@ export default function App() {
                       </div>
                       
                       <div>
-                        <h4 className="text-lg text-white font-medium mb-2">Benefits:</h4>
-                        <ul className="text-cyan-200 text-sm space-y-1 ml-4">
+                        <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Benefits:</h4>
+                        <ul className="text-white text-sm space-y-1 ml-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                           <li>• Improves focus, memory, willpower</li>
                           <li>• Enhances vision over time</li>
                           <li>• Activates Third Eye (Ajna Chakra)</li>
@@ -588,13 +614,13 @@ export default function App() {
                     </div>
 
                     {/* Yogic Eye Movements */}
-                    <div className="bg-gradient-to-br from-white/5 to-blue-500/10 rounded-2xl p-6 border border-blue-400/20">
-                      <h3 className="text-xl text-white font-semibold mb-3">2) Yogic Eye Movements</h3>
-                      <p className="text-blue-200 text-sm mb-4 font-medium">Purpose: Increases eye flexibility, coordination, and alertness.</p>
+                    <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-black/60 transition-colors duration-300">
+                      <h3 className="text-xl text-white font-semibold mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">2) Yogic Eye Movements</h3>
+                      <p className="text-white text-sm mb-4 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Purpose: Increases eye flexibility, coordination, and alertness.</p>
                       
                       <div className="mb-4">
-                        <h4 className="text-lg text-white font-medium mb-2">Steps:</h4>
-                        <ul className="text-blue-200 text-sm space-y-1 ml-4">
+                        <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Steps:</h4>
+                        <ul className="text-white text-sm space-y-1 ml-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                           <li>• Sit with spine straight. Keep head still</li>
                           <li>• Move eyes:</li>
                           <li className="ml-4">- Left ↔ Right (10x)</li>
@@ -606,8 +632,8 @@ export default function App() {
                       </div>
                       
                       <div>
-                        <h4 className="text-lg text-white font-medium mb-2">Benefits:</h4>
-                        <ul className="text-blue-200 text-sm space-y-1 ml-4">
+                        <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Benefits:</h4>
+                        <ul className="text-white text-sm space-y-1 ml-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                           <li>• Strengthens weak muscles</li>
                           <li>• Boosts coordination and focus</li>
                         </ul>
@@ -615,13 +641,13 @@ export default function App() {
                     </div>
 
                     {/* Palming */}
-                    <div className="bg-gradient-to-br from-white/5 to-indigo-500/10 rounded-2xl p-6 border border-indigo-400/20">
-                      <h3 className="text-xl text-white font-semibold mb-3">3) Palming</h3>
-                      <p className="text-indigo-200 text-sm mb-4 font-medium">Purpose: Relieves strain, relaxes nerves, and calms the mind.</p>
+                    <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-black/60 transition-colors duration-300">
+                      <h3 className="text-xl text-white font-semibold mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">3) Palming</h3>
+                      <p className="text-white text-sm mb-4 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Purpose: Relieves strain, relaxes nerves, and calms the mind.</p>
                       
                       <div className="mb-4">
-                        <h4 className="text-lg text-white font-medium mb-2">Steps:</h4>
-                        <ul className="text-indigo-200 text-sm space-y-1 ml-4">
+                        <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Steps:</h4>
+                        <ul className="text-white text-sm space-y-1 ml-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                           <li>• Rub palms together until warm</li>
                           <li>• Gently cup palms over closed eyes</li>
                           <li>• Breathe deeply, feel warmth soothe eyes</li>
@@ -630,8 +656,8 @@ export default function App() {
                       </div>
                       
                       <div>
-                        <h4 className="text-lg text-white font-medium mb-2">Benefits:</h4>
-                        <ul className="text-indigo-200 text-sm space-y-1 ml-4">
+                        <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Benefits:</h4>
+                        <ul className="text-white text-sm space-y-1 ml-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                           <li>• Instant relaxation</li>
                           <li>• Refreshes clarity</li>
                           <li>• Eases screen fatigue</li>
@@ -647,7 +673,7 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Learning Hub
                 </Button>
@@ -659,7 +685,7 @@ export default function App() {
                 <div className="space-y-4">
                   <Button
                     onClick={() => setLearnSection('main')}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   >
                     ← Back to Learning Hub
                   </Button>
@@ -674,100 +700,117 @@ export default function App() {
           </TabsContent>
 
           {/* RITUALS TAB - Premium Design Applied */}
-          <TabsContent value="rituals" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+          <TabsContent value="rituals" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
             <div className="px-6 pt-6 pb-24">
               {activeRitual === null && (
                 <>
-                  <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)] mb-6">
-                    <h2 className="text-title-md text-white font-semibold text-center">Sacred Rituals</h2>
+                  <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-6">
+                    <h2 className="text-title-md text-white font-semibold text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Sacred Rituals</h2>
                   </div>
 
                   <div className="space-y-4">
                     <div 
                       onClick={() => setActiveRitual('meditation')}
-                      className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                      className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-blue-500/20 flex items-center justify-center border border-indigo-400/30">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-blue-500/20 flex items-center justify-center border border-indigo-400/30 overflow-hidden p-1.5">
+                          <img 
+                            src="/third-eye-symbol.svg" 
+                            alt="Third Eye Chakra (Ajna)" 
+                            className="w-full h-full object-contain"
+                            onError={(e) => {
+                              // Fallback if image doesn't exist yet - show a simple third eye emoji
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent && !parent.querySelector('.fallback-emoji')) {
+                                const fallback = document.createElement('div');
+                                fallback.className = 'fallback-emoji text-lg';
+                                fallback.textContent = '👁️';
+                                parent.appendChild(fallback);
+                              }
+                            }}
+                          />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-title-sm text-white font-semibold">Sacred Meditation</h3>
-                          <p className="text-body-sm text-white/60">Premium meditation and music experience</p>
+                          <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Sacred Meditation</h3>
+                          <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Premium meditation and music experience</p>
                         </div>
                       </div>
                     </div>
 
                     <div 
                       onClick={() => setActiveRitual('palming')}
-                      className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                      className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/20 to-yellow-500/20 flex items-center justify-center border border-orange-400/30">
                           <span className="text-orange-400 text-xl">○</span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-title-sm text-white font-semibold">Solar Palming</h3>
-                          <p className="text-body-sm text-white/60">Remove sun spots after gazing (3-5 minutes)</p>
+                          <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Solar Palming</h3>
+                          <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Remove sun spots after gazing (3-5 minutes)</p>
                         </div>
                       </div>
                     </div>
 
                     <div 
                     onClick={() => setActiveRitual('barefoot')}
-                      className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                      className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500/20 to-blue-500/20 flex items-center justify-center border border-green-400/30">
                           <span className="text-green-400 text-xl">🦶</span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-title-sm text-white font-semibold">Barefoot Grounding</h3>
-                          <p className="text-body-sm text-white/60">Earth connection grounding (10-44 minutes)</p>
+                          <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Barefoot Grounding</h3>
+                          <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Earth connection grounding (10-44 minutes)</p>
                         </div>
                       </div>
                     </div>
 
                     <div 
                     onClick={() => setActiveRitual('journal')}
-                      className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                      className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center border border-purple-400/30">
                           <span className="text-purple-400 text-xl">📖</span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-title-sm text-white font-semibold">Solar Journal & Reflection</h3>
-                          <p className="text-body-sm text-white/60">Document your solar journey and insights</p>
+                          <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Solar Journal & Reflection</h3>
+                          <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Document your solar journey and insights</p>
                         </div>
                       </div>
                     </div>
 
                     <div 
                       onClick={() => setActiveRitual('cloud-gazing')}
-                      className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                      className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center border border-blue-400/30">
                           <span className="text-blue-400 text-xl">☁️</span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-title-sm text-white font-semibold">Cloud Gazing</h3>
-                          <p className="text-body-sm text-white/60">Perfect for beginners or cloudy days (1-5 minutes)</p>
+                          <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Cloud Gazing</h3>
+                          <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Perfect for beginners or cloudy days (1-5 minutes)</p>
                         </div>
                       </div>
                     </div>
 
                     <div 
                       onClick={() => setActiveRitual('candle-gazing')}
-                      className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                      className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center border border-orange-400/30">
                           <span className="text-orange-400 text-xl">🕯️</span>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-title-sm text-white font-semibold">Candle Gazing (Trataka)</h3>
-                          <p className="text-body-sm text-white/60">Evening meditation practice (5-15 minutes)</p>
+                          <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Candle Gazing (Trataka)</h3>
+                          <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Evening meditation practice (5-15 minutes)</p>
                         </div>
                       </div>
                     </div>
@@ -873,7 +916,7 @@ export default function App() {
           </TabsContent>
 
           {/* NIGHT TAB - Premium Design Applied */}
-          <TabsContent value="night" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+          <TabsContent value="night" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
             <div className="px-6 pt-6 pb-24">
             {nightActivity === null && (
               <>
@@ -883,14 +926,14 @@ export default function App() {
                         <Sun className="w-6 h-6 text-indigo-400" />
                         <h2 className="text-title-md text-white font-semibold">🌙 Night Practice</h2>
                     </div>
-                      <p className="text-body-md text-white/60">Evening reflection and preparation</p>
+                      <p className="text-body-md text-white font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">Evening reflection and preparation</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
                     <h3 className="text-title-sm text-white font-semibold mb-2">Candle Gazing Moved</h3>
-                    <p className="text-body-sm text-white/60">Candle gazing is now available in the Discover section under Sacred Rituals</p>
+                    <p className="text-body-sm text-white font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Candle gazing is now available in the Discover section under Sacred Rituals</p>
                   </div>
 
                   <Button
@@ -938,7 +981,7 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setNightActivity(null)}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Night Options
                 </Button>
@@ -950,13 +993,13 @@ export default function App() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setNightActivity(null)}
-                    className="mb-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-colors duration-300"
+                    className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                 >
                   ← Back to Night Options
                 </Button>
                   <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
                     <h3 className="text-title-md text-white font-semibold mb-4 text-center">🌙 Sleep Meditation</h3>
-                    <p className="text-body-md text-white/60 mb-6 text-center leading-relaxed">
+                    <p className="text-body-md text-white font-medium mb-6 text-center leading-relaxed tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
                     A guided meditation to prepare your consciousness for restorative sleep and prophetic dreams.
                   </p>
                   <div className="text-center">
@@ -972,14 +1015,14 @@ export default function App() {
 
           {/* UPLOAD TAB - Premium Design Applied */}
           {isFounder && (
-            <TabsContent value="upload" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+            <TabsContent value="upload" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
               <div className="px-6 pt-6 pb-24">
                 <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)] mb-6">
                 <div className="flex items-center justify-center gap-2 mb-2">
                     <Upload className="w-6 h-6 text-amber-400" />
                     <h2 className="text-title-md text-white font-semibold">🔥 Founder Voice Upload</h2>
                 </div>
-                  <p className="text-body-md text-white/60 text-center">
+                  <p className="text-body-md text-white font-medium text-center tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
                   Upload your personal meditation recordings
                 </p>
               </div>

@@ -97,19 +97,19 @@ export function OracleQA({ className = "" }: OracleQAProps) {
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-md rounded-2xl px-6 py-4 border border-purple-400/30 shadow-2xl">
+      <div className="bg-black/30 backdrop-blur-md rounded-2xl px-6 py-4 border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <MessageCircle className="w-6 h-6 text-purple-400" />
-          <h2 className="text-xl text-white font-medium text-center">
+          <MessageCircle className="w-6 h-6 text-yellow-400 drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]" />
+          <h2 className="text-xl text-white font-semibold text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             Ask the Oracle
           </h2>
-          <Sparkles className="w-6 h-6 text-purple-400" />
+          <Sparkles className="w-6 h-6 text-yellow-400 drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]" />
         </div>
-        <p className="text-purple-200 text-sm text-center mb-3">
+        <p className="text-white/90 text-sm text-center mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
           Curated wisdom from revolutionary consciousness merged with solar science
         </p>
         <div className="text-center">
-          <span className="text-purple-300 text-xs">
+          <span className="text-white/70 text-xs drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
             {oracleQuestions.length}+ questions • Mystical responses • Scientific foundation
           </span>
         </div>
@@ -119,13 +119,13 @@ export function OracleQA({ className = "" }: OracleQAProps) {
       <div className="space-y-4">
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/60 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
           <input
             type="text"
             placeholder="Search questions or responses..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-black/30 border border-white/20 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50 focus:ring-1 focus:ring-purple-400/20 transition-all duration-300"
+            className="w-full bg-black/40 border border-white/15 rounded-xl pl-10 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400/40 focus:ring-1 focus:ring-yellow-400/20 transition-all duration-300 backdrop-blur-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
           />
         </div>
 
@@ -139,8 +139,8 @@ export function OracleQA({ className = "" }: OracleQAProps) {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                   selectedCategory === category.id
-                    ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30'
-                    : 'bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:border-white/20'
+                    ? 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 shadow-[0_0_8px_rgba(255,215,0,0.2)]'
+                    : 'bg-black/40 text-white/80 border border-white/10 hover:bg-white/10 hover:border-white/20 backdrop-blur-sm'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -157,7 +157,7 @@ export function OracleQA({ className = "" }: OracleQAProps) {
         {filteredQuestions.map((question) => (
           <div
             key={question.id}
-            className="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden hover:border-purple-400/30 transition-all duration-300"
+            className="bg-black/50 backdrop-blur-lg border border-white/10 rounded-xl overflow-hidden hover:border-yellow-400/30 transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
           >
             <button
               onClick={() => toggleQuestion(question.id)}
@@ -166,32 +166,32 @@ export function OracleQA({ className = "" }: OracleQAProps) {
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-purple-300 text-sm font-medium">{question.category}</span>
+                    <span className="text-yellow-300 text-sm font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">{question.category}</span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(question.difficulty)}`}>
                       {question.difficulty}
                     </span>
-                    <span className="text-gray-400 text-xs">★ {question.popularity}%</span>
+                    <span className="text-white/60 text-xs drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">★ {question.popularity}%</span>
                   </div>
-                  <h3 className="text-white font-medium text-sm leading-relaxed">
+                  <h3 className="text-white font-medium text-sm leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                     {question.question}
                   </h3>
                 </div>
                 {expandedQuestion === question.id ? 
-                  <ChevronUp className="w-4 h-4 text-purple-400 ml-2 flex-shrink-0" /> : 
-                  <ChevronDown className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
+                  <ChevronUp className="w-4 h-4 text-yellow-400 ml-2 flex-shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" /> : 
+                  <ChevronDown className="w-4 h-4 text-white/60 ml-2 flex-shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                 }
               </div>
               
               {expandedQuestion === question.id && (
                 <div className="mt-4 pt-4 border-t border-white/10">
-                  <div className="text-purple-100 text-sm leading-relaxed mb-3">
+                  <div className="text-white/90 text-sm leading-relaxed mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                     {question.response}
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {question.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-1 bg-purple-500/10 text-purple-300 text-xs rounded-full"
+                        className="px-2 py-1 bg-yellow-400/15 text-yellow-300 text-xs rounded-full border border-yellow-400/20 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
                       >
                         #{tag}
                       </span>
@@ -206,10 +206,10 @@ export function OracleQA({ className = "" }: OracleQAProps) {
 
       {/* Footer */}
       <div className="text-center pt-4">
-        <p className="text-gray-400 text-xs">
+        <p className="text-white/70 text-xs drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
           {filteredQuestions.length} questions found • Curated wisdom from solar consciousness
         </p>
-        <p className="text-purple-300 text-xs mt-1">
+        <p className="text-yellow-300 text-xs mt-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
           <Sparkles className="w-3 h-3 inline mr-1" />
           Each response blends mystical wisdom with modern science
         </p>
