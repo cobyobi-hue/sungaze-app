@@ -23,6 +23,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentScreen, setCurrentScreen] = useState<'main' | 'account' | 'membership' | 'notifications' | 'permissions' | 'legal'>('main');
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showImagePicker, setShowImagePicker] = useState(false);
@@ -31,47 +32,128 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   const supabase = createClient();
 
   useEffect(() => {
+    console.log('ProfileScreen: useEffect triggered, calling getCurrentUser');
     getCurrentUser();
   }, []);
 
   useEffect(() => {
+    console.log('ProfileScreen: currentUser changed:', currentUser ? `User ID: ${currentUser.id}` : 'null');
     if (currentUser) {
+      console.log('ProfileScreen: currentUser exists, calling loadProfile');
       loadProfile();
+    } else if (currentUser === null && !loading) {
+      // Only set loading to false if we've explicitly determined there's no user
+      console.log('ProfileScreen: No user found, but this should be handled in getCurrentUser');
     }
   }, [currentUser]);
 
   const getCurrentUser = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      console.log('ProfileScreen: getCurrentUser called, fetching user from Supabase auth');
+      setLoading(true);
+      setError(null);
+      
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      console.log('ProfileScreen: Auth response received', {
+        hasUser: !!user,
+        userId: user?.id,
+        error: authError ? {
+          message: authError.message,
+          status: authError.status
+        } : null
+      });
+      
+      if (authError) {
+        console.error('ProfileScreen: Error getting current user:', authError);
+        setError(`Authentication error: ${authError.message}`);
+        setCurrentUser(null);
+        setLoading(false);
+        return;
+      }
+      
+      if (!user) {
+        console.log('ProfileScreen: No authenticated user found');
+        setError('No authenticated user found. Please sign in.');
+        setCurrentUser(null);
+        setLoading(false);
+        return;
+      }
+      
+      console.log('ProfileScreen: User found, setting currentUser:', user.id);
       setCurrentUser(user);
+      // Don't set loading to false here - let loadProfile handle it
     } catch (error) {
-      console.error('Error getting current user:', error);
+      console.error('ProfileScreen: Unexpected error in getCurrentUser:', error);
+      setError(`Failed to get user: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setCurrentUser(null);
+      setLoading(false);
     }
   };
 
   const loadProfile = async () => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      console.log('ProfileScreen: loadProfile called but no currentUser, returning early');
+      setLoading(false);
+      return;
+    }
     
     try {
       console.log('ProfileScreen: loadProfile called, setting loading to true');
       setLoading(true);
+      setError(null);
       console.log('ProfileScreen: Loading profile for user:', currentUser.id);
-      console.log('ProfileScreen: Current user object:', currentUser);
+      console.log('ProfileScreen: Current user object:', {
+        id: currentUser.id,
+        email: currentUser.email
+      });
       
       // Try to get profile from Supabase first
-      const { data, error } = await supabase
+      console.log('ProfileScreen: Querying Supabase user_profiles table');
+      const { data, error: supabaseError } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('id', currentUser.id)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Supabase error:', error);
-        // Fall back to subscription service
+      console.log('ProfileScreen: Supabase query result:', {
+        hasData: !!data,
+        error: supabaseError ? {
+          message: supabaseError.message,
+          code: supabaseError.code,
+          details: supabaseError.details,
+          hint: supabaseError.hint
+        } : null
+      });
+
+      if (supabaseError && supabaseError.code !== 'PGRST116') {
+        console.error('ProfileScreen: Supabase error (non-404):', supabaseError);
         console.log('ProfileScreen: Falling back to subscription service for user:', currentUser.id);
-        const userProfile = await subscriptionService.getUserProfile(currentUser.id);
-        console.log('ProfileScreen: Subscription service returned:', userProfile);
-        setProfile(userProfile);
+        
+        try {
+          const userProfile = await subscriptionService.getUserProfile(currentUser.id);
+          console.log('ProfileScreen: Subscription service returned:', userProfile);
+          if (userProfile) {
+            setProfile(userProfile);
+          } else {
+            throw new Error('Subscription service returned null profile');
+          }
+        } catch (serviceError) {
+          console.error('ProfileScreen: Subscription service error:', serviceError);
+          setError(`Failed to load profile: ${serviceError instanceof Error ? serviceError.message : 'Unknown error'}`);
+          // Create a minimal profile to prevent infinite loading
+          const fallbackProfile = {
+            id: currentUser.id,
+            email: currentUser.email || '',
+            tier: 'free' as const,
+            badges: ['New Seeker'],
+            seals: [],
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            subscriptionStatus: 'active' as const
+          };
+          setProfile(fallbackProfile);
+        }
       } else if (data) {
         console.log('ProfileScreen: Loaded userProfile from Supabase:', data);
         // Transform database format to component format
@@ -83,7 +165,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
         };
         setProfile(transformedProfile);
       } else {
-        // No profile found, create one
+        // No profile found (PGRST116 error or no data), create one
+        console.log('ProfileScreen: No profile found, creating new profile');
         const newProfile = {
           id: currentUser.id,
           email: currentUser.email,
@@ -95,37 +178,57 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
           subscriptionStatus: 'active' as const
         };
         
-        const { data: createdProfile, error: createError } = await supabase
-          .from('user_profiles')
-          .insert([{
-            id: currentUser.id,
-            email: currentUser.email,
-            tier: 'free',
-            badges: ['New Seeker'],
-            seals: [],
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            subscription_status: 'active'
-          }])
-          .select()
-          .single();
+        try {
+          const { data: createdProfile, error: createError } = await supabase
+            .from('user_profiles')
+            .insert([{
+              id: currentUser.id,
+              email: currentUser.email,
+              tier: 'free',
+              badges: ['New Seeker'],
+              seals: [],
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              subscription_status: 'active'
+            }])
+            .select()
+            .single();
 
-        if (createError) {
-          console.error('Error creating profile:', createError);
+          if (createError) {
+            console.error('ProfileScreen: Error creating profile:', createError);
+            console.log('ProfileScreen: Using fallback profile (not saved to DB)');
+            setProfile(newProfile);
+          } else {
+            console.log('ProfileScreen: Profile created successfully:', createdProfile);
+            // Transform database format to component format
+            const transformedProfile = {
+              ...createdProfile,
+              createdAt: createdProfile.created_at,
+              updatedAt: createdProfile.updated_at,
+              subscriptionStatus: createdProfile.subscription_status
+            };
+            setProfile(transformedProfile);
+          }
+        } catch (createException) {
+          console.error('ProfileScreen: Exception creating profile:', createException);
           setProfile(newProfile);
-        } else {
-          // Transform database format to component format
-          const transformedProfile = {
-            ...createdProfile,
-            createdAt: createdProfile.created_at,
-            updatedAt: createdProfile.updated_at,
-            subscriptionStatus: createdProfile.subscription_status
-          };
-          setProfile(transformedProfile);
         }
       }
     } catch (error) {
-      console.error('ProfileScreen: Failed to load profile:', error);
+      console.error('ProfileScreen: Unexpected error in loadProfile:', error);
+      setError(`Failed to load profile: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      // Set a fallback profile to prevent infinite loading
+      const fallbackProfile = {
+        id: currentUser.id,
+        email: currentUser.email || '',
+        tier: 'free' as const,
+        badges: ['New Seeker'],
+        seals: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        subscriptionStatus: 'active' as const
+      };
+      setProfile(fallbackProfile);
     } finally {
       console.log('ProfileScreen: Setting loading to false');
       setLoading(false);
@@ -134,11 +237,24 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <Sun className="w-12 h-12 text-yellow-400 animate-spin mx-auto mb-4" />
-          <p className="text-white/80 font-medium">Loading your solar profile...</p>
-          <p className="text-white/60 text-sm mt-2">User ID: {userId}</p>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center">
+          <Sun className="w-12 h-12 text-yellow-400 animate-spin mx-auto mb-4 drop-shadow-[0_0_20px_rgba(255,215,0,0.6)]" />
+          <p className="text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Loading your solar profile...</p>
+          {error && (
+            <p className="text-red-400 text-sm mt-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">{error}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !currentUser) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center">
+          <p className="text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{error}</p>
+          <p className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Please sign in to view your profile</p>
         </div>
       </div>
     );
@@ -146,10 +262,10 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-white/80 font-medium mb-4">Please sign in to view your profile</p>
-          <p className="text-white/60 text-sm">Authentication required</p>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center">
+          <p className="text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Please sign in to view your profile</p>
+          <p className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Authentication required</p>
         </div>
       </div>
     );
@@ -157,10 +273,14 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-white/80 font-medium mb-4">Loading your profile...</p>
-          <p className="text-white/60 text-sm">Setting up your solar journey</p>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center">
+          <Sun className="w-12 h-12 text-yellow-400 animate-spin mx-auto mb-4 drop-shadow-[0_0_20px_rgba(255,215,0,0.6)]" />
+          <p className="text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Loading your profile...</p>
+          <p className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Setting up your solar journey</p>
+          {error && (
+            <p className="text-red-400 text-sm mt-2">{error}</p>
+          )}
         </div>
       </div>
     );
