@@ -47,6 +47,24 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     }
   }, [currentUser]);
 
+  // Define handleSignOut BEFORE the early return so it's accessible
+  const handleSignOut = async () => {
+    try {
+      console.log('Starting sign out...');
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Supabase signOut error:', error);
+      }
+      // Clear local storage
+      localStorage.clear();
+      // Redirect to home page
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error signing out:', error);
+      alert('Failed to sign out. Please try again.');
+    }
+  };
+
   const getCurrentUser = async () => {
     try {
       console.log('ProfileScreen: getCurrentUser called, fetching user from Supabase auth');
