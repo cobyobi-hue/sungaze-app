@@ -62,7 +62,6 @@ export interface AppConfig {
   email: {
     sendgridApiKey: string;
     sendgridFromEmail: string;
-    resendApiKey?: string;
   };
   
   // Analytics
@@ -185,7 +184,6 @@ export const config: AppConfig = {
   email: {
     sendgridApiKey: getEnvVar('SENDGRID_API_KEY', 'mock_sendgrid_key'),
     sendgridFromEmail: getEnvVar('SENDGRID_FROM_EMAIL', 'noreply@sungaze.app'),
-    resendApiKey: process.env.RESEND_API_KEY,
   },
   
   analytics: {
