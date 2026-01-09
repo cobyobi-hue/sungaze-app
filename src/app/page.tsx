@@ -153,8 +153,8 @@ export default function App() {
   const isFounder = true;
   const hasAccess = () => true;
 
-  // Show auth screen if not authenticated
-  if (!isAuthenticated) {
+  // Show auth screen if not authenticated, BUT allow profile tab access for app store review
+  if (!isAuthenticated && activeTab !== 'profile') {
     return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
   }
 

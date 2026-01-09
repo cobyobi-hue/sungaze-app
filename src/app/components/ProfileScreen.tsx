@@ -308,12 +308,33 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     );
   }
 
-  // If no user after loading completes, return null
-  // The main app will handle showing AuthScreen
-  // This prevents the "Auth session missing" error from showing
+  // If no user after loading completes, show limited profile view for app store review
+  // Users need access to sign out and account management even when not fully authenticated
   if (!currentUser && !loading) {
-    // Return null - the main app's auth check will handle showing AuthScreen
-    return null;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white p-6">
+        <div className="max-w-md mx-auto pt-20">
+          <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center mb-6">
+            <User className="w-16 h-16 text-white/60 mx-auto mb-4" />
+            <h2 className="text-title-lg text-white font-bold mb-2">Profile</h2>
+            <p className="text-white/80 mb-6">Sign in to access your full profile and settings</p>
+            
+            {/* Sign Out Button - Always available */}
+            <button
+              onClick={handleSignOut}
+              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-xl text-white transition-colors duration-300 mb-4"
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Sign Out</span>
+            </button>
+            
+            <p className="text-white/60 text-sm mt-4">
+              Need to delete your account? Sign in first, then go to Account Info.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!profile) {
