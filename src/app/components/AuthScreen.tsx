@@ -104,39 +104,11 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
             }
           }, 1000);
         } else {
-          // Send verification email using our custom email service
-          try {
-            const emailResponse = await fetch('/api/auth/send-verification-email', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email: email,
-                userId: data.user?.id,
-              }),
-            });
-
-            const emailResult = await emailResponse.json();
-
-            if (emailResponse.ok && emailResult.success) {
-              setError('Verification email sent! Please check your inbox and click the verification link.');
-            } else {
-              console.error('Failed to send verification email:', emailResult.error);
-              setError('Account created! However, we couldn\'t send a verification email. You can still use the app.');
-              // Allow user to proceed even if email fails
-              setTimeout(() => {
-                onAuthSuccess();
-              }, 2000);
-            }
-          } catch (emailError) {
-            console.error('Error sending verification email:', emailError);
-            setError('Account created! However, we couldn\'t send a verification email. You can still use the app.');
-            // Allow user to proceed even if email fails
-            setTimeout(() => {
-              onAuthSuccess();
-            }, 2000);
-          }
+          // Account created successfully - proceed directly to app (no email verification for app store review)
+          setError('Account created successfully! Redirecting...');
+          setTimeout(() => {
+            onAuthSuccess();
+          }, 1000);
         }
       } else {
         console.log('Attempting sign in...');
