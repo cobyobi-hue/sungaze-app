@@ -365,6 +365,11 @@ export default function App() {
                 </div>
               )}
               </div>
+
+              {/* Session History - Luxury Design */}
+              <div className="mt-6">
+                <SessionLog maxItems={5} showViewAll={true} />
+              </div>
             </div>
           </TabsContent>
 

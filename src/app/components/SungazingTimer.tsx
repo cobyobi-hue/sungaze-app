@@ -46,6 +46,9 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   const [extendPalming, setExtendPalming] = useState(false);
   const [newLevel, setNewLevel] = useState<SolarLevel | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
+  const [showPostSessionModal, setShowPostSessionModal] = useState(false);
+  const [completedDuration, setCompletedDuration] = useState(0);
+  const [completedSessionType, setCompletedSessionType] = useState<'sunrise' | 'sunset' | 'other'>('other');
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
   // Audio state for background music
@@ -233,6 +236,15 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   // Day 1: 10s, Day 2: 20s, Day 3: 30s... Day 270: 2700s (45 minutes)
 
   const getDayTime = (day: number) => day * 10; // 10 seconds per day
+
+  // Helper function to detect session type based on time
+  const getSessionType = (): 'sunrise' | 'sunset' | 'other' => {
+    const hour = new Date().getHours();
+    // Sunrise: 5-9 AM, Sunset: 5-9 PM
+    if (hour >= 5 && hour < 9) return 'sunrise';
+    if (hour >= 17 && hour < 21) return 'sunset';
+    return 'other';
+  };
   
   const getMonthFromDay = (day: number) => Math.ceil(day / 30); // Roughly 30 days per month
   
@@ -346,8 +358,17 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
     // Show completion feedback
     setJustCompleted(true);
     
-    // Save practice completion and advance day
-    completePractice(initialTime, 'sunrise');
+    // Detect session type based on current time
+    const sessionType = getSessionType();
+    
+    // Auto-save session (AI does it automatically)
+    completePractice(initialTime, sessionType);
+    
+    // Store completed session info for modal
+    setCompletedDuration(initialTime);
+    setCompletedSessionType(sessionType);
+    
+    // Advance day if target met
     advanceDay();
     
     // Check for level up
@@ -359,13 +380,16 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
       setNewLevel(levelUp);
       setShowLevelUp(true);
       
-      // Show level up for 5 seconds, then continue with completion flow
+      // After level up, show post-session modal
       setTimeout(() => {
         setShowLevelUp(false);
-        proceedWithCompletion();
+        setShowPostSessionModal(true);
       }, 5000);
     } else {
-      proceedWithCompletion();
+      // Show post-session modal after 2 seconds
+      setTimeout(() => {
+        setShowPostSessionModal(true);
+      }, 2000);
     }
   };
   
