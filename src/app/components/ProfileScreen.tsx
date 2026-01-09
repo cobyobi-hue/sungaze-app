@@ -51,9 +51,21 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     try {
       console.log('ProfileScreen: getCurrentUser called, fetching user from Supabase auth');
       setLoading(true);
-      setError(null);
+      setError(null); // Clear any previous errors
       
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      // Try to get user - catch any session errors silently
+      let user = null;
+      let authError = null;
+      
+      try {
+        const result = await supabase.auth.getUser();
+        user = result.data.user;
+        authError = result.error;
+      } catch (sessionError: any) {
+        // Catch any thrown errors (like "Auth session missing")
+        console.log('ProfileScreen: Session error caught (silent):', sessionError?.message || 'Unknown session error');
+        authError = sessionError;
+      }
       
       console.log('ProfileScreen: Auth response received', {
         hasUser: !!user,
@@ -65,37 +77,44 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       });
       
       if (authError) {
-        console.error('ProfileScreen: Error getting current user:', authError);
+        console.log('ProfileScreen: Auth error (this is normal if not signed in):', authError.message);
         
         // Handle refresh token errors - clear session silently
         const isRefreshTokenError = authError.message?.includes('Refresh Token') || 
                                    authError.message?.includes('refresh_token') ||
                                    authError.status === 401;
         
-        if (isRefreshTokenError) {
-          console.log('ProfileScreen: Invalid refresh token, clearing session...');
+        // Handle "Auth session missing" or similar errors - just return null silently
+        const isSessionMissing = authError.message?.includes('session') || 
+                                authError.message?.includes('Session') ||
+                                authError.message?.includes('Auth session missing');
+        
+        if (isRefreshTokenError || isSessionMissing) {
+          console.log('ProfileScreen: No valid session, clearing and returning null');
           try {
             await supabase.auth.signOut();
           } catch (signOutError) {
-            console.error('Error signing out:', signOutError);
+            // Ignore sign out errors
           }
-          // Return null - main app will handle showing auth screen
+          // Return null silently - main app will handle showing auth screen
           setCurrentUser(null);
           setLoading(false);
+          setError(null); // Don't show error for missing session
           return;
         }
         
-        setError(`Authentication error: ${authError.message}`);
+        // For other errors, still don't show them - just return null
         setCurrentUser(null);
         setLoading(false);
+        setError(null); // Don't display auth errors
         return;
       }
       
       if (!user) {
-        console.log('ProfileScreen: No authenticated user found');
-        setError('No authenticated user found. Please sign in.');
+        console.log('ProfileScreen: No authenticated user found - returning null silently');
         setCurrentUser(null);
         setLoading(false);
+        setError(null); // Don't show error - just return null
         return;
       }
       
@@ -123,9 +142,11 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
         return;
       }
       
-      setError(`Failed to get user: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      // Don't set error for auth failures - just return null silently
+      console.log('ProfileScreen: Error getting user (silent return):', error instanceof Error ? error.message : 'Unknown error');
       setCurrentUser(null);
       setLoading(false);
+      setError(null); // Don't display errors - main app handles auth
     }
   };
 
