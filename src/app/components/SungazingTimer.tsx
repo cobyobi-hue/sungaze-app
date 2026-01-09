@@ -33,10 +33,8 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   
   // Set initial time based on tier and current day
   const getInitialTime = () => {
-    if (profile?.tier === 'free') {
-      return FREE_TIER_LIMITS.timerMaxDuration; // 60 seconds for free tier
-    }
-    return getCurrentDayTarget(); // Use current day target for premium users
+    // ALL users (free and premium) start at 10 seconds (day 1) and increase by 10 seconds per day
+    return getCurrentDayTarget(); // Day 1 = 10s, Day 2 = 20s, Day 3 = 30s, etc.
   };
   
   const [timeLeft, setTimeLeft] = useState(getInitialTime());
@@ -253,23 +251,34 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
     return labels[month - 1] || labels[0];
   };
 
-  // Generate time options based on subscription tier
+  // Generate time options - includes day-based progression AND common options like 60 seconds
   const getCurrentDayTimeOptions = () => {
-    if (profile?.tier === 'free') {
-      // Free tier gets only 1-minute option
-      return [FREE_TIER_LIMITS.timerMaxDuration];
-    }
+    const options = new Set<number>(); // Use Set to avoid duplicates
     
-    // Premium users get progressive options
-    const options = [];
+    // Always include the day-based progression options
     if (currentDay > 1) {
-      options.push(getDayTime(currentDay - 1));
+      options.add(getDayTime(currentDay - 1)); // Previous day
     }
-    options.push(getDayTime(currentDay));
-    options.push(getDayTime(currentDay + 1));
-    options.push(getDayTime(currentDay + 2));
+    options.add(getDayTime(currentDay)); // Current day (default)
+    options.add(getDayTime(currentDay + 1)); // Next day
+    if (currentDay + 2 <= 270) {
+      options.add(getDayTime(currentDay + 2)); // Day after next
+    }
     
-    return options.slice(0, 3);
+    // Always include 60 seconds as an option (common choice)
+    options.add(60);
+    
+    // Include other common durations if they're not already in the list
+    // Only add if they're reasonable (not less than current day target)
+    const commonOptions = [30, 90, 120, 180, 300]; // 30s, 1.5min, 2min, 3min, 5min
+    commonOptions.forEach(opt => {
+      if (opt >= getCurrentDayTarget()) {
+        options.add(opt);
+      }
+    });
+    
+    // Convert to array, sort, and limit to reasonable number of options
+    return Array.from(options).sort((a, b) => a - b).slice(0, 6);
   };
 
   const getCurrentMonth = () => getMonthFromDay(currentDay);
