@@ -66,6 +66,25 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       
       if (authError) {
         console.error('ProfileScreen: Error getting current user:', authError);
+        
+        // Handle refresh token errors - clear session silently
+        const isRefreshTokenError = authError.message?.includes('Refresh Token') || 
+                                   authError.message?.includes('refresh_token') ||
+                                   authError.status === 401;
+        
+        if (isRefreshTokenError) {
+          console.log('ProfileScreen: Invalid refresh token, clearing session...');
+          try {
+            await supabase.auth.signOut();
+          } catch (signOutError) {
+            console.error('Error signing out:', signOutError);
+          }
+          // Return null - main app will handle showing auth screen
+          setCurrentUser(null);
+          setLoading(false);
+          return;
+        }
+        
         setError(`Authentication error: ${authError.message}`);
         setCurrentUser(null);
         setLoading(false);
@@ -83,8 +102,27 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       console.log('ProfileScreen: User found, setting currentUser:', user.id);
       setCurrentUser(user);
       // Don't set loading to false here - let loadProfile handle it
-    } catch (error) {
+    } catch (error: any) {
       console.error('ProfileScreen: Unexpected error in getCurrentUser:', error);
+      
+      // Check if it's a refresh token error
+      const isRefreshTokenError = error?.message?.includes('Refresh Token') || 
+                                 error?.message?.includes('refresh_token') ||
+                                 error?.status === 401;
+      
+      if (isRefreshTokenError) {
+        console.log('ProfileScreen: Invalid refresh token in catch, clearing session...');
+        try {
+          await supabase.auth.signOut();
+        } catch (signOutError) {
+          console.error('Error signing out:', signOutError);
+        }
+        // Return null - main app will handle showing auth screen
+        setCurrentUser(null);
+        setLoading(false);
+        return;
+      }
+      
       setError(`Failed to get user: ${error instanceof Error ? error.message : 'Unknown error'}`);
       setCurrentUser(null);
       setLoading(false);
@@ -249,26 +287,12 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     );
   }
 
-  if (error && !currentUser) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center">
-          <p className="text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{error}</p>
-          <p className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Please sign in to view your profile</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!currentUser) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center">
-          <p className="text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Please sign in to view your profile</p>
-          <p className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Authentication required</p>
-        </div>
-      </div>
-    );
+  // If no user after loading completes, return null
+  // The main app will handle showing AuthScreen
+  // This prevents the "Auth session missing" error from showing
+  if (!currentUser && !loading) {
+    // Return null - the main app's auth check will handle showing AuthScreen
+    return null;
   }
 
   if (!profile) {

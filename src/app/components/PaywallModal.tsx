@@ -1,13 +1,19 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { X, Crown, Flame, Sun, Shield, Zap, Lock, Star } from 'lucide-react';
+import { X, Crown, Flame, Sun, Shield, Zap, Lock, Star, AlertTriangle } from 'lucide-react';
 import { Button } from './ui/button';
-import { PAYMENT_PRODUCTS, TIER_FEATURES } from '../types/subscription';
-import { createCheckoutSession, redirectToCheckout, getUserRegion } from '../lib/payments/stripe';
-import { initializeFlutterwavePayment, convertCurrency } from '../lib/payments/flutterwave';
+import { TIER_FEATURES } from '../types/subscription';
 import { FounderStats } from './FounderStats';
 import { subscriptionService } from '../lib/database/subscription-service';
+import { 
+  getOfferings, 
+  purchasePackage, 
+  checkSubscriptionStatus,
+  PRODUCT_IDS,
+  initializeRevenueCat 
+} from '../services/revenuecat.service';
+import { PAYMENTS_ENABLED } from '../lib/featureFlags';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -22,12 +28,52 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
   const [loading, setLoading] = useState<string | null>(null);
   const [founderSlots, setFounderSlots] = useState({ remaining: 444, sold: 0 });
   const [showFounderDetails, setShowFounderDetails] = useState(false);
+  const [offerings, setOfferings] = useState<any>(null);
+  const [isLoadingOfferings, setIsLoadingOfferings] = useState(false);
+  const [platform, setPlatform] = useState<string>('web');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
       loadFounderSlots();
+      checkPlatform();
+      if (PAYMENTS_ENABLED) {
+        loadOfferings();
+      }
     }
   }, [isOpen]);
+
+  const checkPlatform = async () => {
+    try {
+      // Check if Capacitor is available
+      const Capacitor = (await import('@capacitor/core')).Capacitor;
+      const currentPlatform = Capacitor.getPlatform();
+      setPlatform(currentPlatform);
+      console.log('Platform detected:', currentPlatform);
+    } catch (e) {
+      console.log('Capacitor not available, running on web');
+      setPlatform('web');
+    }
+  };
+
+  const loadOfferings = async () => {
+    if (!PAYMENTS_ENABLED) return;
+    
+    setIsLoadingOfferings(true);
+    try {
+      // Initialize RevenueCat if not already initialized
+      await initializeRevenueCat(userId);
+      
+      const currentOfferings = await getOfferings();
+      setOfferings(currentOfferings);
+      console.log('Offerings loaded:', currentOfferings);
+    } catch (error) {
+      console.error('Failed to load offerings:', error);
+      setError('Failed to load subscription options. Please try again.');
+    } finally {
+      setIsLoadingOfferings(false);
+    }
+  };
 
   const loadFounderSlots = async () => {
     try {
@@ -39,46 +85,66 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
   };
 
   const handlePayment = async (productId: string) => {
+    // If payments disabled or on web, show coming soon
+    if (!PAYMENTS_ENABLED || platform === 'web') {
+      alert('Subscriptions are coming soon! For now, enjoy the full experience.');
+      return;
+    }
+
     setLoading(productId);
+    setError(null);
     
     try {
-      const product = PAYMENT_PRODUCTS.find(p => p.id === productId);
-      if (!product) {
-        throw new Error('Product not found');
+      if (!offerings || !offerings.availablePackages) {
+        throw new Error('Subscription options not available. Please try again later.');
       }
 
-      // Create checkout session with our API
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId: product.stripePriceId,
-          userId,
-          email,
-          tier: product.tier,
-        }),
-      });
-
-      const data = await response.json();
+      // Map product IDs to RevenueCat packages
+      let packageToPurchase: any = null;
       
-      console.log('Payment API Response:', { status: response.status, data });
-      
-      if (!response.ok) {
-        console.error('Payment API Error:', data);
-        throw new Error(data.error || 'Payment setup failed');
+      // Find the package that matches our product ID
+      for (const pkg of offerings.availablePackages) {
+        const pkgProductId = (pkg as any).storeProduct?.identifier || (pkg as any).identifier;
+        
+        if (productId === 'monthly' && pkgProductId === PRODUCT_IDS.MONTHLY) {
+          packageToPurchase = pkg;
+          break;
+        } else if (productId === 'yearly' && pkgProductId === PRODUCT_IDS.ANNUAL) {
+          packageToPurchase = pkg;
+          break;
+        } else if (productId === 'founder_444' && pkgProductId === PRODUCT_IDS.LIFETIME) {
+          packageToPurchase = pkg;
+          break;
+        }
       }
 
-      if (data.url) {
-        // Redirect to Stripe Checkout
-        window.location.href = data.url;
+      if (!packageToPurchase) {
+        throw new Error('Subscription option not found. Please try again later.');
+      }
+
+      // Purchase through RevenueCat
+      const customerInfo = await purchasePackage(packageToPurchase);
+      
+      console.log('Purchase successful:', customerInfo);
+      
+      // Check if purchase was successful
+      const status = await checkSubscriptionStatus();
+      if (status.isPremium) {
+        alert('Subscription activated successfully!');
+        onSuccess?.();
+        onClose();
       } else {
-        throw new Error('No checkout URL received');
+        throw new Error('Purchase completed but subscription not activated. Please contact support.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Payment error:', error);
-      alert(`Payment failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error.message || 'Payment failed. Please try again.';
+      setError(errorMessage);
+      
+      // Don't show alert for user cancellation
+      if (errorMessage !== 'Purchase was cancelled') {
+        alert(errorMessage);
+      }
     } finally {
       setLoading(null);
     }
@@ -86,9 +152,31 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
 
   if (!isOpen) return null;
 
-  const monthlyProduct = PAYMENT_PRODUCTS.find(p => p.id === 'monthly')!;
-  const yearlyProduct = PAYMENT_PRODUCTS.find(p => p.id === 'yearly')!;
-  const founderProduct = PAYMENT_PRODUCTS.find(p => p.id === 'founder_444')!;
+  // Helper to find package by product ID
+  const findPackage = (productId: string) => {
+    if (!offerings?.availablePackages) return null;
+    const targetId = productId === 'monthly' ? PRODUCT_IDS.MONTHLY : 
+                     productId === 'yearly' ? PRODUCT_IDS.ANNUAL : 
+                     PRODUCT_IDS.LIFETIME;
+    
+    return offerings.availablePackages.find((pkg: any) => {
+      const pkgProductId = pkg.storeProduct?.identifier || pkg.identifier;
+      return pkgProductId === targetId;
+    });
+  };
+
+  const monthlyPackage = findPackage('monthly');
+  const yearlyPackage = findPackage('yearly');
+  const founderPackage = findPackage('founder_444');
+
+  // Get display price from package
+  const getPrice = (pkg: any) => {
+    if (!pkg) return 'Loading...';
+    return pkg.storeProduct?.priceString || pkg.localizedPriceString || 'N/A';
+  };
+
+  // Show "Coming Soon" message if on web or payments disabled
+  const isWebOrDisabled = platform === 'web' || !PAYMENTS_ENABLED;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -127,15 +215,21 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
               </p>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <p className="text-lg text-blue-600 font-bold">$9.99</p>
+                  <p className="text-lg text-blue-600 font-bold">
+                    {monthlyPackage ? getPrice(monthlyPackage) : 'Loading...'}
+                  </p>
                   <p className="text-sm text-gray-600">Sungaze+ Monthly — unlimited ritual path.</p>
                 </div>
                 <div>
-                  <p className="text-lg text-purple-600 font-bold">$88.88</p>
+                  <p className="text-lg text-purple-600 font-bold">
+                    {yearlyPackage ? getPrice(yearlyPackage) : 'Loading...'}
+                  </p>
                   <p className="text-sm text-gray-600">Sungaze+ Yearly — infinite return for one year.</p>
                 </div>
                 <div>
-                  <p className="text-lg text-yellow-600 font-bold">$100</p>
+                  <p className="text-lg text-yellow-600 font-bold">
+                    {founderPackage ? getPrice(founderPackage) : 'Loading...'}
+                  </p>
                   <p className="text-sm text-gray-600">Founder 444 — 3 years full access. Only 444 ever.</p>
                 </div>
               </div>
@@ -147,135 +241,171 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
 
           {/* Payment Options */}
           <div className="px-8 pb-8">
-            <div className="grid md:grid-cols-3 gap-6">
-              
-              {/* Monthly Subscription */}
-              <div className="group relative bg-white border border-blue-300 rounded-2xl p-6 hover:border-blue-400 transition-all duration-300 shadow-sm">
-                <div className="text-center">
-                  <Star className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Sungaze+ Monthly</h3>
-                  <div className="text-3xl font-bold text-blue-600 mb-4">
-                    ${monthlyProduct.price}
-                  </div>
-                  <p className="text-gray-700 text-sm mb-6 font-medium">
-                    Unlimited ritual path — all features unlocked.
-                  </p>
-                  
-                  <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
-                    {TIER_FEATURES.monthly.slice(0, 4).map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Button
-                    onClick={() => handlePayment('monthly')}
-                    disabled={loading === 'monthly'}
-                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 font-bold"
-                  >
-                    {loading === 'monthly' ? 'Processing...' : 'Unlimited Path'}
-                  </Button>
-                </div>
+            {isWebOrDisabled ? (
+              <div className="text-center py-12">
+                <Crown className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Subscriptions Coming Soon!</h3>
+                <p className="text-gray-600 mb-6">
+                  For now, enjoy the full experience at no cost!
+                </p>
+                <Button
+                  onClick={onClose}
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 font-bold px-8"
+                >
+                  Continue
+                </Button>
               </div>
-
-              {/* Yearly Subscription */}
-              <div className="group relative bg-white border border-purple-300 rounded-2xl p-6 hover:border-purple-400 transition-all duration-300 shadow-sm">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    BEST VALUE
-                  </div>
-                </div>
-                
-                <div className="text-center pt-2">
-                  <Zap className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Sungaze+ Yearly</h3>
-                  <div className="text-3xl font-bold text-purple-600 mb-4">
-                    ${yearlyProduct.price}
-                  </div>
-                  <p className="text-gray-700 text-sm mb-6 font-medium">
-                    Infinite return for one year — best value.
-                  </p>
-                  
-                  <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
-                    {TIER_FEATURES.yearly.slice(0, 4).map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Button
-                    onClick={() => handlePayment('yearly')}
-                    disabled={loading === 'yearly'}
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white border-0 font-bold"
-                  >
-                    {loading === 'yearly' ? 'Processing...' : 'Infinite Return'}
-                  </Button>
-                </div>
+            ) : isLoadingOfferings ? (
+              <div className="text-center py-12">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-gray-600">Loading subscription options...</p>
               </div>
-
-              {/* Founder 444 */}
-              <div className="group relative bg-white border-2 border-yellow-400 rounded-2xl p-6 hover:border-yellow-500 transition-all duration-300 shadow-lg">
-                {/* Founder Badge */}
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <FounderStats className="text-xs" />
-                </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                <p className="text-red-600 mb-4">{error}</p>
+                <Button
+                  onClick={loadOfferings}
+                  className="bg-blue-500 hover:bg-blue-600 text-white border-0 font-bold px-8"
+                >
+                  Retry
+                </Button>
+              </div>
+            ) : (
+            <>
+              <div className="grid md:grid-cols-3 gap-6">
                 
-                <div className="text-center pt-4">
-                  <Crown className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Founder 444</h3>
-                  <div className="text-3xl font-bold text-yellow-600 mb-2">
-                    $100
-                  </div>
-                  <p className="text-xs text-yellow-700 mb-4 font-bold">3 years • One time</p>
-                  <p className="text-gray-700 text-sm mb-6 font-medium">
-                    Become one of the First Witnesses. Everything unlocked forever.
-                  </p>
-                  
-                  {!showFounderDetails ? (
-                    <button
-                      onClick={() => setShowFounderDetails(true)}
-                      className="text-yellow-600 text-sm underline mb-4 font-bold"
-                    >
-                      View founder benefits →
-                    </button>
-                  ) : (
+                {/* Monthly Subscription */}
+                <div className="group relative bg-white border border-blue-300 rounded-2xl p-6 hover:border-blue-400 transition-all duration-300 shadow-sm">
+                  <div className="text-center">
+                    <Star className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Sungaze+ Monthly</h3>
+                    <div className="text-3xl font-bold text-blue-600 mb-4">
+                      {monthlyPackage ? getPrice(monthlyPackage) : 'N/A'}
+                    </div>
+                    <p className="text-gray-700 text-sm mb-6 font-medium">
+                      Unlimited ritual path — all features unlocked.
+                    </p>
+                    
                     <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
-                      {TIER_FEATURES.founder_444.slice(0, 4).map((feature, i) => (
+                      {TIER_FEATURES.monthly.slice(0, 4).map((feature, i) => (
                         <li key={i} className="flex items-center gap-2">
-                          <Crown className="w-3 h-3 text-yellow-600" />
+                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
                           {feature}
                         </li>
                       ))}
                     </ul>
-                  )}
-                  
-                  {founderSlots.remaining > 0 ? (
+                    
                     <Button
-                      onClick={() => handlePayment('founder_444')}
-                      disabled={loading === 'founder_444'}
-                      className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-bold border-0"
+                      onClick={() => handlePayment('monthly')}
+                      disabled={loading === 'monthly'}
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 font-bold"
                     >
-                      {loading === 'founder_444' ? 'Processing...' : 'Claim Founder Status'}
+                      {loading === 'monthly' ? 'Processing...' : 'Unlimited Path'}
                     </Button>
-                  ) : (
-                    <div className="w-full bg-gray-200 text-gray-600 py-3 rounded-xl text-center font-bold">
-                      <Shield className="w-4 h-4 inline mr-2" />
-                      Founder 444 Closed
+                  </div>
+                </div>
+
+                {/* Yearly Subscription */}
+                <div className="group relative bg-white border border-purple-300 rounded-2xl p-6 hover:border-purple-400 transition-all duration-300 shadow-sm">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      BEST VALUE
                     </div>
-                  )}
+                  </div>
+                  
+                  <div className="text-center pt-2">
+                    <Zap className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Sungaze+ Yearly</h3>
+                    <div className="text-3xl font-bold text-purple-600 mb-4">
+                      {yearlyPackage ? getPrice(yearlyPackage) : 'N/A'}
+                    </div>
+                    <p className="text-gray-700 text-sm mb-6 font-medium">
+                      Infinite return for one year — best value.
+                    </p>
+                    
+                    <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
+                      {TIER_FEATURES.yearly.slice(0, 4).map((feature, i) => (
+                        <li key={i} className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <Button
+                      onClick={() => handlePayment('yearly')}
+                      disabled={loading === 'yearly'}
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white border-0 font-bold"
+                    >
+                      {loading === 'yearly' ? 'Processing...' : 'Infinite Return'}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Founder 444 */}
+                <div className="group relative bg-white border-2 border-yellow-400 rounded-2xl p-6 hover:border-yellow-500 transition-all duration-300 shadow-lg">
+                  {/* Founder Badge */}
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <FounderStats className="text-xs" />
+                  </div>
+                  
+                  <div className="text-center pt-4">
+                    <Crown className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Founder 444</h3>
+                    <div className="text-3xl font-bold text-yellow-600 mb-2">
+                      {founderPackage ? getPrice(founderPackage) : 'N/A'}
+                    </div>
+                    <p className="text-xs text-yellow-700 mb-4 font-bold">3 years • One time</p>
+                    <p className="text-gray-700 text-sm mb-6 font-medium">
+                      Become one of the First Witnesses. Everything unlocked forever.
+                    </p>
+                    
+                    {!showFounderDetails ? (
+                      <button
+                        onClick={() => setShowFounderDetails(true)}
+                        className="text-yellow-600 text-sm underline mb-4 font-bold"
+                      >
+                        View founder benefits →
+                      </button>
+                    ) : (
+                      <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
+                        {TIER_FEATURES.founder_444.slice(0, 4).map((feature, i) => (
+                          <li key={i} className="flex items-center gap-2">
+                            <Crown className="w-3 h-3 text-yellow-600" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    
+                    {founderSlots.remaining > 0 ? (
+                      <Button
+                        onClick={() => handlePayment('founder_444')}
+                        disabled={loading === 'founder_444'}
+                        className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-bold border-0"
+                      >
+                        {loading === 'founder_444' ? 'Processing...' : 'Claim Founder Status'}
+                      </Button>
+                    ) : (
+                      <div className="w-full bg-gray-200 text-gray-600 py-3 rounded-xl text-center font-bold">
+                        <Shield className="w-4 h-4 inline mr-2" />
+                        Founder 444 Closed
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Security Badge */}
-            <div className="flex justify-center items-center gap-2 mt-8 text-gray-600 text-sm font-medium">
-              <Lock className="w-4 h-4" />
-              <span>Secured by Stripe & Flutterwave • 256-bit encryption</span>
-            </div>
+              {/* Security Badge */}
+              {!isWebOrDisabled && (
+                <div className="flex justify-center items-center gap-2 mt-8 text-gray-600 text-sm font-medium">
+                  <Lock className="w-4 h-4" />
+                  <span>Secured by Apple/Google • 256-bit encryption</span>
+                </div>
+              )}
+            </>
+            )}
           </div>
         </div>
       </div>

@@ -4,12 +4,10 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Star, Loader2 } from 'lucide-react';
 import { OnboardingQuestions } from './OnboardingQuestions';
 import { AuthenticationScreen } from './AuthenticationScreen';
-import { UserProfileForm } from './UserProfileForm';
 import { EncouragementSlides } from './EncouragementSlides';
 import { RatingRequest } from './RatingRequest';
 import { PlanGenerationLoading } from './PlanGenerationLoading';
 import { OnboardingPaywall } from './OnboardingPaywall';
-import { PAYMENTS_ENABLED } from '../../lib/featureFlags';
 
 export interface OnboardingData {
   // 13 Core Questions
@@ -78,12 +76,11 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps = {}) {
   const steps = [
     { component: OnboardingQuestions, title: "Solar Oracle Assessment" },
     { component: AuthenticationScreen, title: "Secure Your Journey" },
-    { component: UserProfileForm, title: "Complete Your Profile" },
     { component: EncouragementSlides, title: "Your Potential" },
     { component: RatingRequest, title: "Help Others" },
     { component: PlanGenerationLoading, title: "Generating Your Plan" },
-    // Only include paywall step if payments are enabled
-    ...(PAYMENTS_ENABLED ? [{ component: OnboardingPaywall, title: "Your Transformation Plan" }] : []),
+    // Shows "Coming Soon" screen with results when payments are disabled
+    { component: OnboardingPaywall, title: "Your Transformation Plan" },
   ];
 
   const updateData = (section: keyof OnboardingData, data: any) => {
@@ -114,19 +111,24 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps = {}) {
   const CurrentComponent = steps[currentStep].component;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 relative overflow-hidden">
+      {/* Dark warm overlay for app interface */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
+      
+      {/* Content wrapper */}
+      <div className="relative z-10">
       {/* Sun44 Logo - Top Left */}
       <div className="fixed top-6 left-6 z-50">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.5)] border border-yellow-300/30">
-          <span className="text-black text-sm font-bold tracking-tight">44</span>
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.6),0_0_40px_rgba(255,215,0,0.3)] border-2 border-yellow-300/40">
+          <span className="text-black text-sm font-bold tracking-tight drop-shadow-[0_2px_4px_rgba(255,255,255,0.3)]">44</span>
         </div>
       </div>
 
       {/* Progress Bar */}
       <div className="fixed top-0 left-0 right-0 z-50">
-        <div className="h-1 bg-blue-500/20">
+        <div className="h-1 bg-orange-500/20">
           <div 
-            className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-500 ease-out"
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
         </div>
@@ -150,18 +152,20 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps = {}) {
           <div className="flex justify-between items-center">
             <button
               onClick={prevStep}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-xl border border-blue-400/30 rounded-2xl text-white hover:from-blue-500/30 hover:to-indigo-500/30 transition-all duration-300"
+              className="flex items-center gap-2 px-6 py-3 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 rounded-2xl text-white transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
             >
-              <ChevronLeft className="w-5 h-5" />
-              <span className="text-body-sm font-medium">Back</span>
+              <ChevronLeft className="w-5 h-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]" />
+              <span className="text-body-sm font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Back</span>
             </button>
             
-            <div className="text-caption text-white/60">
+            <div className="text-caption text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
               {currentStep + 1} of {steps.length}
             </div>
           </div>
         </div>
       )}
+      </div>
+      {/* End content wrapper */}
     </div>
   );
 }

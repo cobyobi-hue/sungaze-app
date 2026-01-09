@@ -109,22 +109,22 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-display-2xl text-white font-bold mb-2">Your Custom Solar Transformation Plan Is Ready</h1>
-          <p className="text-body-md text-white/70">Based on your profile, here's what we've created for you:</p>
+          <p className="text-body-md text-white/90">Based on your profile, here's what we've created for you:</p>
         </div>
 
         {/* Preview Content */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg mb-8">
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-8">
           <h2 className="text-title-md text-white font-semibold mb-4">Your Personalized Insights:</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <p className="text-body-sm text-white/80">• Sungazing progression: 10 seconds daily, increasing by 10 seconds each day</p>
-              <p className="text-body-sm text-white/80">• General practice time: 10-20 minutes (candle gazing, cloud gazing, sungazing)</p>
-              <p className="text-body-sm text-white/80">• Optimal timing based on your location</p>
+              <p className="text-body-sm text-white/90">• Sungazing progression: 10 seconds daily, increasing by 10 seconds each day</p>
+              <p className="text-body-sm text-white/90">• General practice time: 10-20 minutes (candle gazing, cloud gazing, sungazing)</p>
+              <p className="text-body-sm text-white/90">• Optimal timing based on your location</p>
             </div>
             <div className="space-y-2">
-              <p className="text-body-sm text-white/80">• Safety protocols tailored to your experience level</p>
-              <p className="text-body-sm text-white/80">• Expected transformation timeline: 90-273 days</p>
-              <p className="text-body-sm text-white/80">• Energy optimization focus areas</p>
+              <p className="text-body-sm text-white/90">• Safety protocols tailored to your experience level</p>
+              <p className="text-body-sm text-white/90">• Expected transformation timeline: 90-273 days</p>
+              <p className="text-body-sm text-white/90">• Energy optimization focus areas</p>
             </div>
           </div>
         </div>
@@ -133,8 +133,8 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
         <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-xl border border-yellow-400/20 rounded-2xl p-8 text-center shadow-lg mb-8">
           <Crown className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
           <h2 className="text-title-lg text-white font-bold mb-2">Premium Features Coming Soon!</h2>
-          <p className="text-body-md text-white/90 mb-2">Currently enjoying Sungaze at a low cost or FREE</p>
-          <p className="text-body-sm text-white/70 mb-6">
+          <p className="text-body-md text-white/95 mb-2">Currently enjoying Sungaze at a low cost or FREE</p>
+          <p className="text-body-sm text-white/90 mb-6">
             We're working on bringing you premium features. For now, enjoy the full experience!
           </p>
           <button
@@ -210,7 +210,7 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-display-2xl text-white font-bold mb-2">Your Custom Solar Transformation Plan Is Ready</h1>
-        <p className="text-body-md text-white/70">Based on your profile, here's what we've created for you:</p>
+        <p className="text-body-md text-white/90">Based on your profile, here's what we've created for you:</p>
         
         {/* Founder Badge */}
         <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 border border-yellow-400/30 rounded-full">
@@ -222,30 +222,30 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
       {/* Preview Content */}
       <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg mb-8">
         <h2 className="text-title-md text-white font-semibold mb-4">Your Personalized Insights:</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <p className="text-body-sm text-white/80">• Sungazing progression: 10 seconds daily, increasing by 10 seconds each day</p>
-            <p className="text-body-sm text-white/80">• General practice time: 10-20 minutes (candle gazing, cloud gazing, sungazing)</p>
-            <p className="text-body-sm text-white/80">• Optimal timing based on your location</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <p className="text-body-sm text-white/90">• Sungazing progression: 10 seconds daily, increasing by 10 seconds each day</p>
+              <p className="text-body-sm text-white/90">• General practice time: 10-20 minutes (candle gazing, cloud gazing, sungazing)</p>
+              <p className="text-body-sm text-white/90">• Optimal timing based on your location</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-body-sm text-white/90">• Safety protocols tailored to your experience level</p>
+              <p className="text-body-sm text-white/90">• Expected transformation timeline: 90-273 days</p>
+              <p className="text-body-sm text-white/90">• Energy optimization focus areas</p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <p className="text-body-sm text-white/80">• Safety protocols tailored to your experience level</p>
-            <p className="text-body-sm text-white/80">• Expected transformation timeline: 90-273 days</p>
-            <p className="text-body-sm text-white/80">• Energy optimization focus areas</p>
-          </div>
-        </div>
       </div>
 
       {/* Value Props */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         {valueProps.map((prop, index) => (
-          <div key={index} className="flex items-start gap-3 p-4 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-xl">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center flex-shrink-0">
+          <div key={index} className="flex items-start gap-3 p-4 bg-black/50 backdrop-blur-md border border-white/10 hover:bg-black/60 rounded-xl transition-colors duration-300">
+            <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center flex-shrink-0">
               <prop.icon className="w-4 h-4 text-white" />
             </div>
             <div>
               <h3 className="text-body-md text-white font-semibold mb-1">{prop.title}</h3>
-              <p className="text-body-sm text-white/70">{prop.description}</p>
+              <p className="text-body-sm text-white/90">{prop.description}</p>
             </div>
           </div>
         ))}
@@ -266,8 +266,8 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
               onClick={() => setSelectedPlan(plan.id)}
               className={`relative p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
                 selectedPlan === plan.id
-                  ? 'border-blue-400/50 bg-gradient-to-br from-blue-500/20 to-indigo-500/20'
-                  : 'border-blue-400/20 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 hover:border-blue-400/30'
+                  ? 'border-yellow-400/50 bg-black/60'
+                  : 'border-white/10 bg-black/40 hover:bg-black/50 hover:border-white/20'
               }`}
             >
               {/* Popular Badge */}
@@ -293,11 +293,11 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
                 <h3 className="text-title-md text-white font-semibold mb-2">{plan.name}</h3>
                 <div className="flex items-baseline justify-center gap-1">
                   <span className="text-display-2xl text-white font-bold">{plan.price}</span>
-                  <span className="text-body-sm text-white/60">{plan.period}</span>
+                  <span className="text-body-sm text-white/80">{plan.period}</span>
                 </div>
                 {plan.originalPrice && (
                   <div className="flex items-center justify-center gap-2 mt-2">
-                    <span className="text-body-sm text-white/50 line-through">{plan.originalPrice}</span>
+                    <span className="text-body-sm text-white/60 line-through">{plan.originalPrice}</span>
                     <span className="text-body-sm text-green-400 font-semibold">{plan.savings}</span>
                   </div>
                 )}
@@ -308,7 +308,7 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
                 {plan.features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-body-sm text-white/80">{feature}</span>
+                    <span className="text-body-sm text-white/90">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -317,8 +317,8 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
               <button
                 className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 ${
                   selectedPlan === plan.id
-                    ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'
-                    : 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-white/80 hover:from-blue-500/30 hover:to-indigo-500/30'
+                    ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                    : 'bg-black/40 backdrop-blur-lg border border-white/10 text-white hover:bg-black/50'
                 }`}
               >
                 {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
@@ -355,7 +355,7 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
           )}
         </button>
         
-        <p className="text-caption text-white/60 mt-4">
+        <p className="text-caption text-white/80 mt-4">
           Secure payment • Cancel anytime • 30-day money-back guarantee
         </p>
         
@@ -363,7 +363,7 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
         <div className="mt-6 p-4 bg-gradient-to-r from-yellow-400/10 to-amber-500/10 border border-yellow-400/20 rounded-xl">
           <div className="text-center">
             <p className="text-body-sm text-yellow-400 font-semibold mb-2">Limited Time: Founder 444 Status</p>
-            <p className="text-caption text-white/70">
+            <p className="text-caption text-white/90">
               Only the first 444 users will receive founder recognition, exclusive badges, and lifetime access at this special price.
             </p>
           </div>

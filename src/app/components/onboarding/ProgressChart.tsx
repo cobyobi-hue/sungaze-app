@@ -13,7 +13,7 @@ export function ProgressChart({ currentDay, totalDays, className = '' }: Progres
   const days = Array.from({ length: totalDays }, (_, i) => i + 1);
 
   return (
-    <div className={`bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 ${className}`}>
+    <div className={`bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] ${className}`}>
       <h3 className="text-title-sm text-white font-semibold mb-4 text-center">Your 273-Day Transformation Journey</h3>
       
       {/* Progress Bar */}
@@ -22,7 +22,7 @@ export function ProgressChart({ currentDay, totalDays, className = '' }: Progres
           <span className="text-caption text-white/60">Day {currentDay} of {totalDays}</span>
           <span className="text-caption text-white/60">{Math.round(progress)}% Complete</span>
         </div>
-        <div className="h-3 bg-blue-500/20 rounded-full overflow-hidden">
+        <div className="h-3 bg-orange-500/20 rounded-full overflow-hidden">
           <div 
             className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-1000 ease-out"
             style={{ width: `${progress}%` }}
@@ -39,7 +39,7 @@ export function ProgressChart({ currentDay, totalDays, className = '' }: Progres
               day <= currentDay
                 ? 'bg-gradient-to-r from-yellow-400 to-amber-500'
                 : day === currentDay + 1
-                ? 'bg-blue-400/60'
+                ? 'bg-yellow-400/60'
                 : 'bg-white/20'
             }`}
           />

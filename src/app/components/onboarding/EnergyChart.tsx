@@ -20,7 +20,7 @@ export function EnergyChart({ currentEnergy, targetEnergy, className = '' }: Ene
   const currentLevel = energyLevels.find(level => currentEnergy <= level.value) || energyLevels[energyLevels.length - 1];
 
   return (
-    <div className={`bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 ${className}`}>
+    <div className={`bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] ${className}`}>
       <h3 className="text-title-sm text-white font-semibold mb-4 text-center">Your Energy Transformation</h3>
       
       {/* Current Energy Level */}

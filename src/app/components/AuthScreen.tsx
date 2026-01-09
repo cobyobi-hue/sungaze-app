@@ -25,6 +25,8 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
     setLoading(true);
     setError('');
 
+    console.log('Auth form submitted:', { isSignUp, email, password: '***' });
+
     try {
       if (isSignUp) {
         const { data, error } = await supabase.auth.signUp({
@@ -102,32 +104,77 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
             }
           }, 1000);
         } else {
-          setError('Check your email for verification link!');
+          // Send verification email using our custom email service
+          try {
+            const emailResponse = await fetch('/api/auth/send-verification-email', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: email,
+                userId: data.user?.id,
+              }),
+            });
+
+            const emailResult = await emailResponse.json();
+
+            if (emailResponse.ok && emailResult.success) {
+              setError('Verification email sent! Please check your inbox and click the verification link.');
+            } else {
+              console.error('Failed to send verification email:', emailResult.error);
+              setError('Account created! However, we couldn\'t send a verification email. You can still use the app.');
+              // Allow user to proceed even if email fails
+              setTimeout(() => {
+                onAuthSuccess();
+              }, 2000);
+            }
+          } catch (emailError) {
+            console.error('Error sending verification email:', emailError);
+            setError('Account created! However, we couldn\'t send a verification email. You can still use the app.');
+            // Allow user to proceed even if email fails
+            setTimeout(() => {
+              onAuthSuccess();
+            }, 2000);
+          }
         }
       } else {
+        console.log('Attempting sign in...');
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
-        if (error) throw error;
+        console.log('Sign in response:', { data: data?.user?.id, error: error?.message });
+
+        if (error) {
+          console.error('Sign in error:', error);
+          throw error;
+        }
 
         if (data.user) {
+          console.log('Sign in successful, user:', data.user.id);
           // Developer bypass - auto-login for app creator
           if (email === 'cobyobi@gmail.com') {
             setError('Developer access granted! Redirecting...');
             localStorage.setItem('dev_bypass', 'true');
             localStorage.setItem('dev_email', 'cobyobi@gmail.com');
             setTimeout(() => {
+              console.log('Calling onAuthSuccess...');
               onAuthSuccess();
             }, 1000);
           } else {
+            console.log('Calling onAuthSuccess for regular user...');
             onAuthSuccess();
           }
+        } else {
+          console.warn('Sign in succeeded but no user data returned');
+          setError('Sign in successful but no user data. Please try again.');
         }
       }
     } catch (error: any) {
-      setError(error.message);
+      console.error('Auth error:', error);
+      setError(error.message || 'An error occurred during authentication. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -155,27 +202,31 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Dark warm overlay for app interface */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
+      
+      {/* Content wrapper */}
+      <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="relative inline-flex items-center justify-center mb-6">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/20 to-amber-400/20 blur-3xl scale-150"></div>
-            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.5)] border border-yellow-300/30">
-              <span className="text-black text-2xl font-bold tracking-tight">44</span>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/30 to-amber-400/30 blur-3xl scale-150 animate-pulse"></div>
+            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.6),0_0_80px_rgba(255,215,0,0.3)] border-2 border-yellow-300/40">
+              <span className="text-black text-2xl font-bold tracking-tight drop-shadow-[0_2px_4px_rgba(255,255,255,0.3)]">44</span>
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-yellow-400 mb-2">SUNGAZE</h1>
-          <p className="text-white/60">Sacred Light Nutrition</p>
+          <h1 className="text-3xl font-bold text-yellow-400 mb-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9),0_0_8px_rgba(255,215,0,0.5)]">SUNGAZE</h1>
+          <p className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Sacred Light Nutrition</p>
         </div>
 
         {/* Auth Form */}
-        <div className="bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-8">
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-semibold text-white mb-2">
+            <h2 className="text-2xl font-semibold text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               {isSignUp ? 'Join the Solar Journey' : 'Welcome Back'}
             </h2>
-            <p className="text-white/60">
+            <p className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
               {isSignUp ? 'Begin your sacred practice' : 'Continue your solar path'}
             </p>
           </div>
@@ -183,16 +234,16 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
           {showResetPassword ? (
             <form onSubmit={handlePasswordReset} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                   Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 bg-black/40 backdrop-blur-md border border-white/10 hover:bg-black/50 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent transition-colors duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                     placeholder="Enter your email"
                     required
                   />
@@ -200,8 +251,8 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
               </div>
 
               {error && (
-                <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-3">
-                  <p className="text-red-300 text-sm">{error}</p>
+                <div className="bg-red-500/20 backdrop-blur-md border border-red-500/30 rounded-xl p-3 shadow-[0_2px_8px_rgba(239,68,68,0.3)]">
+                  <p className="text-red-300 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">{error}</p>
                 </div>
               )}
 
@@ -216,7 +267,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
               <div className="text-center">
                 <button
                   onClick={() => setShowResetPassword(false)}
-                  className="text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+                  className="text-yellow-300 hover:text-yellow-200 text-sm font-medium drop-shadow-[0_1px_3px_rgba(255,215,0,0.6)] transition-colors duration-300"
                 >
                   Back to Sign In
                 </button>
@@ -226,16 +277,16 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
             <form onSubmit={handleAuth} className="space-y-6">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 bg-black/40 backdrop-blur-md border border-white/10 hover:bg-black/50 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent transition-colors duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                   placeholder="Enter your email"
                   required
                 />
@@ -244,16 +295,16 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent"
+                  className="w-full pl-10 pr-12 py-3 bg-black/40 backdrop-blur-md border border-white/10 hover:bg-black/50 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-transparent transition-colors duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                   placeholder="Enter your password"
                   required
                   minLength={6}
@@ -261,7 +312,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/40 hover:text-white/60"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] transition-colors duration-300"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -270,8 +321,8 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-3">
-                <p className="text-red-300 text-sm">{error}</p>
+              <div className="bg-red-500/20 backdrop-blur-md border border-red-500/30 rounded-xl p-3 shadow-[0_2px_8px_rgba(239,68,68,0.3)]">
+                <p className="text-red-300 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">{error}</p>
               </div>
             )}
 
@@ -292,7 +343,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
               <div>
                 <button
                   onClick={() => setShowResetPassword(true)}
-                  className="text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+                  className="text-yellow-300 hover:text-yellow-200 text-sm font-medium drop-shadow-[0_1px_3px_rgba(255,215,0,0.6)] transition-colors duration-300"
                 >
                   Forgot your password?
                 </button>
@@ -301,7 +352,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
             <div>
               <button
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+                className="text-yellow-300 hover:text-yellow-200 text-sm font-medium drop-shadow-[0_1px_3px_rgba(255,215,0,0.6)] transition-colors duration-300"
               >
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
               </button>
@@ -309,6 +360,7 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
           </div>
         </div>
       </div>
+      {/* End content wrapper */}
     </div>
   );
 }

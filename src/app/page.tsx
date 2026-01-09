@@ -80,19 +80,65 @@ export default function App() {
         return;
       }
       
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      // Handle refresh token errors
+      if (authError) {
+        const isRefreshTokenError = authError.message?.includes('Refresh Token') || 
+                                   authError.message?.includes('refresh_token') ||
+                                   authError.status === 401;
+        
+        if (isRefreshTokenError) {
+          console.log('Invalid refresh token detected, clearing session...');
+          // Clear invalid session
+          await supabase.auth.signOut();
+          // Clear any stored auth data
+          localStorage.removeItem('dev_bypass');
+          localStorage.removeItem('dev_email');
+          setIsAuthenticated(false);
+          setUser(null);
+          return;
+        }
+      }
+      
       if (user) {
         setUser(user);
         setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Auth check error:', error);
+      
+      // Check if it's a refresh token error
+      const isRefreshTokenError = error?.message?.includes('Refresh Token') || 
+                                 error?.message?.includes('refresh_token') ||
+                                 error?.status === 401;
+      
+      if (isRefreshTokenError) {
+        console.log('Invalid refresh token detected in catch, clearing session...');
+        try {
+          await supabase.auth.signOut();
+        } catch (signOutError) {
+          console.error('Error signing out:', signOutError);
+        }
+        localStorage.removeItem('dev_bypass');
+        localStorage.removeItem('dev_email');
+        setIsAuthenticated(false);
+        setUser(null);
+        return;
+      }
+      
       // If Supabase fails but dev bypass is set, still authenticate
       const devBypass = localStorage.getItem('dev_bypass');
       if (devBypass === 'true') {
         const devEmail = localStorage.getItem('dev_email') || 'cobyobi@gmail.com';
         setUser({ id: 'dev-user-1', email: devEmail });
         setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
       }
     }
   };

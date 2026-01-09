@@ -97,7 +97,7 @@ export function PlanGenerationLoading({ onNext }: PlanGenerationLoadingProps) {
         <h1 className="text-display-2xl text-white font-bold mb-2">
           {isComplete ? "Your Plan is Ready!" : "Generating Your Custom Plan"}
         </h1>
-        <p className="text-body-md text-white/70">
+        <p className="text-body-md text-white/90">
           {isComplete 
             ? "Your personalized solar transformation roadmap is complete"
             : "This usually takes 30-60 seconds for optimal customization"
@@ -106,18 +106,18 @@ export function PlanGenerationLoading({ onNext }: PlanGenerationLoadingProps) {
       </div>
 
       {/* Loading Content */}
-      <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-8 shadow-lg mb-8">
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-8">
         {!isComplete && currentStepData && (
           <>
             {/* Current Step */}
             <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center">
                 <IconComponent className="w-8 h-8 text-white animate-pulse" />
               </div>
               <h2 className="text-title-lg text-white font-semibold mb-2">
                 {currentStepData.title}
               </h2>
-              <p className="text-body-md text-white/70">
+              <p className="text-body-md text-white/90">
                 {currentStepData.description}
               </p>
             </div>
@@ -125,12 +125,12 @@ export function PlanGenerationLoading({ onNext }: PlanGenerationLoadingProps) {
             {/* Progress Bar */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-caption text-white/60">Step {currentStep + 1} of {loadingSteps.length}</span>
-                <span className="text-caption text-white/60">{Math.round(progress)}%</span>
+                <span className="text-caption text-white/80">Step {currentStep + 1} of {loadingSteps.length}</span>
+                <span className="text-caption text-white/80">{Math.round(progress)}%</span>
               </div>
-              <div className="h-2 bg-blue-500/20 rounded-full overflow-hidden">
+              <div className="h-2 bg-orange-500/20 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 ease-out"
+                  className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300 ease-out"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -147,7 +147,7 @@ export function PlanGenerationLoading({ onNext }: PlanGenerationLoadingProps) {
             <h2 className="text-title-lg text-white font-semibold mb-2">
               Customization Complete!
             </h2>
-            <p className="text-body-md text-white/70">
+            <p className="text-body-md text-white/90">
               Your personalized solar transformation plan is ready
             </p>
           </div>
@@ -156,12 +156,12 @@ export function PlanGenerationLoading({ onNext }: PlanGenerationLoadingProps) {
         {/* Overall Progress */}
         <div className="mt-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-caption text-white/60">Overall Progress</span>
-            <span className="text-caption text-white/60">
+            <span className="text-caption text-white/80">Overall Progress</span>
+            <span className="text-caption text-white/80">
               {Math.round(((currentStep + (progress / 100)) / loadingSteps.length) * 100)}%
             </span>
           </div>
-          <div className="h-1 bg-blue-500/20 rounded-full overflow-hidden">
+          <div className="h-1 bg-orange-500/20 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 transition-all duration-500 ease-out"
               style={{ width: `${((currentStep + (progress / 100)) / loadingSteps.length) * 100}%` }}
@@ -179,7 +179,7 @@ export function PlanGenerationLoading({ onNext }: PlanGenerationLoadingProps) {
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/5 rounded-full blur-3xl animate-pulse" />
       </div>
     </div>
