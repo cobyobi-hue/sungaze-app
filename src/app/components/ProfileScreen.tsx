@@ -451,24 +451,6 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      console.log('Starting sign out...');
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Supabase signOut error:', error);
-        throw error;
-      }
-      setCurrentUser(null);
-      setProfile(null);
-      localStorage.clear();
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Error signing out:', error);
-      alert('Failed to sign out. Please try again.');
-    }
-  };
-
   const handleImagePicker = () => {
     setShowImagePicker(true);
   };
