@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Play, Pause, RotateCcw, Settings } from "lucide-react";
 import { useProgress } from "../hooks/useProgress";
 import { PalmingRitual } from "./PalmingRitual";
+import { PostSessionModal } from "./PostSessionModal";
 import { MeditativeChimes } from "../lib/meditativeChimes";
 import { 
   getCurrentSolarLevel,
@@ -846,6 +847,23 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         onComplete={handlePalmingComplete}
         onClose={handlePalmingClose}
         onExtendPalming={handleExtendPalming}
+      />
+    )}
+
+    {/* Post-Session Recording Modal */}
+    {showPostSessionModal && (
+      <PostSessionModal
+        isOpen={showPostSessionModal}
+        onClose={() => {
+          setShowPostSessionModal(false);
+          // After closing modal, proceed with palming ritual
+          proceedWithCompletion();
+        }}
+        duration={completedDuration}
+        sessionType={completedSessionType}
+        onSave={(notes) => {
+          console.log('Session notes saved:', notes);
+        }}
       />
     )}
     </>
