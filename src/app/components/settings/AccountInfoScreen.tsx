@@ -7,7 +7,7 @@ import { createClient } from '../../lib/supabase/client';
 
 interface AccountInfoScreenProps {
   onBack: () => void;
-  onDeleteAccount: () => void;
+  onDeleteAccount: () => void | Promise<void>;
 }
 
 interface UserAccount {
@@ -36,6 +36,7 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     loadUserData();
@@ -105,9 +106,16 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
     setShowDeleteConfirm(true);
   };
 
-  const handleDeleteAccount = () => {
-    onDeleteAccount();
-    setShowDeleteConfirm(false);
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await onDeleteAccount();
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      setIsDeleting(false);
+      // Keep modal open on error so user can try again
+    }
   };
 
   const renderField = (field: string, label: string, value: string, placeholder?: string) => {
@@ -229,9 +237,10 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="flex-1 bg-red-500 border border-red-500 rounded-xl py-3 text-white hover:bg-red-600 transition-colors"
+                disabled={isDeleting}
+                className="flex-1 bg-red-500 border border-red-500 rounded-xl py-3 text-white hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Delete
+                {isDeleting ? 'Deleting...' : 'Delete'}
               </button>
             </div>
           </div>

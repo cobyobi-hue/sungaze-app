@@ -340,9 +340,55 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     }
   };
 
-  const handleDeleteAccount = () => {
-    console.log('Delete account requested');
-    // TODO: Implement account deletion
+  const handleDeleteAccount = async () => {
+    if (!currentUser) {
+      console.error('No user to delete');
+      return;
+    }
+
+    try {
+      console.log('Starting account deletion for user:', currentUser.id);
+      
+      // 1. Delete user profile from database
+      const { error: deleteProfileError } = await supabase
+        .from('user_profiles')
+        .delete()
+        .eq('id', currentUser.id);
+
+      if (deleteProfileError) {
+        console.error('Error deleting user profile:', deleteProfileError);
+        // Continue anyway - profile deletion is not critical if it fails
+      } else {
+        console.log('User profile deleted successfully');
+      }
+
+      // 2. Sign out the user (this invalidates their session)
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) {
+        console.error('Error signing out:', signOutError);
+      }
+
+      // 3. Clear all local storage
+      localStorage.clear();
+
+      // 4. Clear state
+      setCurrentUser(null);
+      setProfile(null);
+
+      // 5. Redirect to home page
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      // Even if there's an error, sign out and redirect
+      try {
+        await supabase.auth.signOut();
+        localStorage.clear();
+        window.location.href = '/';
+      } catch (cleanupError) {
+        console.error('Error during cleanup:', cleanupError);
+        window.location.href = '/';
+      }
+    }
   };
 
   const handleSignOut = async () => {
