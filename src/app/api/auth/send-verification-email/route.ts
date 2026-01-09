@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
-
-// Initialize Resend
-const resendApiKey = process.env.RESEND_API_KEY;
-if (!resendApiKey) {
-  console.warn('RESEND_API_KEY is not set. Email verification will not work.');
-}
-
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // Initialize Supabase admin client for generating verification links
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -25,12 +16,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!resend) {
+    // Dynamically import Resend
+    let Resend: any;
+    try {
+      const resendModule = await import('resend');
+      Resend = resendModule.Resend || resendModule.default?.Resend || resendModule.default;
+    } catch (error) {
+      console.error('Failed to import resend:', error);
+      return NextResponse.json(
+        { error: 'Email service not available. Please install resend package.' },
+        { status: 500 }
+      );
+    }
+
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
       return NextResponse.json(
         { error: 'Email service not configured. Please set RESEND_API_KEY.' },
         { status: 500 }
       );
     }
+
+    const resend = new Resend(resendApiKey);
 
     // Generate verification link using Supabase admin API
     let verificationLink = '';
