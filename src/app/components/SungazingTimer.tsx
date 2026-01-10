@@ -866,8 +866,9 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         isOpen={showPostSessionModal}
         onClose={() => {
           setShowPostSessionModal(false);
-          // After closing modal, proceed with palming ritual
-          proceedWithCompletion();
+          // 3. AFTER SESSION LOG: Show palming ritual (gong already played)
+          setJustCompleted(false);
+          setShowPalmingRitual(true);
         }}
         duration={completedDuration}
         sessionType={completedSessionType}
