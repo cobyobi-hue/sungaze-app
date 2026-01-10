@@ -403,24 +403,6 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
       }, 2500); // Wait for gong sound to complete
     }
   };
-  
-  const proceedWithCompletion = async () => {
-    // Play gong sound for session completion
-    setTimeout(async () => {
-      try {
-        const chimes = new MeditativeChimes();
-        await chimes.playCompletionChime();
-      } catch (error) {
-        console.error('Error playing completion chime:', error);
-      }
-      
-      // Show palming ritual after gong sound
-      setTimeout(() => {
-        setJustCompleted(false);
-        setShowPalmingRitual(true);
-      }, 2000); // Brief pause after gong
-    }, 500); // Brief pause before playing gong
-  };
 
   const handleStart = async () => {
     setShowPreGazingInstructions(true);
