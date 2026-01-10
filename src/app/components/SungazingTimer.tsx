@@ -377,20 +377,30 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
     const previousDay = Math.max(1, currentDay - 1);
     const levelUp = checkLevelUp(previousDay, currentDay);
     
+    // 1. FIRST: Play gong sound immediately
+    setTimeout(async () => {
+      try {
+        const chimes = new MeditativeChimes();
+        await chimes.playCompletionChime();
+      } catch (error) {
+        console.error('Error playing completion chime:', error);
+      }
+    }, 500); // Brief pause before playing gong
+    
     if (levelUp) {
       setNewLevel(levelUp);
       setShowLevelUp(true);
       
-      // After level up, show post-session modal
+      // After level up animation (5s) + gong sound (2s), show session log modal
       setTimeout(() => {
         setShowLevelUp(false);
         setShowPostSessionModal(true);
-      }, 5000);
+      }, 7000); // 5s level up + 2s for gong to finish
     } else {
-      // Show post-session modal after 2 seconds
+      // 2. AFTER GONG: Show session log modal (wait for gong to play ~2s)
       setTimeout(() => {
         setShowPostSessionModal(true);
-      }, 2000);
+      }, 2500); // Wait for gong sound to complete
     }
   };
   
