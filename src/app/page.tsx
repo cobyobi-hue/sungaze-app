@@ -20,6 +20,7 @@ import { UnlocksScreen } from "./components/UnlocksScreen";
 import { SafeConditionsOnly } from "./components/SafeConditionsOnly";
 import { TruthSerum } from "./components/TruthSerum";
 import { OracleQA } from "./components/OracleQA";
+import { SessionLog } from "./components/SessionLog";
 import CandleGazingMode from "./components/ritual-modes/CandleGazingMode";
 import { Button } from "./components/ui/button";
 import { PaywallModal } from "./components/PaywallModal";
