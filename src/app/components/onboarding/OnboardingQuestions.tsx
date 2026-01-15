@@ -161,7 +161,7 @@ export function OnboardingQuestions({ data, updateData, onNext }: OnboardingQues
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-display-2xl text-white font-bold mb-2">Solar Oracle Assessment</h1>
-        <p className="text-body-md text-white/90">Help us understand your unique journey</p>
+  ``        <p className="text-body-md text-white/90">Help us understand your unique journey</p>
       </div>
 
       {/* Progress */}

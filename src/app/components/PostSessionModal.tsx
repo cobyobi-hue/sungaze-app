@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Save, Sparkles } from 'lucide-react';
-import { localStorage } from '../lib/storage';
+// Notes persistence is handled by parent via onSave (local-first + Supabase sync).
 
 interface PostSessionModalProps {
   isOpen: boolean;
@@ -26,39 +26,7 @@ export function PostSessionModal({
 
   const handleSave = async () => {
     setIsSaving(true);
-    
-    // Update the most recent session with notes
-    const progress = localStorage.getUserProgress();
-    if (progress.practiceHistory.length > 0) {
-      // Get today's date
-      const today = new Date().toISOString().split('T')[0];
-      
-      // Find the most recent session from today
-      const todaySessions = progress.practiceHistory
-        .filter(s => s.date === today)
-        .sort((a, b) => {
-          // Sort by index (most recent last)
-          return progress.practiceHistory.indexOf(b) - progress.practiceHistory.indexOf(a);
-        });
-      
-      if (todaySessions.length > 0) {
-        const mostRecentSession = todaySessions[0];
-        const sessionIndex = progress.practiceHistory.findIndex(
-          s => s.date === mostRecentSession.date && 
-               s.duration === mostRecentSession.duration &&
-               s.timeOfDay === mostRecentSession.timeOfDay
-        );
-        
-        if (sessionIndex !== -1) {
-          progress.practiceHistory[sessionIndex] = {
-            ...progress.practiceHistory[sessionIndex],
-            notes: notes.trim() || undefined
-          };
-          localStorage.saveUserProgress(progress);
-        }
-      }
-    }
-    
+
     if (onSave) {
       onSave(notes);
     }
@@ -156,4 +124,5 @@ export function PostSessionModal({
     </div>
   );
 }
+
 

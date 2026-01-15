@@ -61,10 +61,10 @@ NEXT_PUBLIC_REVENUECAT_API_KEY=your_revenuecat_api_key_here
 1. Go to https://app.revenuecat.com
 2. Create/select your project
 3. Add your app (iOS and Android)
-4. Create products:
-   - `monthly_premium` - Monthly subscription
-   - `annual_premium` - Annual subscription  
-   - `lifetime_premium` - One-time purchase
+4. Create products (must match App Store Connect product IDs):
+   - `com.sungaze.premium.monthly` - Monthly subscription
+   - `com.sungaze.premium.yearly` - Annual subscription  
+   - `com.sungaze.founder44` - One-time purchase
 5. Create an entitlement: `premium`
 6. Attach products to the entitlement
 7. Get your API key from Settings → API Keys

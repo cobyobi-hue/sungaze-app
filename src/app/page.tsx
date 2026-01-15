@@ -21,6 +21,8 @@ import { SafeConditionsOnly } from "./components/SafeConditionsOnly";
 import { TruthSerum } from "./components/TruthSerum";
 import { OracleQA } from "./components/OracleQA";
 import { SessionLog } from "./components/SessionLog";
+import { SessionHistoryScreen } from "./components/SessionHistoryScreen";
+// import { AnalyticsDashboard } from "./components/AnalyticsDashboard"; // TODO: Create when disk space available
 import CandleGazingMode from "./components/ritual-modes/CandleGazingMode";
 import { Button } from "./components/ui/button";
 import { PaywallModal } from "./components/PaywallModal";
@@ -52,6 +54,7 @@ export default function App() {
   const [showSolarOrbs, setShowSolarOrbs] = useState(false);
   const [showSolarWindowSettings, setShowSolarWindowSettings] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
+  const [homeScreen, setHomeScreen] = useState<"main" | "history">("main");
   const [autoStartTimer, setAutoStartTimer] = useState(false);
   const [journalMode, setJournalMode] = useState<'day' | 'evening'>('day');
   const [activeRitual, setActiveRitual] = useState<'palming' | 'barefoot' | 'journal' | 'scrolls' | 'cloud-gazing' | 'candle-gazing' | 'meditation' | null>(null);
@@ -61,29 +64,33 @@ export default function App() {
   const [learnSection, setLearnSection] = useState<'main' | 'guide' | 'content' | 'unlocks' | 'levels' | 'scrolls' | 'truth-serum' | 'oracle-qa' | 'journey' | 'eye-practices'>('main');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true); // Add loading state
   const supabase = createClient();
 
-  // Check authentication on mount
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
+  // Define checkAuth BEFORE useEffect to avoid reference issues
   const checkAuth = async () => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     try {
-      // Check for developer bypass first
-      const devBypass = localStorage.getItem('dev_bypass');
-      const devEmail = localStorage.getItem('dev_email');
-      
-      if (devBypass === 'true' && devEmail === 'cobyobi@gmail.com') {
-        console.log('Developer bypass active - auto-authenticating');
-        setUser({ id: 'dev-user-1', email: 'cobyobi@gmail.com' });
-        setIsAuthenticated(true);
+      // Check if Supabase client is available - MUST check before any await
+      if (!supabase) {
+        console.warn('Supabase client not available - using dev bypass or mock mode');
+        setIsAuthenticated(false);
+        setUser(null);
+        setAuthLoading(false); // Mark auth check as complete
         return;
       }
       
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      // Use getSession() so refresh restores auth from storage without requiring a network call.
+      const { data, error: authError } = await supabase.auth.getSession();
+      const user = data?.session?.user || null;
       
-      // Handle refresh token errors
+      // Now use user and authError variables instead of destructuring
+      
+      // Handle refresh token errors - use the variables we defined above
       if (authError) {
         const isRefreshTokenError = authError.message?.includes('Refresh Token') || 
                                    authError.message?.includes('refresh_token') ||
@@ -92,10 +99,18 @@ export default function App() {
         if (isRefreshTokenError) {
           console.log('Invalid refresh token detected, clearing session...');
           // Clear invalid session
-          await supabase.auth.signOut();
+          try {
+            if (supabase) {
+              await supabase.auth.signOut();
+            }
+          } catch (signOutError) {
+            console.error('Error signing out:', signOutError);
+          }
           // Clear any stored auth data
-          localStorage.removeItem('dev_bypass');
-          localStorage.removeItem('dev_email');
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('dev_bypass');
+            localStorage.removeItem('dev_email');
+          }
           setIsAuthenticated(false);
           setUser(null);
           return;
@@ -109,43 +124,86 @@ export default function App() {
         setIsAuthenticated(false);
         setUser(null);
       }
+      setAuthLoading(false); // Mark auth check as complete
     } catch (error: any) {
       console.error('Auth check error:', error);
       
       // Check if it's a refresh token error
       const isRefreshTokenError = error?.message?.includes('Refresh Token') || 
-                                 error?.message?.includes('refresh_token') ||
-                                 error?.status === 401;
+                               error?.message?.includes('refresh_token') ||
+                               error?.status === 401;
       
       if (isRefreshTokenError) {
         console.log('Invalid refresh token detected in catch, clearing session...');
         try {
-          await supabase.auth.signOut();
+          if (supabase) {
+            await supabase.auth.signOut();
+          }
         } catch (signOutError) {
           console.error('Error signing out:', signOutError);
         }
-        localStorage.removeItem('dev_bypass');
-        localStorage.removeItem('dev_email');
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('dev_bypass');
+          localStorage.removeItem('dev_email');
+        }
         setIsAuthenticated(false);
         setUser(null);
         return;
       }
       
-      // If Supabase fails but dev bypass is set, still authenticate
-      const devBypass = localStorage.getItem('dev_bypass');
-      if (devBypass === 'true') {
-        const devEmail = localStorage.getItem('dev_email') || 'cobyobi@gmail.com';
-        setUser({ id: 'dev-user-1', email: devEmail });
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-        setUser(null);
-      }
+      setIsAuthenticated(false);
+      setUser(null);
+      setAuthLoading(false); // Mark auth check as complete
     }
   };
 
-  const handleAuthSuccess = () => {
-    checkAuth();
+  // Check authentication on mount - AFTER checkAuth is defined
+  useEffect(() => {
+    // Properly handle async function in useEffect
+    let mounted = true;
+    // NOTE: Do not auto-enable dev bypass. If you want it, set it manually in devtools:
+    // localStorage.setItem('dev_bypass','true'); localStorage.setItem('dev_email','you@example.com');
+    
+    const runAuthCheck = async () => {
+      try {
+        if (typeof window !== 'undefined') {
+          await checkAuth();
+        }
+      } catch (error) {
+        console.error('Error in auth check:', error);
+        // Silently handle errors to prevent panic
+        if (mounted) {
+          setIsAuthenticated(false);
+          setUser(null);
+          setAuthLoading(false); // Mark auth check as complete even on error
+        }
+      }
+    };
+
+    runAuthCheck();
+
+    // Keep UI in sync with auth events (sign-in/sign-out/refresh)
+    const { data: sub } = supabase?.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      const nextUser = session?.user ?? null;
+      setUser(nextUser);
+      setIsAuthenticated(!!nextUser);
+      setAuthLoading(false);
+    }) ?? { data: { subscription: null as any } };
+
+    return () => {
+      mounted = false;
+      sub?.subscription?.unsubscribe?.();
+    };
+  }, []); // Empty deps array - only run on mount
+
+  const handleAuthSuccess = async () => {
+    try {
+      await checkAuth();
+    } catch (error) {
+      console.error('Error in handleAuthSuccess:', error);
+      // Silently handle errors to prevent panic
+    }
   };
 
   // Simplified state management - no complex subscription hook
@@ -154,8 +212,30 @@ export default function App() {
   const isFounder = true;
   const hasAccess = () => true;
 
-  // Show auth screen if not authenticated, BUT allow profile tab access for app store review
-  if (!isAuthenticated && activeTab !== 'profile') {
+  // TEMPORARY: Auto-authenticate for development/debugging
+  // Set dev bypass in localStorage: localStorage.setItem('dev_bypass', 'true'); localStorage.setItem('dev_email', 'cobyobi@gmail.com');
+  
+  // Show loading state while auth check is in progress
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative inline-flex items-center justify-center mb-6">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/20 to-amber-400/20 blur-3xl scale-150"></div>
+            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.5)] border border-yellow-300/30">
+              <span className="text-black text-2xl font-bold tracking-tight">44</span>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-yellow-400 mb-2">SUNGAZE</h1>
+          <p className="text-white/60 mb-4">Loading...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show auth screen if not authenticated (including Profile tab)
+  if (!isAuthenticated) {
     return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
   }
 
@@ -312,6 +392,9 @@ export default function App() {
 
           {/* HOME TAB - Sunrise/Sunset Theme */}
           <TabsContent value="home" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+            {homeScreen === "history" ? (
+              <SessionHistoryScreen onBack={() => setHomeScreen("main")} />
+            ) : (
             <div className="px-6 pt-6 pb-24">
             <SolarWindow
               onStartGazing={() => {
@@ -369,9 +452,15 @@ export default function App() {
 
               {/* Session History - Luxury Design */}
               <div className="mt-6">
-                <SessionLog maxItems={5} showViewAll={true} />
+                <SessionLog
+                  maxItems={3}
+                  showViewAll={true}
+                  onOpenFullHistory={() => setHomeScreen("history")}
+                />
               </div>
+              
             </div>
+            )}
           </TabsContent>
 
           {/* GAZE TAB - Sunrise/Sunset Theme */}

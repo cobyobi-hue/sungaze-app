@@ -56,7 +56,7 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
       // Get user profile from database
       const { data: profile, error: profileError } = await supabase
         .from('user_profiles')
-        .select('*')
+        .select('*, account_settings')
         .eq('id', user.id)
         .single();
 
@@ -64,15 +64,18 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
         console.error('Error loading profile:', profileError);
       }
 
+      // Load from account_settings JSONB if available, otherwise use profile fields
+      const accountSettings = profile?.account_settings as Record<string, string> | null;
+      
       // Set user account data
       setUserAccount({
-        name: profile?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || "User",
-        username: profile?.username || user.user_metadata?.username || "@user",
+        name: accountSettings?.name || profile?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || "User",
+        username: accountSettings?.username || profile?.username || user.user_metadata?.username || "@user",
         email: user.email || "",
-        phone: profile?.phone || "",
-        place: profile?.location || "Unknown",
-        aboutMe: profile?.about_me || "",
-        birthday: profile?.birthday || ""
+        phone: accountSettings?.phone || profile?.phone || "",
+        place: accountSettings?.place || profile?.location || "Unknown",
+        aboutMe: accountSettings?.aboutMe || profile?.about_me || "",
+        birthday: accountSettings?.birthday || profile?.birthday || ""
       });
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -86,12 +89,64 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
     setEditValue(currentValue);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (editingField) {
+      // Update local state immediately
       setUserAccount(prev => ({
         ...prev,
         [editingField]: editValue
       }));
+      
+      // Save to Supabase
+      try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+          console.error('Error getting user:', authError);
+          setEditingField(null);
+          setEditValue("");
+          return;
+        }
+
+        // Get current account_settings
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('account_settings')
+          .eq('id', user.id)
+          .single();
+
+        const currentSettings = (profile?.account_settings as Record<string, string>) || {};
+        
+        // Update the specific field
+        const updatedSettings = {
+          ...currentSettings,
+          [editingField]: editValue
+        };
+
+        // Save to Supabase
+        const { error: updateError } = await supabase
+          .from('user_profiles')
+          .update({ 
+            account_settings: updatedSettings,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', user.id);
+
+        if (updateError) {
+          console.error('Error saving account settings:', updateError);
+          alert('Failed to save. Please try again.');
+          // Revert local state on error
+          setUserAccount(prev => ({
+            ...prev,
+            [editingField]: currentSettings[editingField] || ""
+          }));
+        } else {
+          console.log('Account settings saved successfully');
+        }
+      } catch (error) {
+        console.error('Error saving account settings:', error);
+        alert('Failed to save. Please try again.');
+      }
+      
       setEditingField(null);
       setEditValue("");
     }

@@ -29,11 +29,11 @@ if (PAYMENTS_ENABLED) {
 // RevenueCat API Key - Set this in your environment or config
 const REVENUECAT_API_KEY = process.env.NEXT_PUBLIC_REVENUECAT_API_KEY || '';
 
-// Product IDs
+// Product IDs - Must match App Store Connect product IDs
 export const PRODUCT_IDS = {
-  MONTHLY: 'monthly_premium',
-  ANNUAL: 'annual_premium',
-  LIFETIME: 'lifetime_premium',
+  MONTHLY: 'com.sungaze.premium.monthly',
+  ANNUAL: 'com.sungaze.premium.yearly',
+  LIFETIME: 'com.sungaze.founder44',
 } as const;
 
 export type ProductId = typeof PRODUCT_IDS[keyof typeof PRODUCT_IDS];

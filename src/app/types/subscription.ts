@@ -12,6 +12,7 @@ export interface UserProfile {
   expirationDate?: string; // For founders, 3 years from purchase
   badges: string[];
   seals: string[];
+  profileImageUrl?: string; // Profile picture URL from Supabase Storage
   createdAt: string;
   updatedAt: string;
 }

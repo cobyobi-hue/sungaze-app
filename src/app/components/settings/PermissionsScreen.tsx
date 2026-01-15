@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Camera, Image, MapPin, Bell, Mic, Settings, ExternalLink } from 'lucide-react';
+import { createClient } from '../../lib/supabase/client';
 
 interface PermissionsScreenProps {
   onBack: () => void;
@@ -17,6 +18,7 @@ interface Permission {
 }
 
 export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
+  const supabase = createClient();
   const [permissions, setPermissions] = useState<Permission[]>([
     {
       id: 'camera',
@@ -60,49 +62,178 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
     }
   ]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    checkPermissions();
+    loadPermissionSettings();
   }, []);
 
-  const checkPermissions = async () => {
-    setLoading(true);
+  const loadPermissionSettings = async () => {
     try {
-      // Simulate checking permissions
-      const updatedPermissions = permissions.map(permission => {
-        // In a real app, you would check actual permission status
-        const randomStatus = Math.random() > 0.5 ? 'granted' : 'denied';
-        return { ...permission, status: randomStatus as 'granted' | 'denied' };
-      });
-      setPermissions(updatedPermissions);
+      setLoading(true);
+      
+      // Get current user
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) {
+        console.error('Error getting user:', authError);
+        setLoading(false);
+        return;
+      }
+
+      // Get user profile with permission settings
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('permission_settings')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('Error loading permission settings:', profileError);
+      }
+
+      // If settings exist, update state
+      if (profile?.permission_settings) {
+        const savedSettings = profile.permission_settings as Record<string, 'granted' | 'denied' | 'not-requested'>;
+        setPermissions(prev => 
+          prev.map(permission => ({
+            ...permission,
+            status: savedSettings[permission.id] ?? permission.status
+          }))
+        );
+      } else {
+        // Check actual browser permissions if no saved settings
+        await checkActualPermissions();
+      }
     } catch (error) {
-      console.error('Error checking permissions:', error);
+      console.error('Error loading permission settings:', error);
+      // Fallback to checking actual permissions
+      await checkActualPermissions();
     } finally {
       setLoading(false);
     }
   };
 
-  const requestPermission = async (permissionId: string) => {
-    setLoading(true);
+  const checkActualPermissions = async () => {
     try {
-      // In a real app, you would request the actual permission
-      console.log(`Requesting ${permissionId} permission`);
+      const updatedPermissions = await Promise.all(
+        permissions.map(async (permission) => {
+          let status: 'granted' | 'denied' | 'not-requested' = 'not-requested';
+          
+          try {
+            if (permission.id === 'notifications' && 'Notification' in window) {
+              const result = await Notification.requestPermission();
+              status = result === 'granted' ? 'granted' : result === 'denied' ? 'denied' : 'not-requested';
+            } else if (permission.id === 'location' && navigator.geolocation) {
+              // Can't directly check, but we can try
+              status = 'not-requested';
+            } else if (permission.id === 'camera' && navigator.mediaDevices) {
+              // Can't directly check without requesting
+              status = 'not-requested';
+            }
+          } catch (error) {
+            console.error(`Error checking ${permission.id} permission:`, error);
+          }
+          
+          return { ...permission, status };
+        })
+      );
       
-      // Simulate permission request
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      setPermissions(updatedPermissions);
+    } catch (error) {
+      console.error('Error checking permissions:', error);
+    }
+  };
+
+  const savePermissionSettings = async () => {
+    try {
+      setSaving(true);
       
+      // Get current user
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) {
+        console.error('Error getting user:', authError);
+        return;
+      }
+
+      // Create settings object from current state
+      const settings: Record<string, string> = {};
+      permissions.forEach(permission => {
+        settings[permission.id] = permission.status;
+      });
+
+      // Save to Supabase
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({ 
+          permission_settings: settings,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
+      if (updateError) {
+        console.error('Error saving permission settings:', updateError);
+        alert('Failed to save settings. Please try again.');
+      } else {
+        console.log('Permission settings saved successfully');
+      }
+    } catch (error) {
+      console.error('Error saving permission settings:', error);
+      alert('Failed to save settings. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const requestPermission = async (permissionId: string) => {
+    setSaving(true);
+    try {
+      let newStatus: 'granted' | 'denied' | 'not-requested' = 'not-requested';
+      
+      // Request actual browser permission
+      if (permissionId === 'notifications' && 'Notification' in window) {
+        const result = await Notification.requestPermission();
+        newStatus = result === 'granted' ? 'granted' : result === 'denied' ? 'denied' : 'not-requested';
+      } else if (permissionId === 'location' && navigator.geolocation) {
+        // Request location permission
+        try {
+          await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+          newStatus = 'granted';
+        } catch (error) {
+          newStatus = 'denied';
+        }
+      } else if (permissionId === 'camera' && navigator.mediaDevices) {
+        // Request camera permission
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          stream.getTracks().forEach(track => track.stop()); // Stop immediately
+          newStatus = 'granted';
+        } catch (error) {
+          newStatus = 'denied';
+        }
+      } else {
+        // For other permissions, just mark as granted (simulated)
+        newStatus = 'granted';
+      }
+      
+      // Update local state immediately (optimistic update)
       setPermissions(prev => 
         prev.map(permission => 
           permission.id === permissionId 
-            ? { ...permission, status: 'granted' }
+            ? { ...permission, status: newStatus }
             : permission
         )
       );
+      
+      // Save to Supabase
+      await savePermissionSettings();
     } catch (error) {
       console.error('Error requesting permission:', error);
+      alert('Failed to request permission. Please try again.');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -188,11 +319,19 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
             <ArrowLeft className="w-4 h-4 text-white" />
           </button>
           <h1 className="text-xl text-white font-semibold">Permissions</h1>
+          {saving && (
+            <span className="text-xs text-white/60 ml-auto">Saving...</span>
+          )}
         </div>
 
         {/* Permissions List */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-4 mb-6">
-          <div className="space-y-1">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-4 mb-6">
+            <div className="space-y-1">
             {permissions.map((permission, index) => (
               <div key={permission.id}>
                 {renderPermissionItem(permission)}
@@ -201,8 +340,9 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
                 )}
               </div>
             ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* System Settings Button */}
         <button

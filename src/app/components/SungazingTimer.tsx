@@ -29,7 +29,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   const { profile, hasAccess, isPremium } = useSubscription();
   
   // Progress management - loads current day from localStorage
-  const { progress, completePractice, advanceDay, getCurrentDayTarget } = useProgress();
+  const { progress, completePractice, savePracticeNotes, advanceDay, getCurrentDayTarget } = useProgress();
   const currentDay = progress?.currentDay || 1;
   
   // Set initial time based on tier and current day
@@ -50,6 +50,8 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   const [showPostSessionModal, setShowPostSessionModal] = useState(false);
   const [completedDuration, setCompletedDuration] = useState(0);
   const [completedSessionType, setCompletedSessionType] = useState<'sunrise' | 'sunset' | 'other'>('other');
+  const [completedClientSessionId, setCompletedClientSessionId] = useState<string | null>(null);
+  const completionFiredRef = useRef(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
   // Audio state for background music
@@ -315,7 +317,10 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         setTimeLeft((prev) => {
           if (prev <= 1) {
             setIsActive(false);
-            handlePracticeComplete();
+            // Properly handle async function call
+            handlePracticeComplete().catch((error) => {
+              console.error('Error in handlePracticeComplete:', error);
+            });
             return 0;
           }
           return prev - 1;
@@ -337,6 +342,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   // Handle auto-start from Begin Sungazing button
   useEffect(() => {
     if (autoStart && !isActive) {
+      completionFiredRef.current = false;
       // Skip pre-gazing instructions and start immediately
       setShowPreGazingInstructions(false);
       setIsActive(true);
@@ -349,58 +355,84 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   }, [autoStart, isActive, onAutoStartHandled]);
 
   const handlePracticeComplete = async () => {
-    // Stop all audio when practice completes
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      setIsAudioPlaying(false);
-    }
-    
-    // Show completion feedback
-    setJustCompleted(true);
-    
-    // Detect session type based on current time
-    const sessionType = getSessionType();
-    
-    // Auto-save session (AI does it automatically)
-    completePractice(initialTime, sessionType);
-    
-    // Store completed session info for modal
-    setCompletedDuration(initialTime);
-    setCompletedSessionType(sessionType);
-    
-    // Advance day if target met
-    advanceDay();
-    
-    // Check for level up
-    const completedMinutes = initialTime / 60; // Convert seconds to minutes
-    const previousDay = Math.max(1, currentDay - 1);
-    const levelUp = checkLevelUp(previousDay, currentDay);
-    
-    // 1. FIRST: Play gong sound immediately
-    setTimeout(async () => {
-      try {
-        const chimes = new MeditativeChimes();
-        await chimes.playCompletionChime();
-      } catch (error) {
-        console.error('Error playing completion chime:', error);
+    // Guard against double-completion (interval can tick twice before it's cleared)
+    if (completionFiredRef.current) return;
+    completionFiredRef.current = true;
+
+    try {
+      // Stop all audio when practice completes
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        setIsAudioPlaying(false);
       }
-    }, 500); // Brief pause before playing gong
-    
-    if (levelUp) {
-      setNewLevel(levelUp);
-      setShowLevelUp(true);
       
-      // After level up animation (5s) + gong sound (2s), show session log modal
-      setTimeout(() => {
-        setShowLevelUp(false);
-        setShowPostSessionModal(true);
-      }, 7000); // 5s level up + 2s for gong to finish
-    } else {
-      // 2. AFTER GONG: Show session log modal (wait for gong to play ~2s)
-      setTimeout(() => {
-        setShowPostSessionModal(true);
-      }, 2500); // Wait for gong sound to complete
+      // Show completion feedback
+      setJustCompleted(true);
+      
+      // Detect session type based on current time
+      const sessionType = getSessionType();
+      
+      // Auto-save session (AI does it automatically)
+      try {
+        const clientSessionId = completePractice(initialTime, sessionType);
+        setCompletedClientSessionId(clientSessionId);
+      } catch (error) {
+        console.error('Error completing practice:', error);
+      }
+      
+      // Store completed session info for modal
+      setCompletedDuration(initialTime);
+      setCompletedSessionType(sessionType);
+      
+      // Advance day if target met
+      try {
+        advanceDay();
+      } catch (error) {
+        console.error('Error advancing day:', error);
+      }
+      
+      // Check for level up
+      const completedMinutes = initialTime / 60; // Convert seconds to minutes
+      const previousDay = Math.max(1, currentDay - 1);
+      const levelUp = checkLevelUp(previousDay, currentDay);
+      
+      // 1. FIRST: Play gong sound immediately
+      setTimeout(async () => {
+        try {
+          const chimes = new MeditativeChimes();
+          await chimes.playCompletionChime();
+        } catch (error) {
+          console.error('Error playing completion chime:', error);
+        }
+      }, 500); // Brief pause before playing gong
+      
+      if (levelUp) {
+        setNewLevel(levelUp);
+        setShowLevelUp(true);
+        
+        // After level up animation (5s) + gong sound (2s), show session log modal
+        setTimeout(() => {
+          try {
+            setShowLevelUp(false);
+            setShowPostSessionModal(true);
+          } catch (error) {
+            console.error('Error showing post session modal:', error);
+          }
+        }, 7000); // 5s level up + 2s for gong to finish
+      } else {
+        // 2. AFTER GONG: Show session log modal (wait for gong to play ~2s)
+        setTimeout(() => {
+          try {
+            setShowPostSessionModal(true);
+          } catch (error) {
+            console.error('Error showing post session modal:', error);
+          }
+        }, 2500); // Wait for gong sound to complete
+      }
+    } catch (error) {
+      console.error('Error in handlePracticeComplete:', error);
+      // Don't throw - just log to prevent panic
     }
   };
 
@@ -409,6 +441,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   };
 
   const handleBeginGazing = async () => {
+    completionFiredRef.current = false;
     setShowPreGazingInstructions(false);
     setIsActive(true);
     
@@ -855,7 +888,13 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         duration={completedDuration}
         sessionType={completedSessionType}
         onSave={(notes) => {
-          console.log('Session notes saved:', notes);
+          try {
+            if (completedClientSessionId) {
+              savePracticeNotes(completedClientSessionId, notes);
+            }
+          } catch (e) {
+            console.error('Error saving practice notes:', e);
+          }
         }}
       />
     )}

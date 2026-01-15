@@ -39,7 +39,7 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-display-2xl text-white font-bold mb-2">Secure Your Solar Journey</h1>
-        <p className="text-body-md text-white/90">Create your account to begin transformation</p>
+        <p className="text-body-md text-white/70">Create your account to begin transformation</p>
       </div>
 
       {/* Authentication Options */}
@@ -75,41 +75,41 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
             <div className="w-full border-t border-white/20" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">or</span>
+            <span className="px-2 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white/60">or</span>
           </div>
         </div>
 
         {/* Email Authentication */}
         <div className="space-y-4">
           <div>
-            <label className="block text-label text-white/90 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Email</label>
+            <label className="block text-label text-white/80 mb-2">Email</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/80" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-black/40 backdrop-blur-md border border-yellow-400/50 hover:bg-black/50 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/70 transition-colors duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                className="w-full pl-10 pr-4 py-3 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-blue-400/50 transition-colors"
                 placeholder="Enter your email"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-label text-white/90 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">Password</label>
+            <label className="block text-label text-white/80 mb-2">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/80" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 bg-black/40 backdrop-blur-md border border-yellow-400/50 hover:bg-black/50 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/70 transition-colors duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                className="w-full pl-10 pr-12 py-3 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-blue-400/50 transition-colors"
                 placeholder="Create a password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80 hover:text-white"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-white/80"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -119,7 +119,7 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
           <button
             onClick={() => handleAuth('email')}
             disabled={isLoading || !email || !password}
-            className="w-full p-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 rounded-xl text-white transition-colors duration-300 flex items-center justify-center gap-3 disabled:opacity-50 shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
+            className="w-full p-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 rounded-xl text-white transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -135,14 +135,14 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
 
       {/* Privacy Assurance */}
       <div className="text-center">
-        <p className="text-caption text-white/80 mb-4">
+        <p className="text-caption text-white/60 mb-4">
           By signing up, you agree to our{' '}
           <a href="#" className="text-blue-400 hover:text-blue-300 underline">Privacy Policy</a>
           {' '}and{' '}
           <a href="#" className="text-blue-400 hover:text-blue-300 underline">Terms of Service</a>
         </p>
         
-        <div className="flex items-center justify-center gap-4 text-caption text-white/70">
+        <div className="flex items-center justify-center gap-4 text-caption text-white/50">
           <div className="flex items-center gap-1">
             <Lock className="w-3 h-3" />
             <span>Encrypted</span>

@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { UserProfile, TIER_FEATURES, FOUNDER_BADGES } from '../types/subscription';
 import { subscriptionService } from '../lib/database/subscription-service';
 import { createClient } from '../lib/supabase/client';
+import { AuthScreen } from './AuthScreen';
 import { getCurrentSolarLevel, getLevelProgress, SOLAR_LEVELS } from '../lib/solarLevels';
 import { hasAchievement, getAuraGlow } from '../lib/questSystem';
 import { AccountInfoScreen } from './settings/AccountInfoScreen';
@@ -47,6 +48,15 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     }
   }, [currentUser]);
 
+  // Load profile image when profile is loaded
+  useEffect(() => {
+    if (profile?.profileImageUrl) {
+      setProfileImage(profile.profileImageUrl);
+    } else {
+      setProfileImage(null);
+    }
+  }, [profile?.profileImageUrl]);
+
   // Define handleSignOut BEFORE the early return so it's accessible
   const handleSignOut = async () => {
     try {
@@ -55,8 +65,9 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       if (error) {
         console.error('Supabase signOut error:', error);
       }
-      // Clear local storage
-      localStorage.clear();
+      // Clear only auth-related local storage (do not wipe user data/progress)
+      localStorage.removeItem('dev_bypass');
+      localStorage.removeItem('dev_email');
       // Redirect to home page
       window.location.href = '/';
     } catch (error) {
@@ -71,19 +82,9 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       setLoading(true);
       setError(null); // Clear any previous errors
       
-      // Try to get user - catch any session errors silently
-      let user = null;
-      let authError = null;
-      
-      try {
-        const result = await supabase.auth.getUser();
-        user = result.data.user;
-        authError = result.error;
-      } catch (sessionError: any) {
-        // Catch any thrown errors (like "Auth session missing")
-        console.log('ProfileScreen: Session error caught (silent):', sessionError?.message || 'Unknown session error');
-        authError = sessionError;
-      }
+      // Use getSession() so refresh restores auth from storage without requiring a network call.
+      const { data, error: authError } = await supabase.auth.getSession();
+      const user = data?.session?.user ?? null;
       
       console.log('ProfileScreen: Auth response received', {
         hasUser: !!user,
@@ -189,7 +190,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       console.log('ProfileScreen: Querying Supabase user_profiles table');
       const { data, error: supabaseError } = await supabase
         .from('user_profiles')
-        .select('*')
+        .select('*, profile_image_url')
         .eq('id', currentUser.id)
         .single();
 
@@ -238,7 +239,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
           ...data,
           createdAt: data.created_at,
           updatedAt: data.updated_at,
-          subscriptionStatus: data.subscription_status
+          subscriptionStatus: data.subscription_status,
+          profileImageUrl: data.profile_image_url
         };
         setProfile(transformedProfile);
       } else {
@@ -282,7 +284,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
               ...createdProfile,
               createdAt: createdProfile.created_at,
               updatedAt: createdProfile.updated_at,
-              subscriptionStatus: createdProfile.subscription_status
+              subscriptionStatus: createdProfile.subscription_status,
+              profileImageUrl: createdProfile.profile_image_url
             };
             setProfile(transformedProfile);
           }
@@ -326,32 +329,15 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     );
   }
 
-  // If no user after loading completes, show limited profile view for app store review
-  // Users need access to sign out and account management even when not fully authenticated
+  // If no user after loading completes, show a clear sign-in CTA
   if (!currentUser && !loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white p-6">
-        <div className="max-w-md mx-auto pt-20">
-          <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)] text-center mb-6">
-            <User className="w-16 h-16 text-white/60 mx-auto mb-4" />
-            <h2 className="text-title-lg text-white font-bold mb-2">Profile</h2>
-            <p className="text-white/80 mb-6">Sign in to access your full profile and settings</p>
-            
-            {/* Sign Out Button - Always available */}
-            <button
-              onClick={handleSignOut}
-              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-xl text-white transition-colors duration-300 mb-4"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Sign Out</span>
-            </button>
-            
-            <p className="text-white/60 text-sm mt-4">
-              Need to delete your account? Sign in first, then go to Account Info.
-            </p>
-          </div>
-        </div>
-      </div>
+      <AuthScreen
+        onAuthSuccess={() => {
+          // After sign-in, reload ProfileScreen state and UI.
+          getCurrentUser();
+        }}
+      />
     );
   }
 
@@ -473,25 +459,97 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Upload profile image to Supabase Storage
+  const uploadProfileImage = async (file: File): Promise<string> => {
+    if (!currentUser) {
+      throw new Error('No user logged in');
+    }
+
+    try {
+      // Create a unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${currentUser.id}/${Date.now()}.${fileExt}`;
+
+      // Upload to Supabase Storage
+      const { data, error: uploadError } = await supabase.storage
+        .from('profile-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        console.error('Error uploading image:', uploadError);
+        throw uploadError;
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('profile-images')
+        .getPublicUrl(fileName);
+
+      // Save URL to database
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({ profile_image_url: publicUrl })
+        .eq('id', currentUser.id);
+
+      if (updateError) {
+        console.error('Error saving image URL:', updateError);
+        throw updateError;
+      }
+
+      console.log('Profile image uploaded and saved:', publicUrl);
+      return publicUrl;
+    } catch (error) {
+      console.error('Error uploading profile image:', error);
+      throw error;
+    }
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        alert('Please select an image file.');
-        return;
-      }
+    if (!file) return;
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Image size must be less than 5MB.');
-        return;
-      }
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      return;
+    }
 
-      // Create object URL for preview
-      const imageUrl = URL.createObjectURL(file);
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB.');
+      return;
+    }
+
+    try {
+      // Show loading state with temporary preview
+      const tempUrl = URL.createObjectURL(file);
+      setProfileImage(tempUrl);
+
+      // Upload to Supabase Storage
+      const imageUrl = await uploadProfileImage(file);
+      
+      // Update state with the permanent URL
       setProfileImage(imageUrl);
-      console.log('Profile image updated:', file.name);
+      
+      // Clean up temporary URL
+      URL.revokeObjectURL(tempUrl);
+      
+      // Update profile state to reflect the new image URL
+      if (profile) {
+        setProfile({
+          ...profile,
+          profileImageUrl: imageUrl
+        });
+      }
+      
+      console.log('Profile image uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Failed to upload image. Please try again.');
+      setProfileImage(null);
     }
   };
 

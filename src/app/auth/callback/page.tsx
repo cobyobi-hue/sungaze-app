@@ -15,21 +15,6 @@ export default function AuthCallback() {
         
         if (error) {
           console.error('Auth callback error:', error);
-          
-          // Handle refresh token errors
-          const isRefreshTokenError = error.message?.includes('Refresh Token') || 
-                                     error.message?.includes('refresh_token') ||
-                                     error.status === 401;
-          
-          if (isRefreshTokenError) {
-            console.log('Invalid refresh token in callback, clearing session...');
-            try {
-              await supabase.auth.signOut();
-            } catch (signOutError) {
-              console.error('Error signing out:', signOutError);
-            }
-          }
-          
           router.push('/?error=auth_callback_failed');
           return;
         }
@@ -41,23 +26,8 @@ export default function AuthCallback() {
           // No session, redirect to auth screen
           router.push('/');
         }
-      } catch (error: any) {
+      } catch (error) {
         console.error('Auth callback error:', error);
-        
-        // Handle refresh token errors in catch
-        const isRefreshTokenError = error?.message?.includes('Refresh Token') || 
-                                   error?.message?.includes('refresh_token') ||
-                                   error?.status === 401;
-        
-        if (isRefreshTokenError) {
-          console.log('Invalid refresh token in callback catch, clearing session...');
-          try {
-            await supabase.auth.signOut();
-          } catch (signOutError) {
-            console.error('Error signing out:', signOutError);
-          }
-        }
-        
         router.push('/?error=auth_callback_failed');
       }
     };
