@@ -67,7 +67,6 @@ export function useProgress() {
     try {
       // modern browsers
       if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-        // @ts-expect-error randomUUID exists in modern runtimes
         return crypto.randomUUID() as string;
       }
     } catch {}
