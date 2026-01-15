@@ -220,11 +220,17 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
   // Confirmation screen
   if (showConfirmation) {
     return (
-      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white min-h-screen">
+      <div className="relative min-h-screen bg-black text-white overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-28 -right-28 h-72 w-72 rounded-full bg-gradient-to-br from-yellow-400/20 via-orange-500/12 to-transparent blur-3xl" />
+          <div className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-gradient-to-tr from-orange-500/16 via-yellow-400/10 to-transparent blur-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(255,215,0,0.10),transparent_55%)]" />
+        </div>
         <div className="px-6 pt-6 pb-24">
           <div className="text-center py-12">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-500/20 to-yellow-500/20 flex items-center justify-center mx-auto mb-6 animate-pulse border border-orange-400/30">
-              <Sparkles className="w-10 h-10 text-orange-400" />
+            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 via-yellow-300 to-orange-400 flex items-center justify-center mx-auto mb-6 shadow-[0_0_24px_rgba(255,215,0,0.45),0_0_52px_rgba(255,165,0,0.18)]">
+              <Sparkles className="w-10 h-10 text-black" />
+              <div className="absolute inset-0 rounded-full border border-yellow-300/50 shadow-[0_0_16px_rgba(255,215,0,0.35)]" />
             </div>
             <h2 className="text-title-lg text-white font-semibold mb-4">
               Solar Circuit Complete
@@ -232,7 +238,7 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
             <p className="text-white/60 text-body-md mb-6">
               You are charged with light + earth energy.
             </p>
-            <div className="flex items-center justify-center gap-2 text-orange-400">
+            <div className="flex items-center justify-center gap-2 text-yellow-300">
               <Sun className="w-6 h-6 animate-spin" />
               <span className="font-medium">Your journey is recorded</span>
               <Sun className="w-6 h-6 animate-spin" />
@@ -247,18 +253,24 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
     const entry = editingEntry || newEntry;
     
     return (
-      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white min-h-screen">
+      <div className="relative min-h-screen bg-black text-white overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-55">
+          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-gradient-to-br from-yellow-400/20 via-orange-500/10 to-transparent blur-3xl" />
+          <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-gradient-to-tr from-orange-500/15 via-yellow-400/10 to-transparent blur-3xl" />
+        </div>
+        <div className="px-6 pt-6 pb-24">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="relative flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400/30 to-yellow-400/30 flex items-center justify-center">
-              <Book className="w-6 h-6 text-orange-600" />
+            <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 via-yellow-300 to-orange-400 flex items-center justify-center shadow-[0_0_22px_rgba(255,215,0,0.35)]">
+              <Book className="w-6 h-6 text-black" />
+              <div className="absolute inset-0 rounded-full border border-yellow-300/50" />
             </div>
             <div>
-              <h3 className="text-gray-900 text-lg font-bold">
+              <h3 className="text-white text-lg font-semibold tracking-wide">
                 {editingEntry ? 'Edit Entry' : (mode === 'evening' ? 'New Evening Entry' : 'New Journal Entry')}
               </h3>
-              <p className="text-gray-700 text-sm font-medium">
+              <p className="text-white/60 text-sm font-medium">
                 {formatDate(editingEntry?.date || new Date())}
               </p>
             </div>
@@ -268,7 +280,7 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
               setShowNewEntry(false);
               setEditingEntry(null);
             }}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-300 rounded-full p-2 shadow-sm"
+            className="bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
           >
             <X className="w-4 h-4" />
           </Button>
@@ -277,16 +289,17 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
         {/* Entry Form */}
         <div className="space-y-6">
           {/* Practice Details */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-orange-200 shadow-sm">
-            <h4 className="text-gray-900 font-bold mb-4">Practice Details</h4>
+          <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/5 to-orange-500/15">
+            <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+            <h4 className="text-white font-semibold tracking-wide mb-4">Practice Details</h4>
             
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-gray-900 text-sm font-bold mb-2 block">Type</label>
+                <label className="text-white/80 text-sm font-semibold mb-2 block">Type</label>
                 <select
                   value={entry.gazingType}
                   onChange={(e) => setNewEntry({...newEntry, gazingType: e.target.value as 'sun' | 'cloud' | 'candle' | 'starlight'})}
-                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm shadow-sm focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+                  className="w-full bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
                 >
                   <option value="sun">Sun Gazing</option>
                   <option value="cloud">Cloud Gazing</option>
@@ -296,12 +309,12 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
               </div>
               
               <div>
-                <label className="text-gray-900 text-sm font-bold mb-2 block">Duration</label>
+                <label className="text-white/80 text-sm font-semibold mb-2 block">Duration (sec)</label>
                 <input
                   type="number"
                   value={entry.duration}
                   onChange={(e) => setNewEntry({...newEntry, duration: parseInt(e.target.value)})}
-                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm shadow-sm focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+                  className="w-full bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
                   min="1"
                   max="3600"
                 />
@@ -309,45 +322,28 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
             </div>
             
             <div>
-              <label className="text-gray-900 text-sm font-bold mb-2 block">Conditions</label>
+              <label className="text-white/80 text-sm font-semibold mb-2 block">Conditions</label>
               <input
                 type="text"
                 value={entry.condition}
                 onChange={(e) => setNewEntry({...newEntry, condition: e.target.value})}
-                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm shadow-sm focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+                className="w-full bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
                 placeholder="Clear skies, partly cloudy, golden hour..."
               />
             </div>
-          </div>
-
-          {/* Mood Selection */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-orange-200 shadow-sm">
-            <h4 className="text-gray-900 font-bold mb-4">How do you feel?</h4>
-            <div className="grid grid-cols-5 gap-2">
-              {Object.entries(moodEmojis).map(([mood, emoji]) => (
-                <button
-                  key={mood}
-                  onClick={() => setNewEntry({...newEntry, mood: mood as any})}
-                  className={`p-3 rounded-lg text-center transition-all duration-200 ${
-                    entry.mood === mood
-                      ? 'bg-orange-100 border-2 border-orange-400 shadow-md'
-                      : 'bg-white hover:bg-gray-50 border border-gray-200 shadow-sm'
-                  }`}
-                >
-                  <div className="text-lg mb-1">{emoji}</div>
-                  <div className="text-xs text-gray-800 font-bold capitalize">{mood}</div>
-                </button>
-              ))}
             </div>
           </div>
 
+          {/* Mood Selection removed (kept as an internal field for now) */}
+
           {/* Photo Upload */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-orange-200 shadow-sm">
-            <h4 className="text-gray-900 font-bold mb-4 flex items-center gap-2">
-              <Image className="w-4 h-4 text-orange-600" />
+          <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/5 to-orange-500/15">
+            <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+            <h4 className="text-white font-semibold tracking-wide mb-4 flex items-center gap-2">
+              <Image className="w-4 h-4 text-yellow-300" />
               Capture this moment
             </h4>
-            <p className="text-gray-700 text-xs mb-4 italic">
+            <p className="text-white/60 text-xs mb-4 italic">
               Add a photo to remember this practice
             </p>
             
@@ -356,11 +352,11 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
                 <img 
                   src={photoPreview} 
                   alt="Journal entry" 
-                  className="w-full h-48 object-cover rounded-lg"
+                  className="w-full h-48 object-cover rounded-2xl border border-white/10"
                 />
                 <Button
                   onClick={removePhoto}
-                  className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 shadow-lg"
+                  className="absolute top-2 right-2 bg-red-500/30 hover:bg-red-500/45 text-white border border-red-400/40 rounded-2xl p-2 shadow-lg"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -370,17 +366,17 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
                 <Button
                   type="button"
                   onClick={() => cameraInputRef.current?.click()}
-                  className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 py-3 rounded-lg transition-all duration-200 shadow-sm"
+                  className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-2xl transition-all duration-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
                 >
-                  <Camera className="w-4 h-4 text-orange-600" />
+                  <Camera className="w-4 h-4 text-yellow-300" />
                   Take Photo
                 </Button>
                 <Button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 py-3 rounded-lg transition-all duration-200 shadow-sm"
+                  className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-2xl transition-all duration-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
                 >
-                  <Upload className="w-4 h-4 text-orange-600" />
+                  <Upload className="w-4 h-4 text-yellow-300" />
                   Upload Photo
                 </Button>
               </div>
@@ -402,43 +398,49 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
               onChange={handleGalleryUpload}
               className="hidden"
             />
+            </div>
           </div>
 
           {/* Reflection */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-orange-200 shadow-sm">
-            <h4 className="text-gray-900 font-bold mb-2">Reflection</h4>
-            <p className="text-gray-700 text-xs mb-4 italic">
+          <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/5 to-orange-500/15">
+            <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+            <h4 className="text-white font-semibold tracking-wide mb-2">Reflection</h4>
+            <p className="text-white/60 text-xs mb-4 italic">
               How was your practice today? What did you experience?
             </p>
             <textarea
               value={entry.reflection}
               onChange={(e) => setNewEntry({...newEntry, reflection: e.target.value})}
-              className="w-full h-32 bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm resize-none shadow-sm focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+              className="w-full h-32 bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm resize-none shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
               placeholder="Describe your experience, thoughts, and feelings..."
               required
             />
+            </div>
           </div>
 
           {/* Body Experience */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-orange-200 shadow-sm">
-            <h4 className="text-gray-900 font-bold mb-2">Body Experience</h4>
-            <p className="text-gray-700 text-xs mb-4 italic">
+          <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/5 to-orange-500/15">
+            <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+            <h4 className="text-white font-semibold tracking-wide mb-2">Body Experience</h4>
+            <p className="text-white/60 text-xs mb-4 italic">
               What sensations did you notice in your body?
             </p>
             <textarea
               value={entry.bodyExperience}
               onChange={(e) => setNewEntry({...newEntry, bodyExperience: e.target.value})}
-              className="w-full h-24 bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm resize-none shadow-sm focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+              className="w-full h-24 bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm resize-none shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
               placeholder="Warmth, tingling, relaxation, energy..."
             />
+            </div>
           </div>
 
           {/* Insights */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-orange-200 shadow-sm">
-            <h4 className="text-gray-900 font-bold mb-2">
+          <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/5 to-orange-500/15">
+            <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+            <h4 className="text-white font-semibold tracking-wide mb-2">
               {mode === 'evening' ? 'Inner Reflections' : 'Insights & Gratitude'}
             </h4>
-            <p className="text-gray-700 text-xs mb-4 italic">
+            <p className="text-white/60 text-xs mb-4 italic">
               {mode === 'evening' 
                 ? 'What did the inner flame reveal to you tonight?'
                 : 'Any insights, realizations, or things you\'re grateful for?'
@@ -447,46 +449,51 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
             <textarea
               value={entry.insights}
               onChange={(e) => setNewEntry({...newEntry, insights: e.target.value})}
-              className="w-full h-24 bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm resize-none shadow-sm focus:border-orange-400 focus:ring-1 focus:ring-orange-400"
+              className="w-full h-24 bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm resize-none shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
               placeholder={mode === 'evening' ? 'Visions, realizations, inner wisdom...' : 'Insights, gratitude, intentions...'}
             />
+            </div>
           </div>
 
           {/* Evening-specific fields */}
           {mode === 'evening' && (
             <>
               {/* Gratitude */}
-              <div className="bg-gradient-to-r from-purple-400/10 to-pink-400/10 backdrop-blur-xl border border-purple-300/20 rounded-xl p-4">
-                <h4 className="text-gray-900 font-bold mb-2 flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-purple-600" />
+              <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/15 via-white/5 to-orange-500/12">
+                <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+                <h4 className="text-white font-semibold tracking-wide mb-2 flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-yellow-300" />
                   Evening Gratitude
                 </h4>
-                <p className="text-gray-700 text-xs mb-4 italic">
+                <p className="text-white/60 text-xs mb-4 italic">
                   What are you grateful for from today's journey?
                 </p>
                 <textarea
                   value={entry.gratitude || ''}
                   onChange={(e) => setNewEntry({...newEntry, gratitude: e.target.value})}
-                  className="w-full h-24 bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm resize-none shadow-sm focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
+                  className="w-full h-24 bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm resize-none shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
                   placeholder="I am grateful for..."
                 />
+                </div>
               </div>
 
               {/* Dream Intentions */}
-              <div className="bg-gradient-to-r from-indigo-400/10 to-blue-400/10 backdrop-blur-xl border border-indigo-300/20 rounded-xl p-4">
-                <h4 className="text-gray-900 font-bold mb-2 flex items-center gap-2">
-                  <Moon className="w-4 h-4 text-indigo-600" />
+              <div className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/15 via-white/5 to-orange-500/12">
+                <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+                <h4 className="text-white font-semibold tracking-wide mb-2 flex items-center gap-2">
+                  <Moon className="w-4 h-4 text-yellow-300" />
                   Dream Intentions
                 </h4>
-                <p className="text-gray-700 text-xs mb-4 italic">
+                <p className="text-white/60 text-xs mb-4 italic">
                   What would you like to explore or receive in your dreams?
                 </p>
                 <textarea
                   value={entry.dreamIntentions || ''}
                   onChange={(e) => setNewEntry({...newEntry, dreamIntentions: e.target.value})}
-                  className="w-full h-24 bg-white border border-gray-300 rounded-lg px-3 py-2 text-gray-900 text-sm resize-none shadow-sm focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
+                  className="w-full h-24 bg-black/40 border border-white/10 rounded-2xl px-3 py-2 text-white text-sm resize-none shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
                   placeholder="Tonight in my dreams, I intend to..."
                 />
+                </div>
               </div>
             </>
           )}
@@ -495,25 +502,36 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
           <Button
             onClick={handleSaveEntry}
             disabled={!entry.reflection?.trim()}
-            className="w-full bg-gradient-to-r from-orange-400/30 to-yellow-400/30 hover:from-orange-400/40 hover:to-yellow-400/40 text-gray-800 border border-orange-400/30 backdrop-blur-xl rounded-2xl py-3 transition-all duration-300 font-medium tracking-wide shadow-[0_4px_20px_rgba(255,165,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-semibold rounded-2xl py-3 transition-all duration-300 shadow-[0_10px_30px_rgba(255,165,0,0.18)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Heart className="w-5 h-5 mr-2" />
             {editingEntry ? 'Update Entry' : 'Save Entry'}
           </Button>
+        </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white min-h-screen">
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 opacity-55">
+        <div className="absolute -top-28 -right-28 h-72 w-72 rounded-full bg-gradient-to-br from-yellow-400/20 via-orange-500/12 to-transparent blur-3xl" />
+        <div className="absolute -bottom-28 -left-28 h-72 w-72 rounded-full bg-gradient-to-tr from-orange-500/16 via-yellow-400/10 to-transparent blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(255,215,0,0.10),transparent_55%)]" />
+      </div>
       <div className="px-6 pt-6 pb-24">
         {/* Header */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)] mb-6">
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/55 backdrop-blur-xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.55)] mb-6">
+          <div className="pointer-events-none absolute inset-0 opacity-50">
+            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-gradient-to-br from-yellow-400/18 via-orange-500/10 to-transparent blur-3xl" />
+            <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-gradient-to-tr from-orange-500/12 via-yellow-400/10 to-transparent blur-3xl" />
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/20 to-yellow-500/20 flex items-center justify-center border border-orange-400/30">
-                <Book className="w-6 h-6 text-orange-400" />
+              <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 via-yellow-300 to-orange-400 flex items-center justify-center shadow-[0_0_22px_rgba(255,215,0,0.35)]">
+                <Book className="w-6 h-6 text-black" />
+                <div className="absolute inset-0 rounded-full border border-yellow-300/50" />
               </div>
               <div>
                 <h2 className="text-title-md text-white font-semibold">
@@ -525,13 +543,13 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
             <div className="flex gap-2">
               <Button
                 onClick={() => setShowNewEntry(true)}
-                className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 hover:from-orange-500/30 hover:to-yellow-500/30 border border-orange-400/30 text-white rounded-2xl px-4 py-2 transition-all duration-300"
+                className="bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl px-4 py-2 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
                 <Plus className="w-4 h-4" />
               </Button>
               <Button
                 onClick={onClose}
-                className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 text-white rounded-2xl px-4 py-2 transition-all duration-300"
+                className="bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl px-4 py-2 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -559,19 +577,20 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
             {entries.map((entry) => (
               <div
                 key={entry.id}
-                className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                className="rounded-3xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/5 to-orange-500/15"
               >
+                <div className="rounded-3xl bg-black/55 backdrop-blur-xl border border-white/10 p-6 shadow-[0_12px_40px_rgba(0,0,0,0.55)] hover:bg-black/50 transition-all duration-300">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${
                       entry.gazingType === 'sun' 
-                        ? 'bg-gradient-to-br from-orange-500/20 to-yellow-500/20 border-orange-400/30' 
-                        : 'bg-gradient-to-br from-blue-500/20 to-gray-500/20 border-blue-400/30'
+                        ? 'bg-gradient-to-br from-yellow-400/25 to-orange-500/20 border-yellow-400/35 shadow-[0_0_14px_rgba(255,215,0,0.18)]' 
+                        : 'bg-white/5 border-white/10'
                     }`}>
                       {entry.gazingType === 'sun' ? (
-                        <Sun className="w-5 h-5 text-orange-400" />
+                        <Sun className="w-5 h-5 text-yellow-200" />
                       ) : (
-                        <Cloud className="w-5 h-5 text-blue-400" />
+                        <Cloud className="w-5 h-5 text-white/70" />
                       )}
                     </div>
                     <div>
@@ -579,7 +598,6 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
                         <span className="text-white font-semibold text-body-sm capitalize">
                           {entry.gazingType} Gazing
                         </span>
-                        <span className="text-lg">{moodEmojis[entry.mood]}</span>
                       </div>
                       <p className="text-white/60 text-caption font-medium">
                         {formatDate(entry.date)} • {formatTime(entry.duration)} • {entry.condition}
@@ -589,7 +607,7 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
                   <div className="flex gap-1">
                     <Button
                       onClick={() => setEditingEntry(entry)}
-                      className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-xl rounded-lg p-1.5"
+                      className="bg-white/5 hover:bg-white/10 text-white border border-white/10 backdrop-blur-xl rounded-xl p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
                     >
                       <Edit3 className="w-3 h-3" />
                     </Button>
@@ -607,7 +625,7 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
                   <img 
                     src={entry.photoUrl} 
                     alt="Journal moment" 
-                    className="w-full max-w-sm mx-auto h-48 object-cover rounded-lg shadow-lg"
+                    className="w-full max-w-sm mx-auto h-48 object-cover rounded-2xl border border-white/10 shadow-lg"
                   />
                 </div>
               )}
@@ -621,19 +639,20 @@ export function SolarJournal({ onClose, initialEntry, mode = 'day', userId = 'de
                 {(entry.bodyExperience || entry.insights) && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                     {entry.bodyExperience && (
-                      <div className="bg-white/10 rounded-lg p-3 border border-white/20">
+                      <div className="bg-white/5 rounded-2xl p-4 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                         <div className="text-white font-semibold mb-1">Body Experience</div>
                         <p className="text-white/80">{entry.bodyExperience}</p>
                       </div>
                     )}
                     {entry.insights && (
-                      <div className="bg-white/10 rounded-lg p-3 border border-white/20">
+                      <div className="bg-white/5 rounded-2xl p-4 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                         <div className="text-white font-semibold mb-1">Insights</div>
                         <p className="text-white/80">{entry.insights}</p>
                       </div>
                     )}
                   </div>
                 )}
+                </div>
             </div>
           ))}
           </div>
