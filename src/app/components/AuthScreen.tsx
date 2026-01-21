@@ -213,9 +213,9 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Dark warm overlay for app interface */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
+    <div className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Dark teal overlay for readability */}
+      <div className="absolute inset-0 bg-black/35 backdrop-blur-xl" />
       
       {/* Content wrapper */}
       <div className="relative z-10 w-full max-w-md">
