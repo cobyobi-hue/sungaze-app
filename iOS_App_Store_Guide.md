@@ -63,16 +63,16 @@ Create a launch screen that matches your app's design.
 #### Info.plist Permissions:
 ```xml
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>SUNGAZE needs location access to provide accurate solar timing and safe gazing recommendations.</string>
+<string>Sungaze needs location access to provide accurate solar timing and safe gazing recommendations.</string>
 
 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>SUNGAZE needs location access to provide accurate solar timing and safe gazing recommendations.</string>
+<string>Sungaze needs location access to provide accurate solar timing and safe gazing recommendations.</string>
 
 <key>NSCameraUsageDescription</key>
-<string>SUNGAZE may use the camera for solar visualization and safety monitoring.</string>
+<string>Sungaze may use the camera for solar visualization and safety monitoring.</string>
 
 <key>NSMicrophoneUsageDescription</key>
-<string>SUNGAZE may use the microphone for voice-guided meditation sessions.</string>
+<string>Sungaze may use the microphone for voice-guided meditation sessions.</string>
 ```
 
 ### 5. App Store Connect Setup

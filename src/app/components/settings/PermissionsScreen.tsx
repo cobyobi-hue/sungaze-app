@@ -3,6 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Camera, Image, MapPin, Bell, Mic, Settings, ExternalLink } from 'lucide-react';
 import { createClient } from '../../lib/supabase/client';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { useDialog } from '../../contexts/DialogContext';
+import { ScreenShell } from '../ui/ScreenShell';
+import { Capacitor } from '@capacitor/core';
+import {
+  checkNativeLocalNotificationPermission,
+  requestNativeLocalNotificationPermission
+} from '../../lib/solarReminderNotifications';
 
 interface PermissionsScreenProps {
   onBack: () => void;
@@ -19,6 +27,8 @@ interface Permission {
 
 export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
   const supabase = createClient();
+  const { isOnline } = useNetworkStatus();
+  const dialog = useDialog();
   const [permissions, setPermissions] = useState<Permission[]>([
     {
       id: 'camera',
@@ -72,6 +82,12 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
   const loadPermissionSettings = async () => {
     try {
       setLoading(true);
+
+      if (!isOnline) {
+        // Offline: fall back to checking browser permissions and skip Supabase reads.
+        await checkActualPermissions();
+        return;
+      }
       
       // Get current user
       const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -121,9 +137,15 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
           let status: 'granted' | 'denied' | 'not-requested' = 'not-requested';
           
           try {
-            if (permission.id === 'notifications' && 'Notification' in window) {
-              const result = await Notification.requestPermission();
-              status = result === 'granted' ? 'granted' : result === 'denied' ? 'denied' : 'not-requested';
+            if (permission.id === 'notifications') {
+              if (Capacitor.isNativePlatform()) {
+                const perm = await checkNativeLocalNotificationPermission();
+                status = perm.supported && perm.granted ? 'granted' : 'not-requested';
+              } else if ('Notification' in window) {
+                const perm = Notification.permission;
+                status =
+                  perm === 'granted' ? 'granted' : perm === 'denied' ? 'denied' : 'not-requested';
+              }
             } else if (permission.id === 'location' && navigator.geolocation) {
               // Can't directly check, but we can try
               status = 'not-requested';
@@ -148,6 +170,11 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
   const savePermissionSettings = async () => {
     try {
       setSaving(true);
+
+      if (!isOnline) {
+        dialog.alert({ message: 'You are offline. Reconnect to save permission settings.' });
+        return;
+      }
       
       // Get current user
       const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -173,13 +200,13 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
 
       if (updateError) {
         console.error('Error saving permission settings:', updateError);
-        alert('Failed to save settings. Please try again.');
+        dialog.alert({ message: 'Failed to save settings. Please try again.' });
       } else {
         console.log('Permission settings saved successfully');
       }
     } catch (error) {
       console.error('Error saving permission settings:', error);
-      alert('Failed to save settings. Please try again.');
+      dialog.alert({ message: 'Failed to save settings. Please try again.' });
     } finally {
       setSaving(false);
     }
@@ -192,8 +219,13 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
       
       // Request actual browser permission
       if (permissionId === 'notifications' && 'Notification' in window) {
-        const result = await Notification.requestPermission();
-        newStatus = result === 'granted' ? 'granted' : result === 'denied' ? 'denied' : 'not-requested';
+        if (Capacitor.isNativePlatform()) {
+          const perm = await requestNativeLocalNotificationPermission();
+          newStatus = perm.supported && perm.granted ? 'granted' : 'denied';
+        } else {
+          const result = await Notification.requestPermission();
+          newStatus = result === 'granted' ? 'granted' : result === 'denied' ? 'denied' : 'not-requested';
+        }
       } else if (permissionId === 'location' && navigator.geolocation) {
         // Request location permission
         try {
@@ -228,18 +260,22 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
       );
       
       // Save to Supabase
-      await savePermissionSettings();
+      if (isOnline) {
+        await savePermissionSettings();
+      } else {
+        dialog.alert({ message: 'You are offline. This change will not be saved until you reconnect.' });
+      }
     } catch (error) {
       console.error('Error requesting permission:', error);
-      alert('Failed to request permission. Please try again.');
+      dialog.alert({ message: 'Failed to request permission. Please try again.' });
     } finally {
       setSaving(false);
     }
   };
 
   const openSystemSettings = () => {
-    // In a real app, you would open system settings
-    console.log('Opening system settings');
+    // Worth doing now: avoid a dead-end button until we wire a real deep link
+    dialog.alert({ message: "Open System Settings is coming soon. For now, use your device's Settings app to manage permissions." });
   };
 
   const getStatusColor = (status: string) => {
@@ -308,7 +344,7 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+    <ScreenShell>
       {/* Header */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-4 mb-6">
@@ -330,7 +366,7 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
             <div className="w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
-          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-4 mb-6">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
             <div className="space-y-1">
             {permissions.map((permission, index) => (
               <div key={permission.id}>
@@ -347,7 +383,8 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
         {/* System Settings Button */}
         <button
           onClick={openSystemSettings}
-          className="w-full bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-2xl py-4 text-white font-medium hover:from-blue-500/30 hover:to-indigo-500/30 transition-colors flex items-center justify-center gap-2"
+          disabled
+          className="w-full bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-2xl py-4 text-white/70 font-medium transition-colors flex items-center justify-center gap-2 opacity-60 cursor-not-allowed"
         >
           <Settings className="w-5 h-5" />
           Open System Settings
@@ -355,7 +392,7 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
         </button>
 
         {/* Info Section */}
-        <div className="mt-6 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-4">
+        <div className="mt-6 bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
           <div className="flex items-start gap-3">
             <div className="w-5 h-5 text-blue-400 mt-0.5">
               <Settings className="w-full h-full" />
@@ -383,6 +420,6 @@ export function PermissionsScreen({ onBack }: PermissionsScreenProps) {
           </div>
         </div>
       )}
-    </div>
+    </ScreenShell>
   );
 }

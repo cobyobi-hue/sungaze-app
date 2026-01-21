@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Download, Users, Mail, Music, RefreshCw } from 'lucide-react';
 import { resetOnboarding } from '../lib/consent';
+import { useDialog } from '../contexts/DialogContext';
 
 interface FounderData {
   founderNumber: number;
@@ -28,6 +29,7 @@ export function FounderAdminPanel() {
   const [data, setData] = useState<FounderExportData | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
+  const dialog = useDialog();
 
   const exportFounderData = async () => {
     setLoading(true);
@@ -145,7 +147,7 @@ export function FounderAdminPanel() {
               onClick={() => {
                 const emails = emailsWithRitualAccess.map(f => f.ritualEmail).join(', ');
                 navigator.clipboard.writeText(emails);
-                alert('Ritual emails copied to clipboard!');
+                dialog.alert({ message: 'Ritual emails copied to clipboard!' });
               }}
               className="bg-orange-600 hover:bg-orange-700"
             >

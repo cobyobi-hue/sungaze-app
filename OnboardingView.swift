@@ -220,7 +220,6 @@ struct OnboardingView: View {
         showPaywall = true
     }
 }
-
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var networkManager = NetworkManager.shared
@@ -323,6 +322,7 @@ struct PaywallView: View {
         dismiss()
     }
 }
+
 
 
 

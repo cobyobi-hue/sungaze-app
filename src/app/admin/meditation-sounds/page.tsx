@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { Button } from '../../components/ui/button';
 import { Upload, Play, Pause, Trash2, Music, Volume2, Save } from 'lucide-react';
+import { useDialog } from '../../contexts/DialogContext';
 
 interface MeditationSound {
   id: string;
@@ -21,6 +22,7 @@ export default function MeditationSoundsAdmin() {
   const [playing, setPlaying] = useState<string | null>(null);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dialog = useDialog();
 
   const [newSound, setNewSound] = useState({
     name: '',
@@ -34,7 +36,7 @@ export default function MeditationSoundsAdmin() {
     if (!file) return;
 
     if (!file.type.startsWith('audio/')) {
-      alert('Please select an audio file');
+      dialog.alert({ message: 'Please select an audio file' });
       return;
     }
 
@@ -81,7 +83,7 @@ export default function MeditationSoundsAdmin() {
 
     } catch (error) {
       console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
+      dialog.alert({ message: 'Upload failed. Please try again.' });
     } finally {
       setUploading(false);
     }
@@ -111,19 +113,25 @@ export default function MeditationSoundsAdmin() {
     setCurrentAudio(audio);
   };
 
-  const deleteSound = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this meditation sound?')) {
-      setSounds(prev => prev.filter(s => s.id !== id));
-      
-      // Update localStorage
-      const updatedSounds = sounds.filter(s => s.id !== id);
-      localStorage.setItem('meditation_sounds', JSON.stringify(updatedSounds));
-      
-      if (playing === id) {
-        currentAudio?.pause();
-        setPlaying(null);
-        setCurrentAudio(null);
-      }
+  const deleteSound = async (id: string) => {
+    const ok = await dialog.confirm({
+      title: 'Delete sound?',
+      message: 'Are you sure you want to delete this meditation sound?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+    });
+    if (!ok) return;
+
+    setSounds(prev => prev.filter(s => s.id !== id));
+    
+    // Update localStorage
+    const updatedSounds = sounds.filter(s => s.id !== id);
+    localStorage.setItem('meditation_sounds', JSON.stringify(updatedSounds));
+    
+    if (playing === id) {
+      currentAudio?.pause();
+      setPlaying(null);
+      setCurrentAudio(null);
     }
   };
 

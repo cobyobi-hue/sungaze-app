@@ -195,7 +195,7 @@ export function SolarOracleOnboarding({ onComplete, onSkip }: SolarOracleOnboard
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-cyan-900/90 backdrop-blur-xl">
+    <div className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] backdrop-blur-xl">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1)_0%,transparent_70%)]" />
@@ -218,23 +218,23 @@ export function SolarOracleOnboarding({ onComplete, onSkip }: SolarOracleOnboard
             {/* Progress Bar */}
             <div className="w-full bg-black/30 rounded-full h-2 mb-6 overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                className="h-full bg-gradient-to-r from-[#40C4FF] to-[#4DD0E1] rounded-full transition-all duration-500 ease-out shadow-[0_0_12px_rgba(77,208,225,0.45)]"
                 style={{ width: `${progress}%` }}
               />
             </div>
             
-            <p className="text-cyan-200/80 text-sm mb-2">
+            <p className="text-white/75 text-sm mb-2 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">
               Question {currentQuestion + 1} of {questions.length}
             </p>
           </div>
 
           {/* Question Card */}
-          <div className="bg-black/40 backdrop-blur-xl border border-cyan-400/30 rounded-3xl p-8 shadow-2xl">
+          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-white mb-4 leading-tight">
                 {question.title}
               </h1>
-              <p className="text-cyan-100 text-lg leading-relaxed font-medium">
+              <p className="text-white/90 text-lg leading-relaxed font-medium">
                 {question.question}
               </p>
             </div>
@@ -247,14 +247,14 @@ export function SolarOracleOnboarding({ onComplete, onSkip }: SolarOracleOnboard
                   onClick={() => handleOptionSelect(option)}
                   className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 ${
                     selectedOption === option
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-400/60 shadow-[0_0_20px_rgba(34,211,238,0.2)]'
-                      : 'bg-black/20 border-white/20 hover:bg-black/30 hover:border-cyan-400/40'
+                      ? 'bg-black/50 border-white/20 shadow-[0_0_18px_rgba(77,208,225,0.18)]'
+                      : 'bg-black/20 border-white/15 hover:bg-black/30 hover:border-white/25'
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center mt-0.5 transition-all duration-300 ${
                       selectedOption === option
-                        ? 'border-cyan-400 bg-cyan-400'
+                        ? 'border-[#4DD0E1] bg-[#4DD0E1]'
                         : 'border-white/40'
                     }`}>
                       {selectedOption === option && (
@@ -262,7 +262,7 @@ export function SolarOracleOnboarding({ onComplete, onSkip }: SolarOracleOnboard
                       )}
                     </div>
                     <span className={`text-sm leading-relaxed transition-colors duration-300 ${
-                      selectedOption === option ? 'text-cyan-100' : 'text-white/90'
+                      selectedOption === option ? 'text-white' : 'text-white/90'
                     }`}>
                       {option}
                     </span>
@@ -293,7 +293,7 @@ export function SolarOracleOnboarding({ onComplete, onSkip }: SolarOracleOnboard
                 <Button
                   onClick={handleNext}
                   disabled={!selectedOption}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-8 py-3 shadow-[0_4px_20px_rgba(34,211,238,0.3)]"
+                className="bg-gradient-to-r from-[#40C4FF] to-[#4DD0E1] hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-8 py-3 shadow-[0_4px_20px_rgba(77,208,225,0.25)]"
                 >
                   {currentQuestion === questions.length - 1 ? 'Begin Your Journey' : 'Continue'}
                   {currentQuestion < questions.length - 1 && <ChevronRight className="w-4 h-4 ml-2" />}

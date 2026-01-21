@@ -106,7 +106,7 @@ struct LocationPermissionModal: View {
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("SUNGAZE needs your location to provide accurate sunrise/sunset times and safe gazing recommendations based on your local solar conditions.")
+                Text("Sungaze needs your location to provide accurate sunrise/sunset times and safe gazing recommendations based on your local solar conditions.")
                     .font(.body)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)

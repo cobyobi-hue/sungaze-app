@@ -12,7 +12,15 @@ import { SessionDetailModal, type SessionDetailModalSession } from "./SessionDet
 
 type RangeFilter = "today" | "7d" | "30d" | "all";
 
-export function SessionHistoryScreen({ onBack }: { onBack: () => void }) {
+export function SessionHistoryScreen({
+  onBack,
+  previewMode,
+  onOpenFullHistory,
+}: {
+  onBack: () => void;
+  previewMode?: boolean;
+  onOpenFullHistory?: () => void;
+}) {
   const [isMounted, setIsMounted] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [currentProgress, setCurrentProgress] = useState<any>(null);
@@ -24,6 +32,8 @@ export function SessionHistoryScreen({ onBack }: { onBack: () => void }) {
 
   const [selectedSession, setSelectedSession] = useState<SessionDetailModalSession | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const isPreview = !!previewMode;
 
   useEffect(() => {
     if (typeof window !== "undefined") setIsMounted(true);
@@ -241,16 +251,22 @@ export function SessionHistoryScreen({ onBack }: { onBack: () => void }) {
     return list;
   }, [mergedSessionsAll, range, query]);
 
+  const visibleFiltered = useMemo(() => {
+    if (!isPreview) return filtered;
+    // Preview mode: show only the most recent few entries to keep the home screen compact.
+    return filtered.slice(0, 3);
+  }, [filtered, isPreview]);
+
   const grouped = useMemo(() => {
     const map = new Map<string, PracticeSession[]>();
-    for (const s of filtered) {
+    for (const s of visibleFiltered) {
       const arr = map.get(s.date);
       if (arr) arr.push(s);
       else map.set(s.date, [s]);
     }
     const keys = Array.from(map.keys()).sort((a, b) => parseLocalDateKey(b).getTime() - parseLocalDateKey(a).getTime());
     return keys.map((k) => ({ date: k, label: formatDate(k), sessions: map.get(k)! }));
-  }, [filtered]);
+  }, [visibleFiltered]);
 
   const exportCsv = () => {
     const header = ["date", "label", "time", "duration_seconds", "time_of_day", "notes", "synced"].join(",");
@@ -279,73 +295,99 @@ export function SessionHistoryScreen({ onBack }: { onBack: () => void }) {
   if (!isMounted) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
-      <div className="px-6 pt-6 pb-24">
+    <div
+      className={`text-white ${
+        isPreview
+          ? "rounded-2xl bg-black/35 border border-white/10 backdrop-blur-lg shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
+          : "min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064]"
+      }`}
+    >
+      <div className={isPreview ? "p-6" : "px-6 pt-6 pb-24"}>
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
-          <button
-            type="button"
-            onClick={onBack}
-            className="rounded-xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/10 to-orange-500/20 hover:from-yellow-400/30 hover:to-orange-500/30 transition-all"
-          >
-            <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-black/35 border border-white/10 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-              <ChevronLeft className="w-5 h-5 text-white/90" />
+          {isPreview ? (
+            <div className="flex items-center justify-between w-full">
+              <div>
+                <h2 className="text-white font-semibold tracking-wide text-base">Session History</h2>
+                <p className="text-white/40 text-xs tracking-wider uppercase">{filtered.length} sessions</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => (onOpenFullHistory ? onOpenFullHistory() : onBack())}
+                className="text-xs font-semibold tracking-wide text-yellow-200/90 hover:text-yellow-200 transition-colors"
+              >
+                View All
+              </button>
             </div>
-          </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={onBack}
+                className="rounded-xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/10 to-orange-500/20 hover:from-yellow-400/30 hover:to-orange-500/30 transition-all"
+              >
+                <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-black/35 border border-white/10 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                  <ChevronLeft className="w-5 h-5 text-white/90" />
+                </div>
+              </button>
 
-          <div className="text-center flex-1">
-            <h1 className="text-white font-semibold tracking-wide text-lg">Session History</h1>
-            <p className="text-white/40 text-xs tracking-wider uppercase">{filtered.length} sessions</p>
-          </div>
+              <div className="text-center flex-1">
+                <h1 className="text-white font-semibold tracking-wide text-lg">Session History</h1>
+                <p className="text-white/40 text-xs tracking-wider uppercase">{filtered.length} sessions</p>
+              </div>
 
-          <button
-            type="button"
-            onClick={exportCsv}
-            className="rounded-xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/10 to-orange-500/20 hover:from-yellow-400/30 hover:to-orange-500/30 transition-all"
-          >
-            <div className="h-10 px-3 flex items-center gap-2 rounded-xl bg-black/35 border border-white/10 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-white/90 text-sm">
-              <Download className="w-4 h-4" />
-              CSV
-            </div>
-          </button>
+              <button
+                type="button"
+                onClick={exportCsv}
+                className="rounded-xl p-[1px] bg-gradient-to-br from-yellow-400/20 via-white/10 to-orange-500/20 hover:from-yellow-400/30 hover:to-orange-500/30 transition-all"
+              >
+                <div className="h-10 px-3 flex items-center gap-2 rounded-xl bg-black/35 border border-white/10 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-white/90 text-sm">
+                  <Download className="w-4 h-4" />
+                  CSV
+                </div>
+              </button>
+            </>
+          )}
         </div>
 
         {/* Controls */}
-        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-5">
-          <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search notes, dates, times…"
-              className="w-full pl-10 pr-3 py-3 rounded-xl bg-black/35 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
-            />
-          </div>
+        {!isPreview && (
+          <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-5">
+            <div className="relative mb-3">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search notes, dates, times…"
+                className="w-full pl-10 pr-3 py-3 rounded-xl bg-black/35 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/25"
+              />
+            </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
-            {([
-              ["today", "Today"],
-              ["7d", "7D"],
-              ["30d", "30D"],
-              ["all", "All"],
-            ] as const).map(([key, label]) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setRange(key)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold tracking-wide border transition-all ${
-                  range === key
-                    ? "bg-gradient-to-br from-yellow-400/25 to-orange-400/20 border-yellow-400/35 text-yellow-200 shadow-[0_0_14px_rgba(255,215,0,0.16)]"
-                    : "bg-white/5 border-white/10 text-white/70 hover:text-white"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
+            <div className="flex items-center gap-2 flex-wrap">
+              {([
+                ["today", "Today"],
+                ["7d", "7D"],
+                ["30d", "30D"],
+                ["all", "All"],
+              ] as const).map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setRange(key)}
+                  className={`px-3 py-2 rounded-xl text-xs font-semibold tracking-wide border transition-all ${
+                    range === key
+                      ? "bg-gradient-to-br from-yellow-400/25 to-orange-400/20 border-yellow-400/35 text-yellow-200 shadow-[0_0_14px_rgba(255,215,0,0.16)]"
+                      : "bg-white/5 border-white/10 text-white/70 hover:text-white"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
 
-            {supabaseLoading && <span className="text-white/40 text-xs ml-auto">Syncing…</span>}
+              {supabaseLoading && <span className="text-white/40 text-xs ml-auto">Syncing…</span>}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Groups */}
         {grouped.length === 0 ? (
@@ -438,5 +480,6 @@ export function SessionHistoryScreen({ onBack }: { onBack: () => void }) {
     </div>
   );
 }
+
 
 

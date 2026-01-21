@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ArrowLeft, ExternalLink, FileText, Shield, HelpCircle, Bug, Mail } from 'lucide-react';
+import { ScreenShell } from '../ui/ScreenShell';
 
 interface LegalScreenProps {
   onBack: () => void;
@@ -18,6 +19,9 @@ interface LegalItem {
 
 export function LegalScreen({ onBack }: LegalScreenProps) {
   const [loading, setLoading] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerUrl, setViewerUrl] = useState<string | null>(null);
+  const [viewerTitle, setViewerTitle] = useState<string>('');
 
   const legalItems: LegalItem[] = [
     {
@@ -50,16 +54,22 @@ export function LegalScreen({ onBack }: LegalScreenProps) {
     }
   ];
 
+  const openInAppViewer = (title: string, url: string) => {
+    setViewerTitle(title);
+    setViewerUrl(url);
+    setViewerOpen(true);
+  };
+
   const handleOpenLink = async (item: LegalItem) => {
     if (item.url) {
       setLoading(item.id);
       try {
-        // In a real app, you would open the URL in a webview or external browser
-        window.open(item.url, '_blank');
+        // Policy fix: open in-app instead of external browser
+        openInAppViewer(item.title, item.url);
       } catch (error) {
         console.error('Error opening link:', error);
       } finally {
-        setTimeout(() => setLoading(null), 1000);
+        setTimeout(() => setLoading(null), 200);
       }
     } else if (item.action) {
       item.action();
@@ -103,7 +113,33 @@ export function LegalScreen({ onBack }: LegalScreenProps) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+    <ScreenShell>
+      {/* In-app legal viewer modal */}
+      {viewerOpen && viewerUrl && (
+        <div className="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm">
+          <div className="absolute inset-0 max-w-3xl mx-auto bg-black/90 border-x border-white/10">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+              <div className="text-white font-semibold truncate pr-3">{viewerTitle}</div>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewerOpen(false);
+                  setViewerUrl(null);
+                }}
+                className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-white"
+              >
+                Close
+              </button>
+            </div>
+            <iframe
+              src={viewerUrl}
+              title={viewerTitle}
+              className="w-full h-[calc(100vh-52px)]"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-4 mb-6">
@@ -117,7 +153,7 @@ export function LegalScreen({ onBack }: LegalScreenProps) {
         </div>
 
         {/* Legal Items */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-4 mb-6">
+        <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
           <div className="space-y-1">
             {legalItems.map((item, index) => (
               <div key={item.id}>
@@ -131,7 +167,7 @@ export function LegalScreen({ onBack }: LegalScreenProps) {
         </div>
 
         {/* Contact Section */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-6">
+        <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
               <Mail className="w-4 h-4 text-blue-400" />
@@ -167,6 +203,6 @@ export function LegalScreen({ onBack }: LegalScreenProps) {
           </p>
         </div>
       </div>
-    </div>
+    </ScreenShell>
   );
 }

@@ -220,7 +220,7 @@ export function OnboardingPaywall({ data, onNext }: OnboardingPaywallProps) {
       </div>
 
       {/* Preview Content */}
-      <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-lg mb-8">
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] mb-8">
         <h2 className="text-title-md text-white font-semibold mb-4">Your Personalized Insights:</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">

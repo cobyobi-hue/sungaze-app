@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Globe, Search, Cloud, Circle } from 'lucide-react';
+import { Globe, Search, Cloud, User } from 'lucide-react';
 
 interface TabItem {
   id: string;
@@ -31,17 +31,21 @@ export function SolarTabBar({ activeTab, onTabChange, className = '' }: SolarTab
     {
       id: 'gaze',
       icon: (
-        <div className="w-8 h-8 relative flex items-center justify-center">
-          {/* Sun44 Logo - bright glowing orb with 44 */}
-          <div className="w-full h-full relative rounded-full bg-gradient-to-br from-yellow-400 via-yellow-300 to-orange-400 shadow-[0_0_20px_rgba(255,215,0,0.8),0_0_40px_rgba(255,165,0,0.4)] flex items-center justify-center animate-pulse">
-            <span className="text-black text-sm font-bold tracking-tight">44</span>
+        <div className="w-10 h-10 relative flex items-center justify-center">
+          {/* Sun44 Logo - luxury orb (dark core + bright gold ring) */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-200/55 via-yellow-300/35 to-transparent blur-xl" />
+          <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_22px_rgba(255,230,120,0.95),0_0_52px_rgba(255,215,0,0.55)]" />
+          <div className="absolute inset-[6px] rounded-full bg-black/85 border border-yellow-100/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-14px_26px_rgba(0,0,0,0.55)]" />
+          <div className="absolute inset-[7px] rounded-full border border-white/20" />
+          <div className="w-full h-full relative flex items-center justify-center animate-pulse">
+            <span className="text-[#FFEB3B] text-base font-extrabold tracking-tight drop-shadow-[0_6px_12px_rgba(0,0,0,0.75),0_0_16px_rgba(255,215,0,0.7)]">
+              44
+            </span>
           </div>
-          {/* Outer glow ring */}
-          <div className="absolute inset-0 rounded-full border-2 border-yellow-300/60 shadow-[0_0_15px_rgba(255,215,0,0.6)]" />
           {/* Orbital dots */}
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full shadow-[0_0_8px_rgba(255,215,0,0.8)]" />
-          <div className="absolute -bottom-1 -left-1 w-1.5 h-1.5 bg-orange-400 rounded-full shadow-[0_0_6px_rgba(255,165,0,0.8)]" />
-          <div className="absolute -bottom-1 -right-1 w-1 h-1 bg-yellow-300 rounded-full shadow-[0_0_6px_rgba(255,235,59,0.8)]" />
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFF8E1] rounded-full shadow-[0_0_10px_rgba(255,248,225,0.95)]" />
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-[#FFEB3B] rounded-full shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+          <div className="absolute -bottom-1 -right-1 w-1.5 h-1.5 bg-[#FFEB3B] rounded-full shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
         </div>
       ),
       label: 'TODAY'
@@ -60,7 +64,7 @@ export function SolarTabBar({ activeTab, onTabChange, className = '' }: SolarTab
     },
     {
       id: 'profile',
-      icon: <Circle className="w-6 h-6 fill-orange-500 text-orange-500" />,
+      icon: <User className="w-6 h-6" />,
       label: 'PROFILE'
     }
   ];
@@ -68,7 +72,7 @@ export function SolarTabBar({ activeTab, onTabChange, className = '' }: SolarTab
   return (
     <div className={`fixed bottom-0 left-0 right-0 z-50 ${className}`}>
       {/* Tab bar background - More transparent */}
-      <div className="bg-gradient-to-t from-amber-800/70 via-orange-700/70 to-orange-600/70 backdrop-blur-xl border-t border-orange-400/20 shadow-[0_-4px_16px_rgba(0,0,0,0.2)]">
+      <div className="bg-gradient-to-t from-[#006064]/70 via-[#4DD0E1]/45 to-[#40C4FF]/45 backdrop-blur-xl border-t border-white/15 shadow-[0_-4px_16px_rgba(0,0,0,0.2)]">
         {/* Content */}
         <div className="flex items-center justify-around px-6 py-4 pb-safe">
           {tabs.map((tab) => {

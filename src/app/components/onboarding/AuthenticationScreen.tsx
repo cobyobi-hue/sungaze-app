@@ -18,6 +18,9 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerUrl, setViewerUrl] = useState<string | null>(null);
+  const [viewerTitle, setViewerTitle] = useState<string>('');
 
   const handleAuth = async (method: 'apple' | 'google' | 'email') => {
     setIsLoading(true);
@@ -36,6 +39,32 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
 
   return (
     <div className="max-w-md mx-auto">
+      {/* In-app legal viewer modal */}
+      {viewerOpen && viewerUrl && (
+        <div className="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm">
+          <div className="absolute inset-0 max-w-3xl mx-auto bg-black/90 border-x border-white/10">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+              <div className="text-white font-semibold truncate pr-3">{viewerTitle}</div>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewerOpen(false);
+                  setViewerUrl(null);
+                }}
+                className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-white"
+              >
+                Close
+              </button>
+            </div>
+            <iframe
+              src={viewerUrl}
+              title={viewerTitle}
+              className="w-full h-[calc(100vh-52px)]"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-display-2xl text-white font-bold mb-2">Secure Your Solar Journey</h1>
@@ -75,7 +104,7 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
             <div className="w-full border-t border-white/20" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white/60">or</span>
+            <span className="px-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white/70">or</span>
           </div>
         </div>
 
@@ -89,7 +118,7 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-blue-400/50 transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/15 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-white/30 transition-colors backdrop-blur-md"
                 placeholder="Enter your email"
               />
             </div>
@@ -103,7 +132,7 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-blue-400/50 transition-colors"
+                className="w-full pl-10 pr-12 py-3 bg-black/40 border border-white/15 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-white/30 transition-colors backdrop-blur-md"
                 placeholder="Create a password"
               />
               <button
@@ -119,7 +148,7 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
           <button
             onClick={() => handleAuth('email')}
             disabled={isLoading || !email || !password}
-            className="w-full p-4 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 rounded-xl text-white transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50"
+            className="w-full p-4 bg-black/40 hover:bg-black/50 border border-white/15 rounded-xl text-white transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.25)]"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -137,9 +166,29 @@ export function AuthenticationScreen({ data, updateData, onNext }: Authenticatio
       <div className="text-center">
         <p className="text-caption text-white/60 mb-4">
           By signing up, you agree to our{' '}
-          <a href="#" className="text-blue-400 hover:text-blue-300 underline">Privacy Policy</a>
+          <button
+            type="button"
+            className="text-white/90 hover:text-white underline"
+            onClick={() => {
+              setViewerTitle('Privacy Policy');
+              setViewerUrl('https://sungaze.app/privacy-policy');
+              setViewerOpen(true);
+            }}
+          >
+            Privacy Policy
+          </button>
           {' '}and{' '}
-          <a href="#" className="text-blue-400 hover:text-blue-300 underline">Terms of Service</a>
+          <button
+            type="button"
+            className="text-white/90 hover:text-white underline"
+            onClick={() => {
+              setViewerTitle('Terms of Service');
+              setViewerUrl('https://sungaze.app/terms-of-service');
+              setViewerOpen(true);
+            }}
+          >
+            Terms of Service
+          </button>
         </p>
         
         <div className="flex items-center justify-center gap-4 text-caption text-white/50">

@@ -68,6 +68,42 @@ NEXTAUTH_URL=http://localhost:3001
 NEXTAUTH_SECRET=your_nextauth_secret_here
 ```
 
+## 🔑 Supabase Password Reset (Required for “Forgot Password”)
+
+If “Forgot Password → Send Reset Link” errors or no email arrives, it’s almost always because **the reset redirect URL is not allowlisted** in Supabase.
+
+### 1) Set a stable app URL
+
+In `.env.local` (and in Vercel env vars), set:
+
+```bash
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+```
+
+The app uses `NEXT_PUBLIC_APP_URL` to build redirect URLs for Supabase emails (avoids `window.location.origin` differences on mobile/Capacitor).
+
+### 2) Allowlist reset redirect URL(s) in Supabase
+
+In **Supabase Dashboard → Authentication → URL Configuration**:
+
+- **Site URL**: `https://yourdomain.com`
+- **Additional Redirect URLs**: add the routes you use:
+  - `https://yourdomain.com/reset-password`
+  - `https://www.yourdomain.com/reset-password` (if you use `www`)
+  - `http://localhost:3001/reset-password` (local dev)
+
+If testing inside a **Capacitor Android** WebView, also allowlist common WebView origins:
+- `https://localhost/reset-password`
+- `http://localhost/reset-password`
+- `capacitor://localhost/reset-password`
+
+### 3) Confirm email delivery is enabled
+
+In **Supabase Dashboard → Authentication**:
+- Ensure an **Email provider** is enabled (default provider or SMTP configured).
+- In **Email Templates → Reset Password**, ensure it’s enabled and uses the default reset link.
+- Check **Auth logs** after a reset attempt to confirm whether it was blocked by redirect allowlist or email provider.
+
 ### ☀️ SOLAR DATA APIS
 ```bash
 # Sun position and timing data

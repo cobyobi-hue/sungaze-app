@@ -1,3 +1,3 @@
-export const PAYMENTS_ENABLED = true;
+export const PAYMENTS_ENABLED = false;
 
 

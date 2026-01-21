@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { X, Sun, Mail, ExternalLink } from 'lucide-react';
 import { founderTracker } from '../lib/founder-tracker';
+import { useDialog } from '../contexts/DialogContext';
 
 interface FounderAccessModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface FounderAccessModalProps {
 export function FounderAccessModal({ isOpen, onClose, userId = 'test-user-1' }: FounderAccessModalProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const dialog = useDialog();
 
   if (!isOpen) return null;
 
@@ -104,7 +106,7 @@ export function FounderAccessModal({ isOpen, onClose, userId = 'test-user-1' }: 
     const newWindow = window.open(dataUrl, '_blank');
     if (!newWindow) {
       console.log('Popup blocked! Trying alternative method...');
-      alert('Please allow popups for this site, or the ritual page will not open.');
+      dialog.alert({ message: 'Please allow popups for this site, or the ritual page will not open.' });
     } else {
       console.log('New window opened successfully');
     }

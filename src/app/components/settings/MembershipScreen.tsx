@@ -11,6 +11,8 @@ import {
   initializeRevenueCat 
 } from '../../services/revenuecat.service';
 import { PAYMENTS_ENABLED } from '../../lib/featureFlags';
+import { useDialog } from '../../contexts/DialogContext';
+import { ScreenShell } from '../ui/ScreenShell';
 
 interface MembershipScreenProps {
   onBack: () => void;
@@ -31,6 +33,7 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [platform, setPlatform] = useState<string>('web');
+  const dialog = useDialog();
 
   useEffect(() => {
     checkPlatform();
@@ -107,23 +110,23 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
 
   const handleRestorePurchases = async () => {
     if (!PAYMENTS_ENABLED || platform === 'web') {
-      alert('Restore purchases is only available on iOS and Android.');
+      dialog.alert({ message: 'Restore purchases is only available on iOS and Android.' });
       return;
     }
 
     try {
       await restorePurchases();
       await loadSubscriptionStatus();
-      alert('Purchases restored successfully!');
+      dialog.alert({ message: 'Purchases restored successfully!' });
     } catch (error: any) {
       console.error('Restore error:', error);
-      alert(error.message || 'Failed to restore purchases. Please try again.');
+      dialog.alert({ message: error.message || 'Failed to restore purchases. Please try again.' });
     }
   };
 
   const handleManageSubscription = async () => {
     if (!PAYMENTS_ENABLED || platform === 'web') {
-      alert('Subscription management is only available on iOS and Android.');
+      dialog.alert({ message: 'Subscription management is only available on iOS and Android.' });
       return;
     }
 
@@ -131,7 +134,7 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
       await openSubscriptionManagement();
     } catch (error: any) {
       console.error('Error opening subscription management:', error);
-      alert('Failed to open subscription management. Please try again.');
+      dialog.alert({ message: 'Failed to open subscription management. Please try again.' });
     }
   };
 
@@ -165,7 +168,7 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+    <ScreenShell>
       {/* Header */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-4 mb-6">
@@ -180,14 +183,14 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
 
         {/* Current Plan */}
         {isLoading ? (
-          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-6 mb-6">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6 mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
             <div className="text-center py-8">
               <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <p className="text-body-sm text-white/60">Loading subscription status...</p>
             </div>
           </div>
         ) : !subscription ? (
-          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-6 mb-6">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6 mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
             <div className="text-center py-8">
               <Crown className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
               <h2 className="text-title-sm text-white font-semibold mb-2">No Active Subscription</h2>
@@ -200,7 +203,7 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
           </div>
         ) : (
           <>
-            <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-6 mb-6">
+            <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6 mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
                   <Crown className="w-6 h-6 text-white" />
@@ -226,7 +229,7 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
             </div>
 
             {/* Features */}
-            <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl rounded-2xl border border-blue-400/20 p-6 mb-6">
+            <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6 mb-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
               <h3 className="text-title-sm text-white font-semibold mb-4">Plan Features</h3>
               <div className="space-y-2">
                 {subscription.features.map((feature, index) => (
@@ -312,7 +315,7 @@ export function MembershipScreen({ onBack }: MembershipScreenProps) {
         </div>
       )}
 
-    </div>
+    </ScreenShell>
   );
 }
 

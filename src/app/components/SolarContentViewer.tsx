@@ -8,14 +8,12 @@ import {
 } from '../lib/solarContent';
 import { getCurrentSolarLevel } from '../lib/solarLevels';
 import { BookOpen, Lightbulb, Users, Lock, ChevronDown, ChevronRight, Square } from 'lucide-react';
-import { Button } from './ui/button';
 
 interface SolarContentViewerProps {
   currentDay: number;
-  onClose: () => void;
 }
 
-export function SolarContentViewer({ currentDay, onClose }: SolarContentViewerProps) {
+export function SolarContentViewer({ currentDay }: SolarContentViewerProps) {
   const [activeTab, setActiveTab] = useState<'guidance' | 'journal'>('guidance');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
@@ -38,132 +36,142 @@ export function SolarContentViewer({ currentDay, onClose }: SolarContentViewerPr
 
   if (!content) {
     return (
-      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white min-h-screen p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold">Solar Content</h1>
-            <Button onClick={onClose} className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-xl rounded-2xl px-4 py-2 transition-all duration-300">
-              Close
-            </Button>
-          </div>
-          <div className="text-center py-12">
-            <p className="text-gray-400">No content available for your current level.</p>
-          </div>
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <BookOpen className="w-6 h-6 text-yellow-300 drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]" />
+          <h2 className="text-title-md text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            Solar Content
+          </h2>
         </div>
+        <p className="text-white/85 text-sm text-center font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
+          No content available for your current level yet.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white min-h-screen p-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold">{currentLevel.title}</h1>
-            <p className="text-gray-400">{currentLevel.subtitle}</p>
-          </div>
-          <Button onClick={onClose} className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-xl rounded-2xl px-4 py-2 transition-all duration-300">
-            Close
-          </Button>
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <BookOpen className="w-6 h-6 text-yellow-300 drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]" />
+          <h2 className="text-title-md text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            {currentLevel.title}
+          </h2>
         </div>
-
-        {/* Level Info */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 mb-6">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="text-4xl">{currentLevel.emoji}</div>
-            <div>
-              <h2 className="text-xl font-semibold">{currentLevel.title}</h2>
-              <p className="text-gray-400">{currentLevel.timeline}</p>
-            </div>
-          </div>
-          <p className="text-gray-300 mb-4">{currentLevel.description}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="font-semibold mb-2">Practices</h3>
-              <ul className="text-sm text-gray-300 space-y-1">
-                {currentLevel.practices.map((practice, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <Square className="w-3 h-3 text-blue-400" />
-                    {practice}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">Unlocks</h3>
-              <ul className="text-sm text-gray-300 space-y-1">
-                {currentLevel.unlocks.map((unlock, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <Square className="w-3 h-3 text-green-400" />
-                    {unlock}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex space-x-1 mb-6 bg-gray-800/50 rounded-lg p-1">
-          <button
-            onClick={() => setActiveTab('guidance')}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'guidance'
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            <Lightbulb className="w-4 h-4 inline mr-2" />
-            Guidance
-          </button>
-          <button
-            onClick={() => setActiveTab('journal')}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'journal'
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            <BookOpen className="w-4 h-4 inline mr-2" />
-            Journal
-          </button>
-        </div>
-
-        {/* Content */}
-        {activeTab === 'guidance' && (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold mb-4">Practice Guidance</h3>
-              <div className="space-y-3">
-                {practiceGuidance.map((guidance, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-blue-400 text-sm font-bold">{index + 1}</span>
-                    </div>
-                    <p className="text-gray-300">{guidance}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'journal' && (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold mb-4">Journal Prompts</h3>
-              <div className="space-y-4">
-                {journalPrompts.map((prompt, index) => (
-                  <div key={index} className="border-l-2 border-blue-400/30 pl-4">
-                    <p className="text-gray-300 italic">"{prompt}"</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        <p className="text-white/85 text-sm text-center font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
+          {currentLevel.subtitle}
+        </p>
       </div>
+
+      {/* Level Info */}
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="text-4xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">{currentLevel.emoji}</div>
+          <div>
+            <h3 className="text-title-sm text-white font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              {currentLevel.title}
+            </h3>
+            <p className="text-white/75 text-sm font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+              {currentLevel.timeline}
+            </p>
+          </div>
+        </div>
+        <p className="text-white/90 text-sm leading-relaxed font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">
+          {currentLevel.description}
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+            <h4 className="text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Practices</h4>
+            <ul className="text-sm text-white/90 space-y-1 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">
+              {currentLevel.practices.map((practice, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <Square className="w-3 h-3 text-yellow-300" />
+                  {practice}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl p-4">
+            <h4 className="text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Unlocks</h4>
+            <ul className="text-sm text-white/90 space-y-1 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">
+              {currentLevel.unlocks.map((unlock, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <Square className="w-3 h-3 text-yellow-300" />
+                  {unlock}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-2 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+        <button
+          onClick={() => setActiveTab('guidance')}
+          className={`flex-1 py-2 px-4 rounded-xl text-sm font-semibold tracking-wide transition-colors ${
+            activeTab === 'guidance'
+              ? 'bg-white/10 text-white border border-white/10'
+              : 'text-white/75 hover:text-white'
+          }`}
+        >
+          <Lightbulb className="w-4 h-4 inline mr-2 text-yellow-300" />
+          Guidance
+        </button>
+        <button
+          onClick={() => setActiveTab('journal')}
+          className={`flex-1 py-2 px-4 rounded-xl text-sm font-semibold tracking-wide transition-colors ${
+            activeTab === 'journal'
+              ? 'bg-white/10 text-white border border-white/10'
+              : 'text-white/75 hover:text-white'
+          }`}
+        >
+          <BookOpen className="w-4 h-4 inline mr-2 text-yellow-300" />
+          Journal
+        </button>
+      </div>
+
+      {/* Content */}
+      {activeTab === 'guidance' && (
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+          <h3 className="text-title-sm text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            Practice Guidance
+          </h3>
+          <div className="space-y-3">
+            {practiceGuidance.map((guidance, index) => (
+              <div key={index} className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-full bg-black/50 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-[0_2px_10px_rgba(0,0,0,0.35)]">
+                  <span className="text-yellow-300 text-sm font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">
+                    {index + 1}
+                  </span>
+                </div>
+                <p className="text-white/90 text-sm leading-relaxed font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">
+                  {guidance}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'journal' && (
+        <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+          <h3 className="text-title-sm text-white font-semibold mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            Journal Prompts
+          </h3>
+          <div className="space-y-4">
+            {journalPrompts.map((prompt, index) => (
+              <div key={index} className="border-l-2 border-white/15 pl-4">
+                <p className="text-white/90 text-sm leading-relaxed italic font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]">
+                  "{prompt}"
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

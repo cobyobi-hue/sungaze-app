@@ -20,7 +20,6 @@ import { UnlocksScreen } from "./components/UnlocksScreen";
 import { SafeConditionsOnly } from "./components/SafeConditionsOnly";
 import { TruthSerum } from "./components/TruthSerum";
 import { OracleQA } from "./components/OracleQA";
-import { SessionLog } from "./components/SessionLog";
 import { SessionHistoryScreen } from "./components/SessionHistoryScreen";
 // import { AnalyticsDashboard } from "./components/AnalyticsDashboard"; // TODO: Create when disk space available
 import CandleGazingMode from "./components/ritual-modes/CandleGazingMode";
@@ -41,6 +40,8 @@ import {
 import { Home, Sparkles, User, Cloud, Sun, Crown, Upload, ChevronDown, BookOpen } from "lucide-react";
 import { hasValidConsent } from "./lib/consent";
 import { createClient } from "./lib/supabase/client";
+import { useNetworkStatus, withTimeout } from "./hooks/useNetworkStatus";
+import { OfflineBanner } from "./components/OfflineBanner";
 
 export default function App() {
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -61,11 +62,12 @@ export default function App() {
   const [showPalmingRitual, setShowPalmingRitual] = useState(false);
   const [showPostGazeRitual, setShowPostGazeRitual] = useState(false);
   const [nightActivity, setNightActivity] = useState<'candle' | 'journal' | 'meditation' | null>(null);
-  const [learnSection, setLearnSection] = useState<'main' | 'guide' | 'content' | 'unlocks' | 'levels' | 'scrolls' | 'truth-serum' | 'oracle-qa' | 'journey' | 'eye-practices'>('main');
+  const [learnSection, setLearnSection] = useState<'main' | 'guide' | 'content' | 'unlocks' | 'levels' | 'scrolls' | 'truth-serum' | 'oracle-qa' | 'journey' | 'eye-practices' | 'black-sun'>('main');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true); // Add loading state
   const supabase = createClient();
+  const { isOnline } = useNetworkStatus();
 
   // Define checkAuth BEFORE useEffect to avoid reference issues
   const checkAuth = async () => {
@@ -84,8 +86,13 @@ export default function App() {
         return;
       }
       
-      // Use getSession() so refresh restores auth from storage without requiring a network call.
-      const { data, error: authError } = await supabase.auth.getSession();
+      // Use getSession() so refresh restores auth from storage.
+      // When offline, we still don't want to hang the UI if something blocks, so bound it with a timeout.
+      const { data, error: authError } = await withTimeout(
+        supabase.auth.getSession(),
+        isOnline ? 8000 : 1200,
+        'supabase.auth.getSession'
+      );
       const user = data?.session?.user || null;
       
       // Now use user and authError variables instead of destructuring
@@ -218,7 +225,9 @@ export default function App() {
   // Show loading state while auth check is in progress
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white flex items-center justify-center">
+      <>
+        <OfflineBanner isOnline={isOnline} />
+      <div className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white flex items-center justify-center">
         <div className="text-center">
           <div className="relative inline-flex items-center justify-center mb-6">
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/20 to-amber-400/20 blur-3xl scale-150"></div>
@@ -231,12 +240,18 @@ export default function App() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto"></div>
         </div>
       </div>
+      </>
     );
   }
 
   // Show auth screen if not authenticated (including Profile tab)
   if (!isAuthenticated) {
-    return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
+    return (
+      <>
+        <OfflineBanner isOnline={isOnline} />
+        <AuthScreen onAuthSuccess={handleAuthSuccess} />
+      </>
+    );
   }
 
 
@@ -269,26 +284,37 @@ export default function App() {
 
   // Show new onboarding flow
   if (showOnboarding || showNewOnboarding) {
-    return <OnboardingFlow onComplete={() => {
-      setShowOnboarding(false);
-      setShowNewOnboarding(false);
-    }} />;
+    return (
+      <>
+        <OfflineBanner isOnline={isOnline} />
+        <OnboardingFlow
+          onComplete={() => {
+            setShowOnboarding(false);
+            setShowNewOnboarding(false);
+          }}
+        />
+      </>
+    );
   }
 
   // Show night mode
   if (currentView === 'night') {
     return (
-      <NightMode
-        onJournalOpen={(mode) => {
-          setJournalMode('evening');
-          setCurrentView('main');
-        }}
-      />
+      <>
+        <OfflineBanner isOnline={isOnline} />
+        <NightMode
+          onJournalOpen={(mode) => {
+            setJournalMode('evening');
+            setCurrentView('main');
+          }}
+        />
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white relative overflow-hidden">
+    <div className="safe-area min-h-screen bg-gradient-to-b from-[#40C4FF] via-[#4DD0E1] to-[#B3E5FC] text-white relative overflow-hidden">
+      <OfflineBanner isOnline={isOnline} />
       {/* Background - Luxury Sunrise/Sunset Gradient Theme with Pinkish Tones */}
 
       {/* Surreal Landscape Background Image - Add your landscape image to /public/landscape-background.jpg */}
@@ -324,8 +350,8 @@ export default function App() {
         <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-gradient-conic from-pink-200/15 via-yellow-200/20 via-orange-200/15 to-pink-200/15 animate-spin-slow" />
       </div>
 
-      {/* Dark warm overlay for app interface with pink-orange tints - lighter for better contrast */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
+      {/* Cool teal overlay for app interface (matches the new sky palette) */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#40C4FF]/55 via-[#4DD0E1]/50 to-[#006064]/70 backdrop-blur-xl" />
 
       {/* Solar Flare Notification */}
       {flareNotification && (
@@ -339,27 +365,70 @@ export default function App() {
 
       {/* App container */}
       <div className="relative z-10 max-w-sm mx-auto min-h-screen px-6 pb-24">
+        {/* Small logo mark (top-left) */}
+        <div className="fixed top-4 left-4 z-[60]">
+          <div className="w-9 h-9 rounded-2xl bg-black/35 border border-white/15 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.25)] flex items-center justify-center">
+            <img src="/sun44-mark.svg" alt="Sungaze" className="w-6 h-6" />
+          </div>
+        </div>
+
         {/* Header */}
         <div className="pt-20 pb-12 text-center">
           <div className="mb-8">
             {/* 44 Circle */}
             <div className="relative inline-flex items-center justify-center mb-6">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/30 to-orange-300/30 blur-3xl scale-150" />
-              <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-yellow-300/90 via-yellow-200/90 to-orange-300/90 flex items-center justify-center shadow-[0_0_40px_rgba(255,215,0,0.6)] border border-yellow-200/40">
-                <span className="text-black text-3xl font-bold tracking-tight drop-shadow-lg">44</span>
+              {/* Outer aura */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/55 via-yellow-300/50 to-yellow-400/35 blur-3xl scale-150" />
+              {/* Luxury orb: dark core + bright gold ring */}
+              <div className="relative w-36 h-36 rounded-full flex items-center justify-center">
+                {/* Soft glow */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-200/55 via-yellow-300/35 to-transparent blur-2xl" />
+                {/* Ring */}
+                <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_34px_rgba(255,230,120,0.95),0_0_95px_rgba(255,215,0,0.55)]" />
+                {/* Inner core */}
+                <div className="absolute inset-[10px] rounded-full bg-black/85 border border-yellow-100/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-18px_40px_rgba(0,0,0,0.55)]" />
+                {/* Highlight arc */}
+                <div className="absolute inset-[12px] rounded-full border border-white/20" />
+                {/* 44 */}
+                <span className="relative text-[#FFEB3B] text-6xl font-extrabold tracking-tight drop-shadow-[0_10px_22px_rgba(0,0,0,0.75),0_0_26px_rgba(255,215,0,0.7)]">
+                  44
+                </span>
               </div>
               {/* Orbiting elements */}
               <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
-                <div className="w-2 h-2 bg-yellow-300 rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_10px_rgba(255,215,0,0.8)]" />
-                <div className="w-1 h-1 bg-orange-500 rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(255,140,0,0.8)]" />
-                <div className="w-1.5 h-1.5 bg-yellow-200 rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_8px_rgba(255,235,59,0.8)]" />
-                <div className="w-1 h-1 bg-yellow-200 rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_8px_rgba(255,235,59,0.8)]" />
+                <div className="w-2 h-2 bg-[#FFF8E1] rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_12px_rgba(255,248,225,0.9)]" />
+                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+                <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_16px_rgba(255,235,59,0.98)]" />
+                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
               </div>
             </div>
 
-            <h1 className="text-display-4xl text-white tracking-[0.12em] font-bold mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7),0_4px_16px_rgba(0,0,0,0.5),0_1px_3px_rgba(255,215,0,0.4)] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_40px_rgba(255,215,0,0.3)] filter brightness-110 animate-fade-in-slow">
+            <h1 className="text-display-3xl text-white tracking-[0.12em] font-bold mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7),0_4px_16px_rgba(0,0,0,0.5),0_1px_3px_rgba(255,215,0,0.35)] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_32px_rgba(255,215,0,0.22)] filter brightness-110 animate-fade-in-slow">
               SUNGAZE
             </h1>
+
+            {/* Bright sun orb (under SUNGAZE) */}
+            <div className="mx-auto mt-3 mb-4 w-44 h-44 relative">
+              {/* outer glow */}
+              <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_45%_40%,rgba(255,255,255,0.35),rgba(255,235,59,0.55)_28%,rgba(255,193,7,0.55)_55%,rgba(255,152,0,0.25)_72%,transparent_78%)] blur-xl" />
+              {/* sun disc */}
+              <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_45%_40%,#FFF59D_0%,#FFEB3B_32%,#FFC107_62%,#FF9800_80%)] shadow-[0_0_50px_rgba(255,200,0,0.35)]" />
+              {/* Orbit ring */}
+              <div className="absolute inset-0 rounded-full border-2 border-[#FFEB3B]/70 shadow-[0_0_22px_rgba(255,235,59,0.35)]" />
+              {/* Orbiting dots (spin) */}
+              <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
+                <div className="w-2 h-2 bg-[#FFF8E1] rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_12px_rgba(255,248,225,0.9)]" />
+                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+                <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_16px_rgba(255,235,59,0.98)]" />
+                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+              </div>
+              {/* rings */}
+              <div className="absolute inset-[10px] rounded-full border-2 border-white/40" />
+              <div className="absolute inset-[22px] rounded-full border border-white/25" />
+              {/* center dot */}
+              <div className="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFF59D] shadow-[0_0_18px_rgba(255,245,157,0.75)]" />
+            </div>
+
             <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent mx-auto mb-4 shadow-[0_0_4px_rgba(255,255,255,0.5),0_0_8px_rgba(255,255,255,0.3)]" />
           </div>
 
@@ -391,11 +460,11 @@ export default function App() {
           </div>
 
           {/* HOME TAB - Sunrise/Sunset Theme */}
-          <TabsContent value="home" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+          <TabsContent value="home" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
             {homeScreen === "history" ? (
               <SessionHistoryScreen onBack={() => setHomeScreen("main")} />
             ) : (
-            <div className="px-6 pt-6 pb-24">
+            <div className="px-6 pt-6 pb-24 space-y-6">
             <SolarWindow
               onStartGazing={() => {
                 setActiveTab("gaze");
@@ -403,8 +472,8 @@ export default function App() {
               }}
             />
 
-              {/* Premium Status - Premium Design */}
-              <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(255,140,0,0.15),0_8px_32px_rgba(255,140,0,0.1)] mb-6">
+              {/* Premium Status - Dark glass for readability */}
+              <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_4px_16px_rgba(0,0,0,0.3)]">
               <div className="flex items-center justify-center gap-2 mb-2">
                   <Crown className="w-5 h-5 text-orange-500" />
                   <h3 className="text-title-sm text-white font-bold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7),0_1px_2px_rgba(0,0,0,0.5)]">Sacred Access Unlocked</h3>
@@ -418,11 +487,16 @@ export default function App() {
                     console.log('Solar Window Settings button clicked');
                     setShowSolarWindowSettings(true);
                   }}
-                  className="mt-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_8px_rgba(255,140,0,0.3),0_4px_16px_rgba(255,140,0,0.2)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_12px_rgba(255,140,0,0.4),0_8px_24px_rgba(255,140,0,0.3)]"
+                  className="mt-2 px-4 py-2 bg-gradient-to-r from-[#40C4FF] to-[#4DD0E1] text-white font-semibold rounded-lg hover:opacity-95 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_8px_rgba(77,208,225,0.25),0_4px_16px_rgba(77,208,225,0.18)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_12px_rgba(77,208,225,0.35),0_8px_24px_rgba(77,208,225,0.25)]"
                 >
                   Solar Window Settings
                 </button>
             </div>
+
+              {/* Session History - Luxury Design */}
+              <div>
+                <SessionHistoryScreen onBack={() => setHomeScreen("main")} previewMode={true} onOpenFullHistory={() => setHomeScreen("history")} />
+              </div>
 
               {/* Ask the Oracle - Luxury Black Design */}
               <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
@@ -449,25 +523,16 @@ export default function App() {
                 </div>
               )}
               </div>
-
-              {/* Session History - Luxury Design */}
-              <div className="mt-6">
-                <SessionLog
-                  maxItems={3}
-                  showViewAll={true}
-                  onOpenFullHistory={() => setHomeScreen("history")}
-                />
-              </div>
               
             </div>
             )}
           </TabsContent>
 
           {/* GAZE TAB - Sunrise/Sunset Theme */}
-          <TabsContent value="gaze" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+          <TabsContent value="gaze" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
             <div className="px-6 pt-6 pb-24">
               <div className="text-center mb-6">
-                <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(255,140,0,0.15),0_8px_32px_rgba(255,140,0,0.1)]">
+                <div className="bg-gradient-to-br from-[#40C4FF]/18 to-[#4DD0E1]/14 backdrop-blur-xl border border-white/15 rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(77,208,225,0.12),0_8px_32px_rgba(77,208,225,0.08)]">
                 <div className="flex items-center justify-center gap-2 mb-2">
                     <Sun className="w-6 h-6 text-yellow-300" />
                     <h2 className="text-title-md text-white font-bold tracking-wide drop-shadow-[0_2px_6px_rgba(0,0,0,0.7),0_1px_3px_rgba(0,0,0,0.5)]">☀️ Direct Sun Gazing</h2>
@@ -496,7 +561,7 @@ export default function App() {
               <div className="mt-6 flex justify-center">
                 <Button
                   onClick={() => setLearnSection('unlocks')}
-                  className="bg-gradient-to-br from-orange-500/30 to-amber-500/30 hover:from-orange-600/40 hover:to-amber-600/40 border border-orange-400/40 text-white font-semibold px-6 py-3 rounded-2xl transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_8px_rgba(255,140,0,0.25),0_4px_16px_rgba(255,140,0,0.15)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_12px_rgba(255,140,0,0.35),0_8px_24px_rgba(255,140,0,0.25)]"
+                  className="bg-gradient-to-br from-sky-500/26 to-cyan-500/22 hover:from-sky-500/32 hover:to-cyan-500/28 border border-sky-300/30 text-white font-semibold px-6 py-3 rounded-2xl transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_8px_rgba(56,189,248,0.2),0_4px_16px_rgba(56,189,248,0.12)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_12px_rgba(56,189,248,0.28),0_8px_24px_rgba(56,189,248,0.2)]"
                 >
                   🔓 Sacred Unlock
                 </Button>
@@ -506,10 +571,10 @@ export default function App() {
           </TabsContent>
 
           {/* CLOUDS TAB - Now empty, cloud gazing moved to Discover */}
-          <TabsContent value="clouds" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+          <TabsContent value="clouds" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
             <div className="px-6 pt-6 pb-24">
               <div className="text-center mb-6">
-                <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(255,140,0,0.15),0_8px_32px_rgba(255,140,0,0.1)]">
+                <div className="bg-gradient-to-br from-[#40C4FF]/18 to-[#4DD0E1]/14 backdrop-blur-xl border border-white/15 rounded-2xl p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.2),0_4px_16px_rgba(77,208,225,0.12),0_8px_32px_rgba(77,208,225,0.08)]">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Cloud className="w-6 h-6 text-yellow-300" />
                     <h2 className="text-title-md text-white font-semibold">☁️ Cloud Section</h2>
@@ -526,7 +591,7 @@ export default function App() {
           </TabsContent>
 
           {/* LEARN TAB - Premium Design Applied */}
-          <TabsContent value="learn" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+          <TabsContent value="learn" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
             <div className="px-6 pt-6 pb-24">
             {learnSection === 'main' && (
               <>
@@ -543,6 +608,13 @@ export default function App() {
                 </div>
 
                 <div className="space-y-4">
+                  <Button
+                    onClick={() => setLearnSection('black-sun')}
+                    className="w-full bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white font-semibold py-4 rounded-2xl transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                  >
+                    Black Sun
+                  </Button>
+
                   {isPremium && (
                     <Button
                       onClick={() => setLearnSection('scrolls')}
@@ -551,7 +623,6 @@ export default function App() {
                       📜 Truth Scrolls (Premium)
                     </Button>
                   )}
-
 
                   <Button
                     onClick={() => setLearnSection('content')}
@@ -625,7 +696,6 @@ export default function App() {
                 </Button>
                 <SolarContentViewer 
                   currentDay={1} 
-                  onClose={() => setLearnSection('main')} 
                 />
               </div>
             )}
@@ -666,48 +736,107 @@ export default function App() {
                 >
                   ← Back to Learning Hub
                 </Button>
-                <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-xl border border-green-400/20 rounded-2xl p-8 shadow-[0_0_20px_rgba(34,197,94,0.1)]">
+                <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
                   <div className="text-center mb-8">
-                    <h2 className="text-2xl text-white font-bold mb-2">9 Month Solar Journey</h2>
-                    <p className="text-white text-sm font-semibold tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">Your transformative path to solar consciousness</p>
+                    <h2 className="text-2xl text-white font-bold mb-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">9 Month Solar Journey</h2>
+                    <p className="text-white/90 text-sm font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
+                      Your transformative path to solar consciousness
+                    </p>
                   </div>
                   
                   <div className="space-y-6">
-                    <div className="bg-gradient-to-br from-white/5 to-green-500/10 rounded-2xl p-6 border border-green-400/20">
-                      <h3 className="text-xl text-white font-semibold mb-4 text-center">The Three Phases of Cellular Restoration</h3>
-                      <p className="text-white text-sm font-medium mb-6 text-center tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    <div className="bg-black/50 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+                      <h3 className="text-xl text-white font-semibold mb-4 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                        The Three Phases of Cellular Restoration
+                      </h3>
+                      <p className="text-white/90 text-sm font-medium mb-6 text-center tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                         Practitioners following the traditional sungazing protocol report profound transformations in their body's natural healing capacity:
                       </p>
                       
                       <div className="space-y-6">
                         {/* Phase 1 */}
-                        <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-xl p-4 border border-orange-400/30">
-                          <h4 className="text-lg text-white font-semibold mb-2">Phase 1 (0-3 months):</h4>
+                        <div className="bg-black/45 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                          <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Phase 1 (0-3 months):</h4>
                           <h5 className="text-md text-white font-semibold mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">Mental & Neurological Reset</h5>
-                          <p className="text-white text-sm font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                          <p className="text-white/90 text-sm font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                             Practitioners report complete reversal of mood imbalances, cognitive fog, sleep disorders, and stress-related conditions. The pineal gland activation appears to restore natural neurotransmitter production, eliminating the need for synthetic interventions.
                           </p>
                         </div>
                         
                         {/* Phase 2 */}
-                        <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-4 border border-amber-400/20">
-                          <h4 className="text-lg text-white font-semibold mb-2">Phase 2 (3-6 months):</h4>
+                        <div className="bg-black/45 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                          <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Phase 2 (3-6 months):</h4>
                           <h5 className="text-md text-white font-semibold mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">Physical Regeneration</h5>
-                          <p className="text-white text-sm font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                          <p className="text-white/90 text-sm font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                             The body's cellular repair mechanisms activate dramatically. Chronic inflammatory conditions, autoimmune responses, digestive disorders, and metabolic dysfunctions begin reversing. Many report their bodies healing conditions that had persisted for decades.
                           </p>
                         </div>
                         
                         {/* Phase 3 */}
-                        <div className="bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-xl p-4 border border-orange-400/30">
-                          <h4 className="text-lg text-white font-semibold mb-2">Phase 3 (6-9 months):</h4>
+                        <div className="bg-black/45 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                          <h4 className="text-lg text-white font-semibold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Phase 3 (6-9 months):</h4>
                           <h5 className="text-md text-white font-semibold mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">Transcendent Biology</h5>
-                          <p className="text-white text-sm font-medium tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                          <p className="text-white/90 text-sm font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
                             The body achieves remarkable efficiency, requiring minimal food while maintaining perfect health. Practitioners describe their bodies operating on pure solar energy, with complete elimination of chronic conditions and enhanced longevity markers.
                           </p>
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {learnSection === 'black-sun' && (
+              <div className="space-y-4">
+                <Button
+                  onClick={() => setLearnSection('main')}
+                  className="mb-4 bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 text-white rounded-2xl px-4 py-2 transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                >
+                  ← Back to Learning Hub
+                </Button>
+
+                <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
+                  <div className="text-center mb-8">
+                    {/* Black Sun + 44 */}
+                    <div className="relative w-24 h-24 mx-auto mb-5 flex items-center justify-center">
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/55 via-yellow-300/50 to-yellow-400/35 blur-2xl scale-150" />
+                      <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_26px_rgba(255,230,120,0.95),0_0_85px_rgba(255,215,0,0.55)]" />
+                      <div className="absolute inset-[10px] rounded-full bg-black/90 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-18px_40px_rgba(0,0,0,0.6)]" />
+                      <span className="relative text-[#FFEB3B] text-4xl font-extrabold tracking-tight drop-shadow-[0_10px_22px_rgba(0,0,0,0.75),0_0_22px_rgba(255,215,0,0.65)]">
+                        44
+                      </span>
+                    </div>
+
+                    <h2 className="text-2xl text-white font-bold mb-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+                      Black Sun
+                    </h2>
+                    <p className="text-white text-sm font-semibold tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)]">
+                      Why the sun is black with “44” at its center
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 text-white/95">
+                    {[
+                      "With continued practice, something unexpected happens: the sun stops feeling hot.",
+                      "At first, the light can feel sharp or intense, largely because the body is conditioned to tense around it. But as the gaze steadies and the nervous system relaxes, the sensation of heat begins to drop away. Many practitioners report that the sun no longer feels burning or aggressive. Instead, it becomes warm, then neutral, and in some cases noticeably cool. This isn’t because the sun has changed, but because perception has. The body stops resisting, and resistance is what generates the feeling of heat.",
+                      "This shift is one of the clearest signs that the practice is maturing.",
+                      "When resistance drops, the sun is no longer experienced as an external force acting on you. It begins to feel more like a field you are inside of. The eyes stop squinting. The breath deepens. The mind quiets. Heat, which is often amplified by fear and tension, dissipates. What remains is a steady, almost temperatureless clarity.",
+                      "At this stage, more advanced practitioners often notice a distinct visual change: an inner black circle appears at the center of the sun.",
+                      "This is sometimes referred to as the “black hole sun,” though it has nothing to do with astronomy and everything to do with perception. The black circle is stable, not a flicker or afterimage. It sits at the core of the solar disc and becomes clearer the longer one maintains relaxed focus. Importantly, this black center does not swallow the light. The light organizes around it. The sun begins to look less like a flat ball of fire and more like a system with structure.",
+                      "This is a critical insight.",
+                      "The sun is not experienced only as radiation or heat. It behaves more like a portal, operating through contrast: brightness surrounding stillness, light emerging from a dark center. Many ancient cultures described the sun this way — not just as a source of energy, but as a gateway or axis point. Sustained gazing appears to recreate this understanding experientially, not symbolically.",
+                      "This is why the sun in my app is represented as black.",
+                      "The black sun with “44” at its center isn’t aesthetic or ironic. It reflects what long-duration gazing reveals: the core of the sun is perceived as dark, stable, and organizing. The 44 minutes represents the traditional upper range that practitioners work toward, not casually, but through gradual conditioning. It marks the point where intensity gives way to coherence, and where the sun stops feeling external and starts functioning like an interface.",
+                      "In simple terms, the sun doesn’t become less powerful as you gaze longer. It becomes more precise. Heat fades. Structure appears. And what once seemed blinding reveals a calm center that changes how the entire experience is understood."
+                    ].map((paragraph, idx) => (
+                      <p
+                        key={idx}
+                        className="text-sm md:text-base leading-relaxed font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.75)]"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -841,7 +970,7 @@ export default function App() {
           </TabsContent>
 
           {/* RITUALS TAB - Premium Design Applied */}
-          <TabsContent value="rituals" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+          <TabsContent value="rituals" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
             <div className="px-6 pt-6 pb-24">
               {activeRitual === null && (
                 <>
@@ -886,7 +1015,7 @@ export default function App() {
                       className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/20 to-yellow-500/20 flex items-center justify-center border border-orange-400/30">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sky-500/18 to-cyan-500/14 flex items-center justify-center border border-sky-300/25">
                           <span className="text-orange-400 text-xl">○</span>
                         </div>
                         <div className="flex-1">
@@ -946,7 +1075,7 @@ export default function App() {
                       className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.3)] cursor-pointer hover:bg-black/50 transition-colors duration-300"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center border border-orange-400/30">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sky-500/18 to-blue-500/14 flex items-center justify-center border border-sky-300/25">
                           <span className="text-orange-400 text-xl">🕯️</span>
                         </div>
                         <div className="flex-1">
@@ -993,10 +1122,10 @@ export default function App() {
             )}
 
             {activeRitual === 'meditation' && (
-              <div className="space-y-4">
+              <div className="space-y-2">
                   <div 
                   onClick={() => setActiveRitual(null)}
-                    className="mb-4 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-4 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
+                    className="mb-2 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-4 shadow-lg cursor-pointer hover:from-blue-500/15 hover:to-indigo-500/15 transition-all duration-300"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center border border-blue-400/30">
@@ -1057,7 +1186,7 @@ export default function App() {
           </TabsContent>
 
           {/* NIGHT TAB - Premium Design Applied */}
-          <TabsContent value="night" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+          <TabsContent value="night" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
             <div className="px-6 pt-6 pb-24">
             {nightActivity === null && (
               <>
@@ -1156,7 +1285,7 @@ export default function App() {
 
           {/* UPLOAD TAB - Premium Design Applied */}
           {isFounder && (
-            <TabsContent value="upload" className="min-h-screen bg-gradient-to-br from-amber-800 via-orange-700 to-orange-600 text-white">
+            <TabsContent value="upload" className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white">
               <div className="px-6 pt-6 pb-24">
                 <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-6 shadow-[0_0_20px_rgba(59,130,246,0.1)] mb-6">
                 <div className="flex items-center justify-center gap-2 mb-2">

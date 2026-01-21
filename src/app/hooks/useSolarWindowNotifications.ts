@@ -1,6 +1,7 @@
 // Hook for managing solar window notifications and reminders
 import { useState, useEffect, useCallback } from 'react';
 import { weatherService } from '../lib/weatherService';
+import { syncNativeSolarReminders } from '../lib/solarReminderNotifications';
 
 export interface NotificationPreferences {
   morningReminder: boolean;
@@ -22,6 +23,7 @@ export function useSolarWindowNotifications() {
   const [preferences, setPreferences] = useState<NotificationPreferences>(DEFAULT_PREFERENCES);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [lastChecked, setLastChecked] = useState<number>(0);
+  const [hydrated, setHydrated] = useState(false);
 
   // Load preferences from localStorage
   useEffect(() => {
@@ -33,8 +35,43 @@ export function useSolarWindowNotifications() {
       }
     } catch (error) {
       console.error('Failed to load notification preferences:', error);
+    } finally {
+      setHydrated(true);
     }
   }, []);
+
+  // Native (Capacitor) local notifications: schedule sunrise/sunset reminders on-device
+  useEffect(() => {
+    if (!hydrated) return;
+
+    let cancelled = false;
+
+    const run = async () => {
+      try {
+        await syncNativeSolarReminders(preferences);
+      } catch (error) {
+        if (!cancelled) console.warn('Failed to sync native solar reminders:', error);
+      }
+    };
+
+    // Debounce small preference changes
+    const t = window.setTimeout(run, 600);
+
+    // Re-sync periodically (solar times can shift day-to-day)
+    const interval = window.setInterval(run, 6 * 60 * 60 * 1000);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+      window.clearInterval(interval);
+    };
+  }, [
+    hydrated,
+    preferences.enabled,
+    preferences.morningReminder,
+    preferences.eveningReminder,
+    preferences.reminderTime
+  ]);
 
   // Save preferences to localStorage
   const savePreferences = useCallback((newPreferences: NotificationPreferences) => {

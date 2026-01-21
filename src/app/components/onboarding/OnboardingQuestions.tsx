@@ -161,18 +161,18 @@ export function OnboardingQuestions({ data, updateData, onNext }: OnboardingQues
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-display-2xl text-white font-bold mb-2">Solar Oracle Assessment</h1>
-  ``        <p className="text-body-md text-white/90">Help us understand your unique journey</p>
+        <p className="text-body-md text-white/70">Help us understand your unique journey</p>
       </div>
 
       {/* Progress */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-caption text-white/80">Question {currentQuestion + 1} of {questions.length}</span>
-          <span className="text-caption text-white/80">{Math.round(progress)}%</span>
+          <span className="text-caption text-white/60">Question {currentQuestion + 1} of {questions.length}</span>
+          <span className="text-caption text-white/60">{Math.round(progress)}%</span>
         </div>
-        <div className="h-2 bg-orange-500/20 rounded-full overflow-hidden">
+        <div className="h-2 bg-blue-500/20 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -189,11 +189,11 @@ export function OnboardingQuestions({ data, updateData, onNext }: OnboardingQues
             <button
               key={index}
               onClick={() => handleAnswer(option)}
-              className="w-full p-4 text-left bg-black/40 backdrop-blur-lg border border-white/10 hover:bg-black/50 rounded-xl text-white transition-colors duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.3)] group"
+              className="w-full p-4 text-left bg-black/40 hover:bg-black/50 border border-white/15 rounded-xl text-white transition-all duration-300 group backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.2)]"
             >
               <div className="flex items-center justify-between">
                 <span className="text-body-md font-medium">{option}</span>
-                <ChevronRight className="w-5 h-5 text-white/80 group-hover:text-white transition-colors" />
+                <ChevronRight className="w-5 h-5 text-white/60 group-hover:text-white/80 transition-colors" />
               </div>
             </button>
           ))}
@@ -204,7 +204,7 @@ export function OnboardingQuestions({ data, updateData, onNext }: OnboardingQues
       <div className="text-center">
         <button 
           onClick={onNext}
-          className="text-caption text-white/80 hover:text-white transition-colors"
+          className="text-caption text-white/60 hover:text-white/80 transition-colors"
         >
           Skip assessment
         </button>

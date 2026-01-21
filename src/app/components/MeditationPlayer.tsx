@@ -266,9 +266,12 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
   const currentTrackData = tracks[currentTrack];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/10 to-indigo-500/10 backdrop-blur-xl flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white relative overflow-hidden px-4 py-8">
+      {/* Dark overlay for contrast (match Home readability) */}
+      <div className="absolute inset-0 bg-black/35 backdrop-blur-[2px]" />
+      <div className="relative z-10 flex flex-col items-center justify-center">
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-12 mb-8" style={{ marginTop: '120px' }}>
+      <div className="flex items-center gap-12 mb-6 mt-10">
         {['meditation', 'music', 'sounds'].map((tab) => (
           <button
             key={tab}
@@ -440,7 +443,7 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
 
       {/* Title Section */}
       <h1 
-        className="text-white text-[28px] font-normal text-center mb-8"
+        className="text-white text-[28px] font-semibold text-center mb-6 drop-shadow-[0_3px_10px_rgba(0,0,0,0.75)]"
         style={{ 
           letterSpacing: '-0.01em',
           fontFamily: 'SF Pro Display, Inter, system-ui, sans-serif'
@@ -477,7 +480,7 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
 
       {/* Description Text */}
       <div 
-        className="text-white text-[15px] font-normal text-center leading-[1.4] mb-8 opacity-60"
+        className="text-white/90 text-[15px] font-medium text-center leading-[1.45] mb-6 drop-shadow-[0_2px_6px_rgba(0,0,0,0.65)]"
         style={{ 
           maxWidth: '280px',
           fontFamily: 'SF Pro Display, Inter, system-ui, sans-serif'
@@ -488,7 +491,7 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
 
       {/* Duration Selector */}
       <div className="mb-6">
-        <div className="text-white text-[13px] font-medium text-center mb-3 opacity-70">
+        <div className="text-white/90 text-[13px] font-semibold text-center mb-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
           Select Duration
         </div>
         <div className="flex flex-wrap justify-center gap-2">
@@ -499,9 +502,8 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
               className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${
                 selectedDuration === duration
                   ? 'bg-gradient-to-r from-[#FF6B35] to-[#F7931E] text-white'
-                  : 'bg-white/[0.06] text-white/60 hover:bg-white/[0.1] hover:text-white/80'
+                  : 'bg-black/25 border border-white/10 text-white/80 hover:bg-black/35 hover:text-white'
               }`}
-              style={{ border: '0.5px solid rgba(255,255,255,0.1)' }}
             >
               {duration}min
             </button>
@@ -513,10 +515,10 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
       {showTimer && (
         <div className="mb-6">
           <div className="text-center">
-            <div className="text-white text-[48px] font-bold mb-2 tracking-tight">
+            <div className="text-white text-[48px] font-bold mb-2 tracking-tight drop-shadow-[0_3px_10px_rgba(0,0,0,0.75)]">
               {formatTime(timeLeft)}
             </div>
-            <div className="text-white/60 text-[13px] font-medium">
+            <div className="text-white/80 text-[13px] font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
               {isTimerActive ? 'Meditation in progress...' : 'Timer paused'}
             </div>
           </div>
@@ -531,24 +533,21 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
       )}
 
       {/* Settings Cards */}
-      <div className="flex gap-3 mb-12">
+      <div className="flex gap-3 mb-10">
         {settings.map((setting, index) => (
           <div
             key={index}
-            className="bg-white/6 rounded-2xl px-6 py-4 text-center"
-            style={{ 
-              minWidth: '100px',
-              border: '0.5px solid rgba(255,255,255,0.1)'
-            }}
+            className="bg-black/35 backdrop-blur-md border border-white/10 rounded-2xl px-6 py-4 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            style={{ minWidth: '100px' }}
           >
             <div 
-              className="text-white text-[13px] opacity-50 mb-1"
+              className="text-white/70 text-[13px] font-semibold mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
               style={{ fontFamily: 'SF Pro Display, Inter, system-ui, sans-serif' }}
             >
               {setting.label}
             </div>
             <div 
-              className="text-white text-[16px] font-medium"
+              className="text-white text-[16px] font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.65)]"
               style={{ fontFamily: 'SF Pro Display, Inter, system-ui, sans-serif' }}
             >
               {setting.value}
@@ -560,12 +559,8 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
       {/* Play Button */}
       <button
         onClick={handlePlayPause}
-        className="w-20 h-20 border-2 border-white rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-all duration-300 active:scale-95"
-        style={{ 
-          marginBottom: '100px',
-          minWidth: '44px',
-          minHeight: '44px'
-        }}
+        className="w-24 h-24 border-2 border-white/90 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-black/30 transition-all duration-300 active:scale-95 shadow-[0_14px_50px_rgba(0,0,0,0.45)]"
+        style={{ minWidth: '44px', minHeight: '44px' }}
       >
         {isPlaying ? (
           <Pause size={28} className="ml-0.5" />
@@ -573,6 +568,7 @@ export function MeditationPlayer({ onTrackChange, onPlayPause }: MeditationPlaye
           <Play size={28} className="ml-1" />
         )}
       </button>
+      </div>
     </div>
   );
 }

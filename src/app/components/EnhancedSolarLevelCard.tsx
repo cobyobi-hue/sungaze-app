@@ -114,7 +114,7 @@ export function EnhancedSolarLevelCard({ currentDay, completedMinutes }: Enhance
   };
 
   return (
-    <div className={`bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl transition-all duration-500 ${auraGlow}`}>
+    <div className={`bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)] transition-all duration-500 ${auraGlow}`}>
       {/* Level Header with Achievement Badge */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -137,12 +137,16 @@ export function EnhancedSolarLevelCard({ currentDay, completedMinutes }: Enhance
                 </div>
               )}
             </div>
-            <p className="text-gray-300 text-sm">{currentLevel.subtitle}</p>
+            <p className="text-white/80 text-sm font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+              {currentLevel.subtitle}
+            </p>
           </div>
         </div>
         <div className="text-right">
           <div className="text-white text-sm font-medium">Level {currentLevel.levelNumber}</div>
-          <div className="text-gray-400 text-xs">{currentLevel.timeline}</div>
+          <div className="text-white/70 text-xs font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">
+            {currentLevel.timeline}
+          </div>
         </div>
       </div>
 
@@ -162,10 +166,10 @@ export function EnhancedSolarLevelCard({ currentDay, completedMinutes }: Enhance
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-300 text-sm">Level Progress</span>
-          <span className="text-gray-300 text-sm">{Math.round(progressInLevel)}%</span>
+          <span className="text-white/80 text-sm font-medium">Level Progress</span>
+          <span className="text-white/80 text-sm font-medium">{Math.round(progressInLevel)}%</span>
         </div>
-        <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-black/40 border border-white/10 rounded-full h-3 overflow-hidden">
           <div 
             className={`h-full bg-gradient-to-r from-orange-500 to-yellow-500 transition-all duration-500 ease-out relative`}
             style={{ width: `${progressInLevel}%` }}
@@ -175,7 +179,7 @@ export function EnhancedSolarLevelCard({ currentDay, completedMinutes }: Enhance
             )}
           </div>
         </div>
-        <div className="flex justify-between mt-1 text-xs text-gray-400">
+        <div className="flex justify-between mt-1 text-xs text-white/70 font-medium">
           <span>Day {daysInLevel}</span>
           <span>{totalDaysInLevel} days in level</span>
         </div>

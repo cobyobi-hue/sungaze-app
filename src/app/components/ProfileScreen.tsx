@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Crown, Flame, Sun, Shield, Star, Award, Calendar, User, Settings, ChevronRight, Bell, CreditCard, LogOut, HelpCircle, Shield as ShieldIcon, Plus, Camera, Image as ImageIcon } from 'lucide-react';
+import { Crown, Flame, Sun, Shield, Star, Award, Calendar, User, Settings, ChevronRight, Bell, CreditCard, LogOut, HelpCircle, Shield as ShieldIcon, Plus, Pencil, Camera, Image as ImageIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import { UserProfile, TIER_FEATURES, FOUNDER_BADGES } from '../types/subscription';
 import { subscriptionService } from '../lib/database/subscription-service';
@@ -14,6 +14,10 @@ import { MembershipScreen } from './settings/MembershipScreen';
 import { NotificationsScreen } from './settings/NotificationsScreen';
 import { PermissionsScreen } from './settings/PermissionsScreen';
 import { LegalScreen } from './settings/LegalScreen';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import { Capacitor } from '@capacitor/core';
+import { useDialog } from '../contexts/DialogContext';
+import { ScreenShell } from './ui/ScreenShell';
 
 interface ProfileScreenProps {
   userId?: string;
@@ -31,6 +35,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
+  const { isOnline } = useNetworkStatus();
+  const dialog = useDialog();
 
   useEffect(() => {
     console.log('ProfileScreen: useEffect triggered, calling getCurrentUser');
@@ -72,7 +78,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
-      alert('Failed to sign out. Please try again.');
+      dialog.alert({ message: 'Failed to sign out. Please try again.' });
     }
   };
 
@@ -441,18 +447,93 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
     setShowImagePicker(true);
   };
 
-  const handleTakePhoto = () => {
+  const photoWebPathToFile = async (webPath: string) => {
+    const res = await fetch(webPath);
+    const blob = await res.blob();
+    const ext = blob.type?.includes('png') ? 'png' : 'jpg';
+    return new File([blob], `profile.${ext}`, { type: blob.type || 'image/jpeg' });
+  };
+
+  const handleTakePhoto = async () => {
     setShowImagePicker(false);
-    // For web, we'll use the file input with camera capture
+
+    // Native (Capacitor): force camera
+    if (Capacitor.isNativePlatform()) {
+      try {
+        if (!isOnline) {
+          dialog.alert({ message: 'You are offline. Reconnect to upload your profile image after taking a photo.' });
+        }
+
+        const mod: any = await import('@capacitor/camera');
+        const { Camera, CameraSource, CameraResultType } = mod;
+
+        const photo = await Camera.getPhoto({
+          source: CameraSource.Camera,
+          quality: 90,
+          resultType: CameraResultType.Uri,
+        });
+
+        if (!photo?.webPath) return;
+
+        // Show preview immediately
+        setProfileImage(photo.webPath);
+
+        // Upload to Supabase using existing flow
+        const file = await photoWebPathToFile(photo.webPath);
+        const imageUrl = await uploadProfileImage(file);
+        setProfileImage(imageUrl);
+        setProfile((p) => (p ? { ...p, profileImageUrl: imageUrl } : p));
+        return;
+      } catch (e) {
+        console.error('Camera take photo failed:', e);
+        dialog.alert({ message: 'Failed to open camera. Please try again.' });
+        return;
+      }
+    }
+
+    // Web fallback: file input with camera capture
     if (fileInputRef.current) {
       fileInputRef.current.setAttribute('capture', 'environment');
       fileInputRef.current.click();
     }
   };
 
-  const handleChooseFromLibrary = () => {
+  const handleChooseFromLibrary = async () => {
     setShowImagePicker(false);
-    // For web, we'll use the file input for file selection
+
+    // Native (Capacitor): force photos
+    if (Capacitor.isNativePlatform()) {
+      try {
+        if (!isOnline) {
+          dialog.alert({ message: 'You are offline. Reconnect to upload your profile image after selecting a photo.' });
+        }
+
+        const mod: any = await import('@capacitor/camera');
+        const { Camera, CameraSource, CameraResultType } = mod;
+
+        const photo = await Camera.getPhoto({
+          source: CameraSource.Photos,
+          quality: 90,
+          resultType: CameraResultType.Uri,
+        });
+
+        if (!photo?.webPath) return;
+
+        setProfileImage(photo.webPath);
+
+        const file = await photoWebPathToFile(photo.webPath);
+        const imageUrl = await uploadProfileImage(file);
+        setProfileImage(imageUrl);
+        setProfile((p) => (p ? { ...p, profileImageUrl: imageUrl } : p));
+        return;
+      } catch (e) {
+        console.error('Camera choose photo failed:', e);
+        dialog.alert({ message: 'Failed to open photo library. Please try again.' });
+        return;
+      }
+    }
+
+    // Web fallback: regular file picker
     if (fileInputRef.current) {
       fileInputRef.current.removeAttribute('capture');
       fileInputRef.current.click();
@@ -463,6 +544,10 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   const uploadProfileImage = async (file: File): Promise<string> => {
     if (!currentUser) {
       throw new Error('No user logged in');
+    }
+
+    if (!isOnline) {
+      throw new Error('You are offline. Reconnect to upload your profile image.');
     }
 
     try {
@@ -513,13 +598,13 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file.');
+      dialog.alert({ message: 'Please select an image file.' });
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image size must be less than 5MB.');
+      dialog.alert({ message: 'Image size must be less than 5MB.' });
       return;
     }
 
@@ -548,7 +633,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       console.log('Profile image uploaded successfully');
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Failed to upload image. Please try again.');
+      dialog.alert({ message: 'Failed to upload image. Please try again.' });
       setProfileImage(null);
     }
   };
@@ -597,7 +682,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <ScreenShell>
       
       {/* Top Bar with Logo and Status */}
       <div className="flex items-center justify-between px-6 pt-6 pb-4">
@@ -634,7 +719,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
             </div>
             
             {/* Profile Image with Orange + Button */}
-            <div className="relative">
+            <div className="relative shrink-0">
               <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center border-2 border-white/20">
                 {profileImage ? (
                   <img 
@@ -648,9 +733,13 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
               </div>
               <button
                 onClick={handleImagePicker}
-                className="absolute -bottom-2 -right-2 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-lg"
+                className="absolute bottom-0 right-0 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-lg border-2 border-black/60"
               >
-                <Plus className="w-5 h-5 text-white" />
+                {(!!profileImage || !!profile?.profileImageUrl) ? (
+                  <Pencil className="w-5 h-5 text-white" />
+                ) : (
+                  <Plus className="w-5 h-5 text-white" />
+                )}
               </button>
             </div>
           </div>
@@ -738,7 +827,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
           <div className="bg-black rounded-t-3xl w-full max-w-md p-6 border-t border-white/10">
             <div className="space-y-3">
               <button
-                onClick={handleTakePhoto}
+                onClick={() => void handleTakePhoto()}
                 className="w-full flex items-center gap-4 py-5 px-4 hover:bg-white/5 rounded-xl transition-colors group"
               >
                 <div className="p-2 rounded-lg bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors">
@@ -751,7 +840,7 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
               </button>
               
               <button
-                onClick={handleChooseFromLibrary}
+                onClick={() => void handleChooseFromLibrary()}
                 className="w-full flex items-center gap-4 py-5 px-4 hover:bg-white/5 rounded-xl transition-colors group"
               >
                 <div className="p-2 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 transition-colors">
@@ -773,6 +862,6 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
           </div>
         </div>
       )}
-    </div>
+    </ScreenShell>
   );
 }

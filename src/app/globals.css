@@ -8,6 +8,16 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+
+  /* Luxe readability (tuned for teal backgrounds) */
+  --luxe-text: rgba(255, 255, 255, 0.97);
+  --luxe-muted: rgba(255, 255, 255, 0.92);
+  --luxe-dim: rgba(255, 255, 255, 0.86);
+  /* Stronger multi-layer shadow so text stays readable on teal + glass */
+  --luxe-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.70),
+    0 10px 26px rgba(0, 0, 0, 0.42),
+    0 0 18px rgba(0, 0, 0, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,6 +36,41 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* iOS/PWA safe-area helpers */
+.safe-area {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Global luxe readability layer (applies across the app when enabled on <body>) */
+.luxe-readable {
+  color: var(--luxe-text);
+}
+
+.luxe-readable :is(h1, h2, h3, h4, h5, h6, p, span, small, strong, em, li, label, a, button) {
+  text-shadow: var(--luxe-shadow);
+}
+
+/* Lift common “muted white” Tailwind colors so they stay readable on teal */
+.luxe-readable .text-white\/60 { color: var(--luxe-muted) !important; }
+.luxe-readable .text-white\/70 { color: var(--luxe-text) !important; }
+.luxe-readable .text-white\/50 { color: var(--luxe-dim) !important; }
+.luxe-readable .text-white\/40 { color: rgba(255, 255, 255, 0.72) !important; }
+.luxe-readable .text-white\/30 { color: rgba(255, 255, 255, 0.66) !important; }
+.luxe-readable .text-white\/20 { color: rgba(255, 255, 255, 0.58) !important; }
+
+/* Darken common “glass” panels slightly so text is always legible */
+.luxe-readable .bg-black\/30 { background-color: rgba(0, 0, 0, 0.42) !important; }
+.luxe-readable .bg-black\/35 { background-color: rgba(0, 0, 0, 0.46) !important; }
+.luxe-readable .bg-black\/40 { background-color: rgba(0, 0, 0, 0.50) !important; }
+
+/* A touch more border contrast on glass cards */
+.luxe-readable .border-white\/10 { border-color: rgba(255, 255, 255, 0.16) !important; }
+.luxe-readable .border-white\/15 { border-color: rgba(255, 255, 255, 0.20) !important; }
+.luxe-readable .border-white\/20 { border-color: rgba(255, 255, 255, 0.24) !important; }
+
+
 
 /* Hide scrollbar for horizontal navigation */
 .scrollbar-hide {

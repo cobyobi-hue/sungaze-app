@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Edit, Save, X, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { createClient } from '../../lib/supabase/client';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { useDialog } from '../../contexts/DialogContext';
+import { ScreenShell } from '../ui/ScreenShell';
 
 interface AccountInfoScreenProps {
   onBack: () => void;
@@ -32,6 +35,8 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
   });
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
+  const { isOnline } = useNetworkStatus();
+  const dialog = useDialog();
 
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -44,6 +49,11 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
 
   const loadUserData = async () => {
     try {
+      if (!isOnline) {
+        // Offline: keep local defaults (email will be blank) and show UI instead of hanging.
+        setLoading(false);
+        return;
+      }
       // Get current user
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
@@ -99,6 +109,17 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
       
       // Save to Supabase
       try {
+        if (!isOnline) {
+          dialog.alert({ message: 'You are offline. Reconnect to save changes.' });
+          // Revert local state on offline since it isn't persisted anywhere.
+          setUserAccount(prev => ({
+            ...prev,
+            [editingField]: (prev as any)[editingField]
+          }));
+          setEditingField(null);
+          setEditValue("");
+          return;
+        }
         const { data: { user }, error: authError } = await supabase.auth.getUser();
         if (authError || !user) {
           console.error('Error getting user:', authError);
@@ -133,7 +154,7 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
 
         if (updateError) {
           console.error('Error saving account settings:', updateError);
-          alert('Failed to save. Please try again.');
+          dialog.alert({ message: 'Failed to save. Please try again.' });
           // Revert local state on error
           setUserAccount(prev => ({
             ...prev,
@@ -144,7 +165,7 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
         }
       } catch (error) {
         console.error('Error saving account settings:', error);
-        alert('Failed to save. Please try again.');
+        dialog.alert({ message: 'Failed to save. Please try again.' });
       }
       
       setEditingField(null);
@@ -222,17 +243,19 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white/60">Loading account info...</p>
+      <ScreenShell>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-white/80 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">Loading account info...</p>
+          </div>
         </div>
-      </div>
+      </ScreenShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+    <ScreenShell>
       {/* Header */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-4 mb-6">
@@ -301,6 +324,6 @@ export function AccountInfoScreen({ onBack, onDeleteAccount }: AccountInfoScreen
           </div>
         </div>
       )}
-    </div>
+    </ScreenShell>
   );
 }

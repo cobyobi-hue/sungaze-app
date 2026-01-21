@@ -6,3 +6,17 @@ ios/App/Pods
 *.keystore
 keystore.properties
 .DS_Store
+
+# Env / secrets (set these in Vercel dashboard or local shell)
+.env.local
+.env.*.local
+
+# Build / tooling artifacts
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+*.log
+.next-dev.log
+
+# IDE / editor
+.cursor/
+android/.idea/

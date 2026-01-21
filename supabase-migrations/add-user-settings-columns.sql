@@ -29,3 +29,5 @@ COMMENT ON COLUMN user_profiles.permission_settings IS 'Stores user permission p
 COMMENT ON COLUMN user_profiles.account_settings IS 'Stores user account information (name, username, phone, place, aboutMe, birthday)';
 
 
+
+

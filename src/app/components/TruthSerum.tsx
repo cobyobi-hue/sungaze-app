@@ -82,32 +82,32 @@ export function TruthSerum({ className = "" }: TruthSerumProps) {
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header with Progress */}
-      <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 backdrop-blur-md rounded-2xl px-6 py-4 border border-amber-400/30 shadow-2xl">
+      <div className="bg-black/40 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <Sun className="w-6 h-6 text-amber-400" />
-          <h2 className="text-xl text-white font-medium text-center">
+          <Sun className="w-6 h-6 text-yellow-300 drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]" />
+          <h2 className="text-xl text-white font-semibold text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             Gems from the Sun
           </h2>
-          <Sparkles className="w-6 h-6 text-amber-400" />
+          <Sparkles className="w-6 h-6 text-yellow-300 drop-shadow-[0_0_8px_rgba(255,215,0,0.35)]" />
         </div>
-        <p className="text-amber-200 text-sm text-center mb-3">
+        <p className="text-white/90 text-sm text-center mb-3 font-medium tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
           Weekly gems of wisdom from revolutionary consciousness merged with solar science
         </p>
         
         {/* Progress Bar */}
         <div className="bg-black/30 rounded-full h-2 mb-2">
           <div 
-            className="bg-gradient-to-r from-amber-400 to-orange-400 h-2 rounded-full transition-all duration-500"
+            className="bg-gradient-to-r from-yellow-300 to-orange-400 h-2 rounded-full transition-all duration-500"
             style={{ width: `${(progressInfo.unlockedCount / progressInfo.totalCount) * 100}%` }}
           />
         </div>
         <div className="flex items-center justify-between text-xs">
-          <span className="text-amber-300">
+          <span className="text-white/80 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">
             <Gift className="w-3 h-3 inline mr-1" />
             Week {progressInfo.currentWeek} • {progressInfo.unlockedCount}/{progressInfo.totalCount} gems unlocked
           </span>
           {progressInfo.nextUnlockDate && (
-            <span className="text-amber-200">
+            <span className="text-white/75 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">
               <Clock className="w-3 h-3 inline mr-1" />
               Next: {progressInfo.nextUnlockDate.toLocaleDateString()}
             </span>

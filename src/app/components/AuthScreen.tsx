@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { createClient } from '../lib/supabase/client';
+import { getAppBaseUrl, joinUrl } from '../lib/appUrl';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 
 interface AuthScreenProps {
@@ -19,11 +21,27 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
   const [showResetPassword, setShowResetPassword] = useState(false);
   
   const supabase = createClient();
+  const appBaseUrl = getAppBaseUrl();
+  const authCallbackUrl = joinUrl(appBaseUrl, '/auth/callback');
+  const resetPasswordUrl = joinUrl(appBaseUrl, '/reset-password');
+  const { isOnline } = useNetworkStatus();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    if (!isOnline) {
+      setError('You appear to be offline. Please reconnect to sign in or create an account.');
+      setLoading(false);
+      return;
+    }
+
+    if (!supabase) {
+      setError('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.');
+      setLoading(false);
+      return;
+    }
 
     console.log('Auth form submitted:', { isSignUp, email, password: '***' });
 
@@ -33,10 +51,10 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
+            emailRedirectTo: authCallbackUrl,
             data: {
               app_name: 'SUNGAZE',
-              app_url: window.location.origin
+              app_url: appBaseUrl
             }
           }
         });
@@ -157,9 +175,21 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
     setLoading(true);
     setError('');
 
+    if (!isOnline) {
+      setError('You appear to be offline. Please reconnect to request a password reset email.');
+      setLoading(false);
+      return;
+    }
+
+    if (!supabase) {
+      setError('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: resetPasswordUrl,
       });
 
       if (error) throw error;
@@ -167,7 +197,16 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
       setError('Password reset link sent to your email!');
       setShowResetPassword(false);
     } catch (error: any) {
-      setError(error.message);
+      // Make the common Supabase allowlist failure self-explanatory.
+      const msg = String(error?.message ?? error ?? 'Unknown error');
+      if (msg.toLowerCase().includes('redirect') && msg.toLowerCase().includes('not allowed')) {
+        setError(
+          'Password reset failed: redirect URL not allowed. In Supabase → Auth → URL Configuration, allowlist: ' +
+            resetPasswordUrl
+        );
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }

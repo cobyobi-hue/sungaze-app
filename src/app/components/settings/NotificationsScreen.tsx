@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Bell, Mail, MessageSquare } from 'lucide-react';
 import { createClient } from '../../lib/supabase/client';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { useDialog } from '../../contexts/DialogContext';
+import { ScreenShell } from '../ui/ScreenShell';
 
 interface NotificationsScreenProps {
   onBack: () => void;
@@ -18,6 +21,8 @@ interface NotificationSetting {
 
 export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
   const supabase = createClient();
+  const { isOnline } = useNetworkStatus();
+  const dialog = useDialog();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   
@@ -74,6 +79,11 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
   const loadNotificationSettings = async () => {
     try {
       setLoading(true);
+
+      if (!isOnline) {
+        // Keep defaults; user can still view settings offline.
+        return;
+      }
       
       // Get current user
       const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -114,6 +124,11 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
   const saveNotificationSettings = async () => {
     try {
       setSaving(true);
+
+      if (!isOnline) {
+        dialog.alert({ message: 'You are offline. Reconnect to save notification settings.' });
+        return;
+      }
       
       // Get current user
       const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -139,13 +154,13 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
 
       if (updateError) {
         console.error('Error saving notification settings:', updateError);
-        alert('Failed to save settings. Please try again.');
+        dialog.alert({ message: 'Failed to save settings. Please try again.' });
       } else {
         console.log('Notification settings saved successfully');
       }
     } catch (error) {
       console.error('Error saving notification settings:', error);
-      alert('Failed to save settings. Please try again.');
+      dialog.alert({ message: 'Failed to save settings. Please try again.' });
     } finally {
       setSaving(false);
     }
@@ -162,7 +177,11 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
     );
     
     // Save to Supabase
-    await saveNotificationSettings();
+    if (isOnline) {
+      await saveNotificationSettings();
+    } else {
+      dialog.alert({ message: 'You are offline. Your change will not be saved until you reconnect.' });
+    }
   };
 
   const getIcon = (type: string) => {
@@ -184,7 +203,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white">
+    <ScreenShell>
       {/* Header */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-4 mb-6">
@@ -251,7 +270,7 @@ export function NotificationsScreen({ onBack }: NotificationsScreenProps) {
           </div>
         )}
       </div>
-    </div>
+    </ScreenShell>
   );
 }
 

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "../components/ui/button";
 import { Eye, EyeOff, Key, Shield, Plus, RotateCcw, Trash2, Copy, Check } from 'lucide-react';
+import { useDialog } from '../contexts/DialogContext';
 
 interface SecretInfo {
   key: string;
@@ -20,6 +21,7 @@ export default function SecretsAdminPage() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [copySuccess, setCopySuccess] = useState('');
   const [error, setError] = useState('');
+  const dialog = useDialog();
 
   const headers = {
     'Authorization': `Bearer ${adminToken}`,
@@ -94,7 +96,13 @@ export default function SecretsAdminPage() {
   };
 
   const deleteSecret = async (key: string) => {
-    if (!confirm(`Delete secret "${key}"?`)) return;
+    const ok = await dialog.confirm({
+      title: 'Delete secret?',
+      message: `Delete secret "${key}"?`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+    });
+    if (!ok) return;
 
     try {
       const response = await fetch(`/api/secrets?key=${key}`, {

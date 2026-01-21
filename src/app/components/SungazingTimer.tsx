@@ -582,7 +582,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
 
   return (
     <>
-    <div className="bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white min-h-screen px-6 pt-6 pb-24 relative overflow-hidden">
+    <div className="bg-gradient-to-b from-purple-100 via-pink-100 via-rose-200 via-orange-200 to-yellow-200 text-white min-h-screen px-6 pt-3 pb-24 relative overflow-hidden">
       {/* Dark warm overlay for app interface */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-800/95 via-rose-800/95 via-orange-700/95 to-orange-600/95 backdrop-blur-xl" />
       
@@ -639,7 +639,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
 
       {/* Audio Track Selection */}
       {!isActive && (
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="text-center mb-4">
             <h3 className="text-white text-sm font-medium mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Choose Sacred Sound</h3>
           </div>

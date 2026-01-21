@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { TIER_FEATURES } from '../types/subscription';
 import { FounderStats } from './FounderStats';
 import { subscriptionService } from '../lib/database/subscription-service';
+import { useDialog } from '../contexts/DialogContext';
 import { 
   getOfferings, 
   purchasePackage, 
@@ -32,6 +33,7 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
   const [isLoadingOfferings, setIsLoadingOfferings] = useState(false);
   const [platform, setPlatform] = useState<string>('web');
   const [error, setError] = useState<string | null>(null);
+  const dialog = useDialog();
 
   useEffect(() => {
     if (isOpen) {
@@ -87,7 +89,7 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
   const handlePayment = async (productId: string) => {
     // If payments disabled or on web, show coming soon
     if (!PAYMENTS_ENABLED || platform === 'web') {
-      alert('Subscriptions are coming soon! For now, enjoy the full experience.');
+      dialog.alert({ message: 'Subscriptions are coming soon! For now, enjoy the full experience.' });
       return;
     }
 
@@ -130,7 +132,7 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
       // Check if purchase was successful
       const status = await checkSubscriptionStatus();
       if (status.isPremium) {
-        alert('Subscription activated successfully!');
+        dialog.alert({ message: 'Subscription activated successfully!' });
         onSuccess?.();
         onClose();
       } else {
@@ -143,7 +145,7 @@ export function PaywallModal({ isOpen, onClose, userId, email, requiredTier, onS
       
       // Don't show alert for user cancellation
       if (errorMessage !== 'Purchase was cancelled') {
-        alert(errorMessage);
+        dialog.alert({ message: errorMessage });
       }
     } finally {
       setLoading(null);
