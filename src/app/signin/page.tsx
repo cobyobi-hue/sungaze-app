@@ -63,22 +63,31 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 w-full max-w-md shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+    <div className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] flex items-center justify-center p-4 text-white">
+      <div className="bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
         <div className="text-center mb-8">
-          <div className="relative w-16 h-16 mx-auto mb-4">
-            {/* Sun44 Logo */}
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-yellow-300 to-orange-400 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,215,0,0.8),0_0_40px_rgba(255,165,0,0.4)]">
-              <span className="text-black text-xl font-bold tracking-tight">44</span>
+          <div className="relative w-20 h-20 mx-auto mb-5">
+            {/* Black sun orb with bright gold ring */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/55 via-yellow-300/50 to-yellow-400/35 blur-2xl scale-110" />
+            <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_24px_rgba(255,230,120,0.9),0_0_70px_rgba(255,215,0,0.45)]" />
+            <div className="absolute inset-[8px] rounded-full bg-black/90 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-14px_30px_rgba(0,0,0,0.6)] flex items-center justify-center">
+              <span className="text-[#FFEB3B] text-2xl font-extrabold tracking-tight drop-shadow-[0_8px_18px_rgba(0,0,0,0.75),0_0_18px_rgba(255,215,0,0.6)]">
+                44
+              </span>
             </div>
-            
             {/* Orbital dots */}
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full shadow-sm shadow-yellow-400/50"></div>
-            <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-orange-400 rounded-full shadow-sm shadow-orange-400/50"></div>
-            <div className="absolute -bottom-1 -right-1 w-1 h-1 bg-yellow-300 rounded-full shadow-sm shadow-yellow-300/50"></div>
+            <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
+              <div className="w-2.5 h-2.5 bg-[#FFF8E1] rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_12px_rgba(255,248,225,0.9)]" />
+              <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+              <div className="w-2 h-2 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_16px_rgba(255,235,59,0.98)]" />
+              <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+            </div>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Welcome to Sun44</h1>
-          <p className="text-white/70">
+
+          <h1 className="text-2xl font-bold text-white mb-2 drop-shadow-[0_3px_8px_rgba(0,0,0,0.7)]">
+            {isSignUp ? 'Create your Sungaze account' : 'Welcome back'}
+          </h1>
+          <p className="text-white/80 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
             {isSignUp ? 'Create your account' : 'Sign in to your account'}
           </p>
         </div>
@@ -94,7 +103,7 @@ export default function SignInPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent"
+              className="w-full px-4 py-3 bg-black/40 border border-white/15 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 backdrop-blur-md"
               placeholder="Enter your email"
             />
           </div>
@@ -109,7 +118,7 @@ export default function SignInPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent"
+              className="w-full px-4 py-3 bg-black/40 border border-white/15 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 backdrop-blur-md"
               placeholder="Enter your password"
             />
           </div>
@@ -123,7 +132,7 @@ export default function SignInPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 disabled:from-gray-500 disabled:to-gray-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-[#40C4FF] to-[#4DD0E1] hover:opacity-95 disabled:opacity-50 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg disabled:cursor-not-allowed"
           >
             {isLoading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
           </button>
@@ -132,7 +141,7 @@ export default function SignInPage() {
         <div className="mt-6 text-center">
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="text-blue-300 hover:text-blue-200 text-sm transition-colors"
+            className="text-white/80 hover:text-white text-sm transition-colors font-medium"
           >
             {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
           </button>
