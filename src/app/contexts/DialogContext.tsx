@@ -35,7 +35,9 @@ const DialogContext = createContext<DialogApi | null>(null);
 
 export function DialogProvider({ children }: { children: React.ReactNode }) {
   const [dialog, setDialog] = useState<DialogState>(null);
-  const resolverRef = useRef<null | ((value: boolean | void) => void)>(null);
+  // One resolver for both alert() and confirm(): alert resolves with void, confirm resolves with boolean.
+  // We normalize to an optional boolean to keep assignment compatible.
+  const resolverRef = useRef<null | ((value?: boolean) => void)>(null);
 
   const close = useCallback(() => {
     setDialog(null);
@@ -49,7 +51,7 @@ export function DialogProvider({ children }: { children: React.ReactNode }) {
     } catch {}
 
     return await new Promise<void>((resolve) => {
-      resolverRef.current = resolve;
+      resolverRef.current = () => resolve();
       setDialog({
         open: true,
         kind: "alert",
@@ -66,7 +68,7 @@ export function DialogProvider({ children }: { children: React.ReactNode }) {
     } catch {}
 
     return await new Promise<boolean>((resolve) => {
-      resolverRef.current = resolve;
+      resolverRef.current = (value) => resolve(!!value);
       setDialog({
         open: true,
         kind: "confirm",

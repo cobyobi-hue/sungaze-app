@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 3001",
-    "build": "next build --turbopack",
+    "build": "next build --webpack",
     "start": "next start -p 3001",
     "lint": "eslint .",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",
+    "@capacitor/camera": "^8.0.0",
     "@capacitor/cli": "^8.0.0",
     "@capacitor/core": "^8.0.0",
     "@capacitor/local-notifications": "^8.0.0",
