@@ -213,9 +213,10 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#40C4FF] via-[#4DD0E1] to-[#006064] text-white flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Dark teal overlay for readability */}
-      <div className="absolute inset-0 bg-black/35 backdrop-blur-xl" />
+    <div className="min-h-screen bg-[#40C4FF] text-white flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Subtle depth (keep the bright teal, just add gentle vignette) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.18),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_60%,rgba(0,96,100,0.18),transparent_60%)]" />
       
       {/* Content wrapper */}
       <div className="relative z-10 w-full max-w-md">
