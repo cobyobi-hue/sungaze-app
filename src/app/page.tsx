@@ -366,7 +366,7 @@ export default function App() {
       {/* App container */}
       <div className="relative z-10 max-w-sm mx-auto min-h-screen px-6 pb-24">
         {/* Small logo mark (top-left) */}
-          <div className="fixed top-4 left-4 z-[60]">
+        <div className="fixed top-4 left-4 z-[60]">
           <div className="w-9 h-9 rounded-2xl bg-black/35 border border-white/15 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.25)] flex items-center justify-center">
             <img src="/sun44-mark.svg" alt="Sungaze" className="w-6 h-6" />
           </div>
@@ -375,31 +375,31 @@ export default function App() {
         {/* Header */}
         <div className="pt-20 pb-12 text-center">
           <div className="mb-8">
-            {/* 44 Circle (gold disc + black 44 + orbit ring) */}
+            {/* 44 Circle */}
             <div className="relative inline-flex items-center justify-center mb-6">
               {/* Outer aura */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/55 via-yellow-300/50 to-yellow-400/35 blur-3xl scale-150" />
-              {/* Gold disc */}
+              {/* Luxury orb: dark core + bright gold ring */}
               <div className="relative w-36 h-36 rounded-full flex items-center justify-center">
                 {/* Soft glow */}
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-200/55 via-yellow-300/35 to-transparent blur-2xl" />
-                {/* Orbit ring */}
-                <div className="absolute inset-0 rounded-full border-[3px] border-[#FFEB3B]/80 shadow-[0_0_24px_rgba(255,235,59,0.35)]" />
-                {/* Disc */}
-                <div className="absolute inset-[6px] rounded-full bg-[radial-gradient(circle_at_45%_40%,#FFF8E1_0%,#FFEB3B_38%,#FFC107_72%)] shadow-[0_0_46px_rgba(255,215,0,0.22)]" />
+                {/* Ring */}
+                <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_34px_rgba(255,230,120,0.95),0_0_95px_rgba(255,215,0,0.55)]" />
+                {/* Inner core */}
+                <div className="absolute inset-[10px] rounded-full bg-black/85 border border-yellow-100/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-18px_40px_rgba(0,0,0,0.55)]" />
+                {/* Highlight arc */}
+                <div className="absolute inset-[12px] rounded-full border border-white/20" />
                 {/* 44 */}
-                <span className="relative text-black text-6xl font-black tracking-tight drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
+                <span className="relative text-[#FFEB3B] text-6xl font-extrabold tracking-tight drop-shadow-[0_10px_22px_rgba(0,0,0,0.75),0_0_26px_rgba(255,215,0,0.7)]">
                   44
                 </span>
               </div>
               {/* Orbiting elements */}
               <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
-                {/* top-right larger dot */}
-                <div className="w-5 h-5 bg-[#FFEB3B] rounded-full absolute top-2 right-4 shadow-[0_0_16px_rgba(255,235,59,0.75)]" />
-                {/* bottom-left dot */}
-                <div className="w-4 h-4 bg-[#FFEB3B] rounded-full absolute bottom-6 left-5 shadow-[0_0_14px_rgba(255,235,59,0.7)]" />
-                {/* bottom dot */}
-                <div className="w-4 h-4 bg-[#FFEB3B] rounded-full absolute bottom-3 left-1/2 transform -translate-x-1/2 shadow-[0_0_14px_rgba(255,235,59,0.7)]" />
+                <div className="w-2 h-2 bg-[#FFF8E1] rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_12px_rgba(255,248,225,0.9)]" />
+                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+                <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_16px_rgba(255,235,59,0.98)]" />
+                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
               </div>
             </div>
 

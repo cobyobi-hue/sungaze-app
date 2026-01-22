@@ -32,21 +32,20 @@ export function SolarTabBar({ activeTab, onTabChange, className = '' }: SolarTab
       id: 'gaze',
       icon: (
         <div className="w-10 h-10 relative flex items-center justify-center">
-          {/* Sun44 Logo (gold disc + black 44 + orbit ring) */}
+          {/* Sun44 Logo - luxury orb (dark core + bright gold ring) */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-200/55 via-yellow-300/35 to-transparent blur-xl" />
-          <div className="absolute inset-0 rounded-full border-[2px] border-[#FFEB3B]/80 shadow-[0_0_18px_rgba(255,235,59,0.35)]" />
-          <div className="absolute inset-[5px] rounded-full bg-[radial-gradient(circle_at_45%_40%,#FFF8E1_0%,#FFEB3B_40%,#FFC107_75%)] shadow-[0_0_22px_rgba(255,215,0,0.20)]" />
-          <div className="w-full h-full relative flex items-center justify-center">
-            <span className="text-black text-base font-black tracking-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)]">
+          <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_22px_rgba(255,230,120,0.95),0_0_52px_rgba(255,215,0,0.55)]" />
+          <div className="absolute inset-[6px] rounded-full bg-black/85 border border-yellow-100/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-14px_26px_rgba(0,0,0,0.55)]" />
+          <div className="absolute inset-[7px] rounded-full border border-white/20" />
+          <div className="w-full h-full relative flex items-center justify-center animate-pulse">
+            <span className="text-[#FFEB3B] text-base font-extrabold tracking-tight drop-shadow-[0_6px_12px_rgba(0,0,0,0.75),0_0_16px_rgba(255,215,0,0.7)]">
               44
             </span>
           </div>
-          {/* Orbital dots (spin) */}
-          <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
-            <div className="w-2.5 h-2.5 bg-[#FFEB3B] rounded-full absolute -top-1 right-2 shadow-[0_0_12px_rgba(255,235,59,0.7)]" />
-            <div className="w-2 h-2 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-2 shadow-[0_0_10px_rgba(255,235,59,0.65)]" />
-            <div className="w-2 h-2 bg-[#FFEB3B] rounded-full absolute -bottom-1 right-1 shadow-[0_0_10px_rgba(255,235,59,0.65)]" />
-          </div>
+          {/* Orbital dots */}
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFF8E1] rounded-full shadow-[0_0_10px_rgba(255,248,225,0.95)]" />
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-[#FFEB3B] rounded-full shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+          <div className="absolute -bottom-1 -right-1 w-1.5 h-1.5 bg-[#FFEB3B] rounded-full shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
         </div>
       ),
       label: 'TODAY'

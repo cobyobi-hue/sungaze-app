@@ -1,17 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
   <defs>
-    <radialGradient id="disc" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(54 44) rotate(90) scale(72)">
-      <stop offset="0" stop-color="#FFF8E1"/>
-      <stop offset="0.42" stop-color="#FFEB3B"/>
-      <stop offset="1" stop-color="#FFC107"/>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(64 64) rotate(90) scale(62)">
+      <stop offset="0" stop-color="#FFD54F" stop-opacity="0.95"/>
+      <stop offset="0.55" stop-color="#FFB74D" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FF7043" stop-opacity="0"/>
     </radialGradient>
-    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
+    <linearGradient id="ring" x1="22" y1="22" x2="106" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD54F"/>
+      <stop offset="0.55" stop-color="#FFB74D"/>
+      <stop offset="1" stop-color="#FF7043"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
       <feColorMatrix in="blur" type="matrix"
         values="1 0 0 0 0
                 0 1 0 0 0
                 0 0 1 0 0
-                0 0 0 0.35 0" result="g"/>
+                0 0 0 0.55 0" result="g"/>
       <feMerge>
         <feMergeNode in="g"/>
         <feMergeNode in="SourceGraphic"/>
@@ -19,22 +24,19 @@
     </filter>
   </defs>
 
-  <!-- Subtle outer glow (transparent background for app use) -->
-  <circle cx="64" cy="64" r="60" fill="rgba(255,235,59,0.10)"/>
+  <!-- Outer glow -->
+  <circle cx="64" cy="64" r="62" fill="url(#glow)"/>
 
-  <!-- Orbit ring -->
-  <circle cx="64" cy="64" r="46" stroke="#FFEB3B" stroke-opacity="0.85" stroke-width="6" filter="url(#softGlow)"/>
+  <!-- Ring -->
+  <circle cx="64" cy="64" r="42" stroke="url(#ring)" stroke-width="8" filter="url(#softGlow)"/>
 
-  <!-- Disc -->
-  <circle cx="64" cy="64" r="42" fill="url(#disc)"/>
-
-  <!-- Orbit dots (match reference proportions) -->
-  <circle cx="104" cy="36" r="9" fill="#FFEB3B" filter="url(#softGlow)"/>
-  <circle cx="44" cy="98" r="7.5" fill="#FFEB3B" filter="url(#softGlow)"/>
-  <circle cx="78" cy="104" r="7.5" fill="#FFEB3B" filter="url(#softGlow)"/>
+  <!-- Orbit dots -->
+  <circle cx="96" cy="38" r="6" fill="#FFD54F" filter="url(#softGlow)"/>
+  <circle cx="40" cy="94" r="6" fill="#FFB74D" filter="url(#softGlow)"/>
+  <circle cx="88" cy="92" r="5" fill="#FF7043" filter="url(#softGlow)"/>
 
   <!-- 44 -->
-  <text x="64" y="80" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="56" font-weight="900" fill="#0B0B0B">
+  <text x="64" y="76" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="46" font-weight="800" fill="#0B0B0B">
     44
   </text>
 </svg>
