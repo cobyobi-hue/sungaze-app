@@ -375,32 +375,13 @@ export default function App() {
         {/* Header */}
         <div className="pt-20 pb-12 text-center">
           <div className="mb-8">
-            {/* 44 Circle */}
+            {/* 44 mark (black-disc version) */}
             <div className="relative inline-flex items-center justify-center mb-6">
-              {/* Outer aura */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-200/55 via-yellow-300/50 to-yellow-400/35 blur-3xl scale-150" />
-              {/* Luxury orb: dark core + bright gold ring */}
-              <div className="relative w-36 h-36 rounded-full flex items-center justify-center">
-                {/* Soft glow */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-200/55 via-yellow-300/35 to-transparent blur-2xl" />
-                {/* Ring */}
-                <div className="absolute inset-0 rounded-full border-2 border-yellow-200/95 shadow-[0_0_34px_rgba(255,230,120,0.95),0_0_95px_rgba(255,215,0,0.55)]" />
-                {/* Inner core */}
-                <div className="absolute inset-[10px] rounded-full bg-black/85 border border-yellow-100/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-18px_40px_rgba(0,0,0,0.55)]" />
-                {/* Highlight arc */}
-                <div className="absolute inset-[12px] rounded-full border border-white/20" />
-                {/* 44 */}
-                <span className="relative text-[#FFEB3B] text-6xl font-extrabold tracking-tight drop-shadow-[0_10px_22px_rgba(0,0,0,0.75),0_0_26px_rgba(255,215,0,0.7)]">
-                  44
-                </span>
-              </div>
-              {/* Orbiting elements */}
-              <div className="absolute inset-0 animate-spin" style={{ animationDuration: '15s' }}>
-                <div className="w-2 h-2 bg-[#FFF8E1] rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_12px_rgba(255,248,225,0.9)]" />
-                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
-                <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_16px_rgba(255,235,59,0.98)]" />
-                <div className="w-1 h-1 bg-[#FFEB3B] rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
-              </div>
+              <img
+                src="/sun44-mark-black.svg"
+                alt="SUNGAZE 44"
+                className="w-44 h-44 drop-shadow-[0_18px_45px_rgba(0,0,0,0.45)]"
+              />
             </div>
 
             <h1 className="text-display-3xl text-white tracking-[0.12em] font-bold mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7),0_4px_16px_rgba(0,0,0,0.5),0_1px_3px_rgba(255,215,0,0.35)] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_32px_rgba(255,215,0,0.22)] filter brightness-110 animate-fade-in-slow">

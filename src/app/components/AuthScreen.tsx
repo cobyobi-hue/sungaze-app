@@ -224,8 +224,12 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
         <div className="text-center mb-8">
           <div className="relative inline-flex items-center justify-center mb-6">
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/30 to-amber-400/30 blur-3xl scale-150 animate-pulse"></div>
-            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/90 to-amber-500/90 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.6),0_0_80px_rgba(255,215,0,0.3)] border-2 border-yellow-300/40">
-              <span className="text-black text-2xl font-bold tracking-tight drop-shadow-[0_2px_4px_rgba(255,255,255,0.3)]">44</span>
+            <div className="relative w-24 h-24 flex items-center justify-center">
+              <img
+                src="/sun44-mark-black.svg"
+                alt="SUNGAZE 44"
+                className="w-24 h-24"
+              />
             </div>
           </div>
           <h1 className="text-3xl font-bold text-yellow-400 mb-2 drop-shadow-[0_3px_6px_rgba(0,0,0,0.9),0_0_8px_rgba(255,215,0,0.5)]">SUNGAZE</h1>

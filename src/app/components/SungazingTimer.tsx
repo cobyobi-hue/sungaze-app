@@ -41,6 +41,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   const [timeLeft, setTimeLeft] = useState(getInitialTime());
   const [initialTime, setInitialTime] = useState(getInitialTime());
   const [isActive, setIsActive] = useState(false);
+  const [isInSession, setIsInSession] = useState(false); // controls the in-session "Solar Window" UI
   const [justCompleted, setJustCompleted] = useState(false);
   const [showPreGazingInstructions, setShowPreGazingInstructions] = useState(false);
   const [showPalmingRitual, setShowPalmingRitual] = useState(false);
@@ -317,6 +318,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
         setTimeLeft((prev) => {
           if (prev <= 1) {
             setIsActive(false);
+            setIsInSession(false);
             // Properly handle async function call
             handlePracticeComplete().catch((error) => {
               console.error('Error in handlePracticeComplete:', error);
@@ -341,17 +343,19 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
 
   // Handle auto-start from Begin Sungazing button
   useEffect(() => {
-    if (autoStart && !isActive) {
-      completionFiredRef.current = false;
-      // Skip pre-gazing instructions and start immediately
-      setShowPreGazingInstructions(false);
-      setIsActive(true);
-      
-      // Call the handler to reset the autoStart flag
-      if (onAutoStartHandled) {
-        onAutoStartHandled();
+    if (!autoStart || isActive) return;
+    completionFiredRef.current = false;
+    // Skip pre-gazing instructions and start immediately (existing behavior)
+    setShowPreGazingInstructions(false);
+    setIsInSession(true);
+    // Start the session (also starts audio if configured)
+    (async () => {
+      try {
+        await handleBeginGazing();
+      } finally {
+        onAutoStartHandled?.();
       }
-    }
+    })();
   }, [autoStart, isActive, onAutoStartHandled]);
 
   const handlePracticeComplete = async () => {
@@ -437,12 +441,14 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   };
 
   const handleStart = async () => {
+    // Pre-gazing instructions come before starting the timer (Pic 2)
     setShowPreGazingInstructions(true);
   };
 
   const handleBeginGazing = async () => {
     completionFiredRef.current = false;
     setShowPreGazingInstructions(false);
+    setIsInSession(true);
     setIsActive(true);
     
     // Clear any audio error states
@@ -511,9 +517,26 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
     }
   };
 
+  const handleResumeGazing = async () => {
+    setIsInSession(true);
+    setIsActive(true);
+    // Resume audio when continuing the session
+    if (audioRef.current && selectedTrack !== 'none' && !isAudioPlaying) {
+      try {
+        await audioRef.current.play();
+        setIsAudioPlaying(true);
+        setAudioError(null);
+      } catch (error) {
+        console.error('Error resuming selected track:', error);
+        setAudioError(`Failed to play audio: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+    }
+  };
+
 
   const handleReset = () => {
     setIsActive(false);
+    setIsInSession(false);
     setTimeLeft(initialTime);
     // Stop audio when timer is reset
     if (audioRef.current && isAudioPlaying) {
@@ -562,6 +585,12 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
     return `${mins}:${remainingSecs.toString().padStart(2, '0')}`;
   };
 
+  const formatTimeMMSS = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   const getSacredMessage = () => {
     if (justCompleted) {
       return 'Practice complete - light absorbed into your being';
@@ -579,6 +608,7 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
   const currentSolarLevel = getCurrentSolarLevel(currentDay);
   const levelProgress = getLevelProgress(currentDay, 0);
   const levelMotivation = getLevelMotivation(currentSolarLevel, currentDay);
+  const hasSessionProgress = timeLeft > 0 && timeLeft !== initialTime && !justCompleted;
 
   return (
     <>
@@ -588,6 +618,105 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
       
       {/* Content wrapper - positioned above overlay */}
       <div className="relative z-10">
+
+      {/* In-session UI (Pic 1 style) */}
+      {isInSession && (
+        <div className="fixed inset-0 z-[90]">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          {/* Subtle teal aurora so it still feels “Sungaze” */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_10%,rgba(64,196,255,0.22),transparent_55%),radial-gradient(circle_at_70%_90%,rgba(77,208,225,0.18),transparent_55%)]" />
+
+          <div className="relative z-10 h-full w-full flex items-center justify-center p-6">
+            <div className="w-full max-w-sm">
+              {/* Close (pause + exit overlay) */}
+              <div className="flex justify-end mb-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handlePause();
+                    setIsInSession(false);
+                  }}
+                  className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md flex items-center justify-center text-white shadow-[0_6px_18px_rgba(0,0,0,0.35)]"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Card */}
+              <div className="bg-black/45 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+                <div className="text-center mb-4">
+                  <p className="text-white/80 text-xs font-semibold tracking-[0.22em] uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
+                    Sungazing Ritual
+                  </p>
+                  <h2 className="text-2xl text-white font-bold mt-2 drop-shadow-[0_3px_10px_rgba(0,0,0,0.75)]">
+                    Enter the Solar Window
+                  </h2>
+                  <p className="text-white/80 text-sm font-medium mt-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
+                    Breathe. Relax your gaze. Let the light become gentle.
+                  </p>
+                </div>
+
+                {/* Timer */}
+                <div className="text-center mb-4">
+                  <div className="text-6xl text-white font-semibold tracking-wider tabular-nums drop-shadow-[0_0_40px_rgba(255,215,0,0.35)]">
+                    {formatTimeMMSS(timeLeft)}
+                  </div>
+                  {selectedTrack !== 'none' && (
+                    <div className="mt-2 text-white/70 text-xs">
+                      {isAudioPlaying ? 'Sacred sound playing' : 'Sacred sound ready'}
+                    </div>
+                  )}
+                </div>
+
+                {/* Brilliant sun (from SungazingRitualIntro) */}
+                <div className="relative mx-auto my-6 w-56 h-56">
+                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_45%_40%,rgba(255,255,255,0.35),rgba(255,235,59,0.55)_28%,rgba(255,193,7,0.55)_55%,rgba(255,152,0,0.25)_72%,transparent_78%)] blur-2xl" />
+                  <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_45%_40%,#FFF59D_0%,#FFEB3B_32%,#FFC107_62%,#FF9800_80%)] shadow-[0_0_60px_rgba(255,200,0,0.28)]" />
+                  <div className="absolute inset-0 rounded-full border-2 border-[#FFEB3B]/70 shadow-[0_0_22px_rgba(255,235,59,0.32)]" />
+                  <div className="absolute inset-0 animate-spin" style={{ animationDuration: "15s" }}>
+                    <div className="w-2.5 h-2.5 bg-[#FFF8E1] rounded-full absolute -top-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_12px_rgba(255,248,225,0.9)]" />
+                    <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute top-1/2 -right-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+                    <div className="w-2 h-2 bg-[#FFEB3B] rounded-full absolute -bottom-1 left-1/2 transform -translate-x-1/2 shadow-[0_0_16px_rgba(255,235,59,0.98)]" />
+                    <div className="w-1.5 h-1.5 bg-[#FFEB3B] rounded-full absolute top-1/2 -left-1 transform -translate-y-1/2 shadow-[0_0_14px_rgba(255,235,59,0.98)]" />
+                  </div>
+                  <div className="absolute inset-[14px] rounded-full border-2 border-white/40" />
+                  <div className="absolute inset-[30px] rounded-full border border-white/25" />
+                  <div className="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFF59D] shadow-[0_0_18px_rgba(255,245,157,0.75)]" />
+                </div>
+
+                {/* Controls */}
+                <div className="grid grid-cols-2 gap-3">
+                  {isActive ? (
+                    <Button
+                      onClick={handlePause}
+                      className="w-full bg-white/15 hover:bg-white/20 text-white border border-white/15 backdrop-blur-xl rounded-2xl py-3 transition-all duration-300 font-semibold"
+                    >
+                      Pause
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleResumeGazing}
+                      className="w-full bg-white/15 hover:bg-white/20 text-white border border-white/15 backdrop-blur-xl rounded-2xl py-3 transition-all duration-300 font-semibold"
+                    >
+                      Resume
+                    </Button>
+                  )}
+
+                  <Button
+                    onClick={handleReset}
+                    className="w-full bg-gradient-to-r from-yellow-400/25 to-orange-400/25 hover:from-yellow-400/32 hover:to-orange-400/32 text-white border border-yellow-400/25 backdrop-blur-xl rounded-2xl py-3 transition-all duration-300 font-semibold shadow-[0_8px_24px_rgba(255,200,0,0.18)]"
+                  >
+                    End
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Pre-Gazing Instructions Overlay */}
       {showPreGazingInstructions && (
         <div className="absolute inset-0 bg-black/80 backdrop-blur-xl rounded-3xl flex flex-col items-center justify-center p-6 z-10">
@@ -733,14 +862,24 @@ export function SungazingTimer({ onTimerChange, onComplete, autoStart, onAutoSta
       {/* Action Buttons - Clean Style */}
       <div className="flex justify-center gap-4 mb-8">
         {!isActive ? (
-          <Button
-            onClick={handleStart}
-            className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 hover:from-yellow-400/40 hover:to-orange-400/40 text-white border border-yellow-400/30 backdrop-blur-xl rounded-2xl px-8 py-4 transition-all duration-300 font-medium shadow-[0_4px_20px_rgba(255,200,0,0.2)]"
-            disabled={timeLeft === 0}
-          >
-            <Play className="w-5 h-5 mr-2" />
-            Begin Practice
-          </Button>
+          hasSessionProgress ? (
+            <Button
+              onClick={handleResumeGazing}
+              className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 hover:from-yellow-400/40 hover:to-orange-400/40 text-white border border-yellow-400/30 backdrop-blur-xl rounded-2xl px-8 py-4 transition-all duration-300 font-medium shadow-[0_4px_20px_rgba(255,200,0,0.2)]"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Resume Session
+            </Button>
+          ) : (
+            <Button
+              onClick={handleStart}
+              className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 hover:from-yellow-400/40 hover:to-orange-400/40 text-white border border-yellow-400/30 backdrop-blur-xl rounded-2xl px-8 py-4 transition-all duration-300 font-medium shadow-[0_4px_20px_rgba(255,200,0,0.2)]"
+              disabled={timeLeft === 0}
+            >
+              <Play className="w-5 h-5 mr-2" />
+              Begin Practice
+            </Button>
+          )
         ) : (
           <Button
             onClick={handlePause}
