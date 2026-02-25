@@ -34,9 +34,35 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
   const [showImagePicker, setShowImagePicker] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const healthCheckRanRef = useRef(false);
   const supabase = createClient();
   const { isOnline } = useNetworkStatus();
   const dialog = useDialog();
+
+  const getErrorMessage = (err: any): string => {
+    if (!err) return 'Failed to upload image. Please try again.';
+    if (typeof err === 'string') return err;
+    // Supabase errors are often plain objects with a `message` field (not instanceof Error)
+    if (typeof err?.message === 'string' && err.message.trim().length > 0) return err.message;
+    if (typeof err?.error_description === 'string' && err.error_description.trim().length > 0) return err.error_description;
+    if (typeof err?.details === 'string' && err.details.trim().length > 0) return err.details;
+    try {
+      return JSON.stringify(err);
+    } catch {
+      return 'Failed to upload image. Please try again.';
+    }
+  };
+
+  const formatSupabaseError = (err: any) => {
+    if (!err) return null;
+    return {
+      message: err?.message,
+      code: err?.code,
+      details: err?.details,
+      hint: err?.hint,
+      status: err?.status,
+    };
+  };
 
   useEffect(() => {
     console.log('ProfileScreen: useEffect triggered, calling getCurrentUser');
@@ -53,6 +79,84 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       console.log('ProfileScreen: No user found, but this should be handled in getCurrentUser');
     }
   }, [currentUser]);
+
+  // Dev-only sanity checks to catch missing Supabase policies/buckets early (no impact to prod users).
+  useEffect(() => {
+    const runHealthCheck = async () => {
+      if (!supabase || !currentUser || healthCheckRanRef.current) return;
+
+      const email = String(currentUser?.email ?? '').toLowerCase();
+      const isDevEmail = email === 'cobyobi@gmail.com';
+      const isLocalhost =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const shouldRun = process.env.NODE_ENV !== 'production' || isLocalhost || isDevEmail;
+      if (!shouldRun) return;
+
+      healthCheckRanRef.current = true;
+
+      // 1) Verify Storage bucket exists / SELECT policy works
+      try {
+        const { error: listErr } = await supabase.storage
+          .from('profile-images')
+          .list(currentUser.id, { limit: 1 });
+
+        if (listErr) {
+          console.warn('ProfileScreen: HealthCheck storage list failed:', formatSupabaseError(listErr));
+          dialog.alert({
+            message:
+              'Supabase Storage check failed for `profile-images`. Run `supabase-profile-image-migration.sql` in Supabase SQL Editor to create the bucket + policies.',
+          });
+        }
+      } catch (e) {
+        console.warn('ProfileScreen: HealthCheck storage exception:', e);
+      }
+
+      // 2) Verify user_profiles INSERT policy works (ignoreDuplicates avoids modifying existing rows)
+      try {
+        if (!currentUser.email) return;
+
+        const { error: insertErr } = await supabase
+          .from('user_profiles')
+          .upsert(
+            [
+              {
+                id: currentUser.id,
+                email: currentUser.email,
+                tier: 'free',
+                badges: ['New Seeker'],
+                seals: [],
+                subscription_status: 'active',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              },
+            ],
+            { onConflict: 'id', ignoreDuplicates: true }
+          );
+
+        if (insertErr) {
+          const msg = getErrorMessage(insertErr).toLowerCase();
+          console.warn('ProfileScreen: HealthCheck profile upsert failed:', formatSupabaseError(insertErr));
+
+          if (msg.includes('row-level security') || msg.includes('rls') || msg.includes('permission')) {
+            dialog.alert({
+              message:
+                'Supabase RLS is blocking profile creation. Run `supabase-migrations/add-user-profiles-insert-policy.sql` in Supabase SQL Editor.',
+            });
+          } else if (msg.includes('duplicate key') && msg.includes('user_profiles_email_key')) {
+            dialog.alert({
+              message:
+                'Supabase profile conflict: a `user_profiles` row already exists for this email (unique constraint `user_profiles_email_key`). Delete or relink the orphaned row in Supabase SQL Editor.',
+            });
+          }
+        }
+      } catch (e) {
+        console.warn('ProfileScreen: HealthCheck profile exception:', e);
+      }
+    };
+
+    runHealthCheck();
+  }, [supabase, currentUser, dialog]);
 
   // Load profile image when profile is loaded
   useEffect(() => {
@@ -280,9 +384,19 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
             .single();
 
           if (createError) {
-            console.error('ProfileScreen: Error creating profile:', createError);
+            // This commonly happens if user_profiles INSERT policy (RLS) wasn't applied.
+            // Use warn (not error) to avoid Next dev overlay "Console Error" for an expected misconfig.
+            console.warn('ProfileScreen: Error creating profile:', formatSupabaseError(createError));
             console.log('ProfileScreen: Using fallback profile (not saved to DB)');
             setProfile(newProfile);
+            const msg = getErrorMessage(createError);
+            setError(msg);
+            if (msg.toLowerCase().includes('row level security') || msg.toLowerCase().includes('rls')) {
+              dialog.alert({
+                message:
+                  'Your Supabase database is blocking profile creation (RLS). Run the migration `supabase-migrations/add-user-profiles-insert-policy.sql` in Supabase SQL Editor, then retry.'
+              });
+            }
           } else {
             console.log('ProfileScreen: Profile created successfully:', createdProfile);
             // Transform database format to component format
@@ -475,14 +589,22 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
         if (!photo?.webPath) return;
 
+        const previousImage = profileImage;
+
         // Show preview immediately
         setProfileImage(photo.webPath);
 
         // Upload to Supabase using existing flow
-        const file = await photoWebPathToFile(photo.webPath);
-        const imageUrl = await uploadProfileImage(file);
-        setProfileImage(imageUrl);
-        setProfile((p) => (p ? { ...p, profileImageUrl: imageUrl } : p));
+        try {
+          const file = await photoWebPathToFile(photo.webPath);
+          const imageUrl = await uploadProfileImage(file);
+          setProfileImage(imageUrl);
+          setProfile((p) => (p ? { ...p, profileImageUrl: imageUrl } : p));
+        } catch (uploadErr) {
+          console.error('Profile image upload failed:', uploadErr);
+          dialog.alert({ message: getErrorMessage(uploadErr) });
+          setProfileImage(previousImage ?? null);
+        }
         return;
       } catch (e) {
         console.error('Camera take photo failed:', e);
@@ -519,12 +641,20 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
         if (!photo?.webPath) return;
 
+        const previousImage = profileImage;
+
         setProfileImage(photo.webPath);
 
-        const file = await photoWebPathToFile(photo.webPath);
-        const imageUrl = await uploadProfileImage(file);
-        setProfileImage(imageUrl);
-        setProfile((p) => (p ? { ...p, profileImageUrl: imageUrl } : p));
+        try {
+          const file = await photoWebPathToFile(photo.webPath);
+          const imageUrl = await uploadProfileImage(file);
+          setProfileImage(imageUrl);
+          setProfile((p) => (p ? { ...p, profileImageUrl: imageUrl } : p));
+        } catch (uploadErr) {
+          console.error('Profile image upload failed:', uploadErr);
+          dialog.alert({ message: getErrorMessage(uploadErr) });
+          setProfileImage(previousImage ?? null);
+        }
         return;
       } catch (e) {
         console.error('Camera choose photo failed:', e);
@@ -552,7 +682,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
 
     try {
       // Create a unique filename
-      const fileExt = file.name.split('.').pop();
+      const fallbackExt = file.type?.includes('png') ? 'png' : 'jpg';
+      const fileExt = file.name?.includes('.') ? (file.name.split('.').pop() || fallbackExt) : fallbackExt;
       const fileName = `${currentUser.id}/${Date.now()}.${fileExt}`;
 
       // Upload to Supabase Storage
@@ -564,8 +695,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
         });
 
       if (uploadError) {
-        console.error('Error uploading image:', uploadError);
-        throw uploadError;
+        console.warn('ProfileScreen: Storage upload failed:', formatSupabaseError(uploadError));
+        throw new Error(getErrorMessage(uploadError));
       }
 
       // Get public URL
@@ -573,22 +704,71 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
         .from('profile-images')
         .getPublicUrl(fileName);
 
-      // Save URL to database
-      const { error: updateError } = await supabase
+      // Save URL to database (robust: handle missing user_profiles row)
+      const { data: updatedRow, error: updateError } = await supabase
         .from('user_profiles')
         .update({ profile_image_url: publicUrl })
-        .eq('id', currentUser.id);
+        .eq('id', currentUser.id)
+        .select('id')
+        .maybeSingle();
 
       if (updateError) {
-        console.error('Error saving image URL:', updateError);
-        throw updateError;
+        console.warn('ProfileScreen: Failed to save profile_image_url:', formatSupabaseError(updateError));
+        throw new Error(getErrorMessage(updateError));
+      }
+
+      // If no row updated, the profile likely doesn't exist yet. Create it and proceed.
+      if (!updatedRow) {
+        if (!currentUser.email) {
+          throw new Error('Missing email for profile creation');
+        }
+
+        const { error: insertError } = await supabase
+          .from('user_profiles')
+          .insert([{
+            id: currentUser.id,
+            email: currentUser.email,
+            tier: 'free',
+            badges: ['New Seeker'],
+            seals: [],
+            subscription_status: 'active',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            profile_image_url: publicUrl,
+          }]);
+
+        if (insertError) {
+          console.warn('ProfileScreen: Failed to create profile while saving image URL:', formatSupabaseError(insertError));
+          const msg = getErrorMessage(insertError).toLowerCase();
+          const isDuplicateEmail =
+            msg.includes('duplicate key') &&
+            (msg.includes('user_profiles_email_key') || msg.includes('email_key') || msg.includes('email'));
+
+          if (isDuplicateEmail) {
+            // This means there's already a user_profiles row for this email, but NOT for this auth uid.
+            // With RLS enabled, the client cannot repair it. It must be fixed in Supabase (admin).
+            throw new Error(
+              'Profile record conflict: there is already a row in `user_profiles` for this email (unique constraint `user_profiles_email_key`). ' +
+              'This usually happens if an older account with the same email was deleted/recreated and left an orphaned profile row. ' +
+              'Fix in Supabase SQL Editor by deleting the old row for that email, then refresh and try again.'
+            );
+          }
+
+          if (msg.includes('row-level security') || msg.includes('rls') || msg.includes('permission')) {
+            throw new Error(
+              'Profile image could not be saved because the database is blocking profile creation (RLS). ' +
+              'In Supabase SQL Editor run `supabase-migrations/add-user-profiles-insert-policy.sql`, then try again.'
+            );
+          }
+          throw new Error(getErrorMessage(insertError));
+        }
       }
 
       console.log('Profile image uploaded and saved:', publicUrl);
       return publicUrl;
     } catch (error) {
-      console.error('Error uploading profile image:', error);
-      throw error;
+      console.warn('ProfileScreen: uploadProfileImage failed:', formatSupabaseError(error));
+      throw (error instanceof Error ? error : new Error(getErrorMessage(error)));
     }
   };
 
@@ -632,8 +812,8 @@ export function ProfileScreen({ userId }: ProfileScreenProps) {
       
       console.log('Profile image uploaded successfully');
     } catch (error) {
-      console.error('Error uploading image:', error);
-      dialog.alert({ message: 'Failed to upload image. Please try again.' });
+      console.warn('ProfileScreen: handleFileChange upload failed:', formatSupabaseError(error));
+      dialog.alert({ message: getErrorMessage(error) });
       setProfileImage(null);
     }
   };
